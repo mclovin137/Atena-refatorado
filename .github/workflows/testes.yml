@@ -1,0 +1,63 @@
+name: Casos de teste
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: ./scripts/testar.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidencias-integracao
+          path: |
+            evidence/
+            services/*/target/surefire-reports/
+            services/*/target/failsafe-reports/
+          if-no-files-found: error
+      - name: Preparar navegador
+        run: |
+          npm install --prefix "$RUNNER_TEMP/browser" playwright@1.61.1
+          "$RUNNER_TEMP/browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Validar aplicação Docker e navegador
+        run: |
+          ./scripts/preparar-ambiente.sh
+          docker compose up --build -d
+          for tentativa in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:18080/actuator/health >/dev/null; then break; fi
+            sleep 2
+          done
+          PLAYWRIGHT_MODULE="$RUNNER_TEMP/browser/node_modules/playwright" node scripts/browser-smoke.mjs
+      - name: Registrar logs operacionais
+        if: always()
+        run: |
+          mkdir -p evidence
+          if [ -f .env ]; then docker compose logs --no-color > evidence/compose.log; fi
+      - name: Publicar evidências visuais
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidencias-navegador
+          path: |
+            evidence/*.png
+            evidence/*.json
+            evidence/compose.log
+          if-no-files-found: error
+      - name: Encerrar ambiente de CI
+        if: always()
+        run: docker compose down

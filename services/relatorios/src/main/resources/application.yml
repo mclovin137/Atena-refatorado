@@ -1,0 +1,41 @@
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  application:
+    name: relatorios-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:15432/relatorios}
+    username: ${DB_USER:relatorios}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: never
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+server:
+  port: ${PORT:8081}
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: strict
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+atena:
+  service-token: ${SERVICE_TOKEN}
+  school-url: ${SCHOOL_URL:http://localhost:8080}

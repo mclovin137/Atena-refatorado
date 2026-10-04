@@ -1,0 +1,57 @@
+name: atena-refatorado
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Execute scripts/preparar-ambiente.sh}
+      ESCOLAR_DB_PASSWORD: ${ESCOLAR_DB_PASSWORD:?Credencial escolar obrigatória}
+      RELATORIOS_DB_PASSWORD: ${RELATORIOS_DB_PASSWORD:?Credencial relatórios obrigatória}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sh:/docker-entrypoint-initdb.d/10-atena.sh:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  escolar:
+    build:
+      context: .
+      args:
+        SERVICE: escolar
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/escolar
+      DB_USER: escolar
+      DB_PASSWORD: ${ESCOLAR_DB_PASSWORD}
+      SERVICE_TOKEN: ${SERVICE_TOKEN:?Token interno obrigatório}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Email de bootstrap obrigatório}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Senha de bootstrap obrigatória}
+      REPORTS_URL: http://relatorios:8081
+      UPLOAD_DIR: /data/uploads
+    ports:
+      - 127.0.0.1:${ATENA_PORT:-18080}:8080
+    volumes:
+      - uploads-data:/data/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+  relatorios:
+    build:
+      context: .
+      args:
+        SERVICE: relatorios
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/relatorios
+      DB_USER: relatorios
+      DB_PASSWORD: ${RELATORIOS_DB_PASSWORD}
+      SERVICE_TOKEN: ${SERVICE_TOKEN}
+      SCHOOL_URL: http://escolar:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  postgres-data:
+  uploads-data:
