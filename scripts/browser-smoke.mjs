@@ -29,7 +29,8 @@ async function request(path, method = 'GET', data, expected = 200, extraHeaders 
   const response = await page.request.fetch(`${baseURL}/api/${path}`, { method, data, headers: { ...(method === 'GET' ? {} : { 'X-CSRF-TOKEN': csrf }), ...extraHeaders } });
   assert.equal(response.status(), expected, `${method} ${path}: esperado ${expected}, recebido ${response.status()}`);
   if (expected === 204) return null;
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 }
 async function create(path, data) {
   const value = await request(path, 'POST', data, 201);
@@ -62,10 +63,10 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: 'evidence/secretaria-mobile.png', fullPage: true });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, 'Tela mobile deve caber na viewport');
+  assert.equal((await page.request.get(`${baseURL}/actuator/metrics`)).status(), 200, 'Secretaria deve consultar métricas autenticadas');
   const suffix = randomUUID();
   const professor = await create('pessoas', { pessoa: { nome: 'Professor de teste', email: `professor-${suffix}@example.test`, matricula: `p-${suffix}`, perfil: 'PROFESSOR', ativo: true }, senha: env.ADMIN_PASSWORD });
   const aluno = await create('pessoas', { pessoa: { nome: 'Aluno de teste', email: `aluno-${suffix}@example.test`, matricula: `a-${suffix}`, perfil: 'ALUNO', ativo: true, documento: '000.000.000-00' }, senha: env.ADMIN_PASSWORD });
-  const unidade = await create('unidades', { nome: `Escola E2E ${suffix}`, endereco: 'Rua de teste', telefone: '123', cnpj: '12.345.678/0001-90' });
   const curso = await create('cursos', { nome: `Curso E2E ${suffix}` });
   const serie = await create('series', { nome: `Série E2E ${suffix}` });
   const materia = await create('materias', { nome: `Matemática E2E ${suffix}` });
@@ -78,8 +79,32 @@ try {
   const finished = await awaitCompletion(`jobs/${job.id}`);
   const grades = (await request('notas')).filter(n => n.disciplinaId === disciplina.id && n.alunoId === aluno.id);
   assert.equal(grades.length, 4, 'Batch deve criar quatro bimestres');
+  for (const grade of grades) created.push(`notas/${grade.id}`);
+  const vazio = await request(`boletins/${aluno.id}`);
+  assert.deepEqual(vazio.unidade, {}, 'Snapshot sem unidade deve preservar objeto vazio');
+  assert.deepEqual(vazio.linhas[0].notas, [null, null, null, null]);
+  assert.deepEqual(vazio.linhas[0].recuperacoes, [null, null, null, null]);
+  const boletimVazio = await request('relatorios', 'POST', { alunoId: aluno.id, tipo: 'BOLETIM', requestId: `${suffix}-boletim-vazio` }, 202);
+  reportIds.push(boletimVazio.id);
+  await awaitCompletion(`relatorios/${boletimVazio.id}`);
+  const boletimJson = await request(`relatorios/${boletimVazio.id}/download?format=json`);
+  assert.ok(Number.isSafeInteger(boletimVazio.id));
+  const snapshotPersistido = JSON.parse(execFileSync('docker', ['compose', 'exec', '-T', 'postgres', 'psql', '-U', 'postgres', '-d', 'relatorios', '-tA', '-v', 'ON_ERROR_STOP=1', '-c', `SELECT snapshot FROM relatorio WHERE id=${boletimVazio.id};`], { encoding: 'utf8' }).trim());
+  assert.deepEqual(snapshotPersistido.unidade, {}, 'Snapshot BOLETIM recebido por HTTP e persistido deve preservar unidade vazia');
+  assert.equal(boletimJson.nome, aluno.nome);
+  assert.equal(boletimJson.tipo, 'BOLETIM');
+  assert.deepEqual(boletimJson.linhas[0].notas, [null, null, null, null]);
+  assert.deepEqual(boletimJson.linhas[0].recuperacoes, [null, null, null, null]);
+  for (const formato of ['pdf', 'csv']) {
+    const arquivo = await page.request.get(`${baseURL}/api/relatorios/${boletimVazio.id}/download?format=${formato}`);
+    assert.equal(arquivo.status(), 200);
+    const bytes = await arquivo.body();
+    if (formato === 'pdf') assert.equal(bytes.subarray(0, 5).toString(), '%PDF-');
+    else assert.ok(bytes.toString().includes('registro;conteudo'));
+  }
+  evidence.push({ tipo: 'BOLETIM', contratoEntreServicos: 'unidade vazia e quatro notas/recuperações null preservadas', formatos: ['json', 'pdf', 'csv'] });
+  const unidade = await create('unidades', { nome: `Escola E2E ${suffix}`, endereco: 'Rua de teste', telefone: '123', cnpj: '12.345.678/0001-90' });
   for (const grade of grades) {
-    created.push(`notas/${grade.id}`);
     await request(`notas/${grade.id}`, 'PUT', { ...grade, valor: 75, recuperacao: null, liberada: true, prazo: '2200-01-01' });
   }
   const boletim = await request(`boletins/${aluno.id}`);
@@ -102,6 +127,25 @@ try {
   const reportJson = await request(`relatorios/${report.id}/download?format=json`);
   assert.equal(reportJson.linhas.length, 1, 'Relatório deve conter a disciplina do aluno');
   assert.equal(reportJson.linhas[0].resultado.media, 75, 'Relatório deve refletir o snapshot real do serviço escolar');
+  for (const [tipo, fixture] of [['LISTA_ALUNOS', aluno], ['LISTA_PROFESSORES', professor], ['LISTA_TURMAS', turma]]) {
+    const lista = await request('relatorios', 'POST', { tipo, requestId: `${suffix}-${tipo}` }, 202);
+    reportIds.push(lista.id);
+    await awaitCompletion(`relatorios/${lista.id}`);
+    const conteudo = await request(`relatorios/${lista.id}/download?format=json`);
+    const linha = conteudo.linhas.find(item => item.id === fixture.id);
+    assert.ok(linha, 'Relatório de lista deve consumir fixture real do serviço escolar');
+    assert.equal(linha.nome, fixture.nome);
+    if (tipo === 'LISTA_TURMAS') assert.equal(linha.ano, fixture.ano);
+    else assert.equal(linha.matricula, fixture.matricula);
+    for (const formato of ['pdf', 'csv']) {
+      const arquivo = await page.request.get(`${baseURL}/api/relatorios/${lista.id}/download?format=${formato}`);
+      assert.equal(arquivo.status(), 200);
+      const bytes = await arquivo.body();
+      if (formato === 'pdf') assert.equal(bytes.subarray(0, 5).toString(), '%PDF-');
+      else assert.ok(bytes.toString().includes('registro;conteudo'));
+    }
+    evidence.push({ lista: tipo, contratoEntreServicos: 'campos reais preservados', formatos: ['json', 'pdf', 'csv'] });
+  }
   let exportedPdf;
   for (const format of ['pdf', 'csv']) {
     const response = await page.request.get(`${baseURL}/api/relatorios/${report.id}/download?format=${format}`);
@@ -115,6 +159,23 @@ try {
   assert.equal(materialResponse.status(), 201);
   const material = await materialResponse.json();
   created.push(`materiais/${material.id}`);
+  const png = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: 1, height: 1 } });
+  const avatarUpload = await page.request.post(`${baseURL}/api/pessoas/${aluno.id}/avatar`, { headers: { 'X-CSRF-TOKEN': csrf }, multipart: { file: { name: 'avatar.png', mimeType: 'image/png', buffer: png } } });
+  assert.equal(avatarUpload.status(), 200);
+  const avatarAntes = await (await page.request.get(`${baseURL}/api/pessoas/${aluno.id}/avatar`)).body();
+  execFileSync('docker', ['compose', 'restart', 'escolar', 'relatorios'], { stdio: 'pipe' });
+  let reiniciou = false;
+  for (let tentativa = 0; tentativa < 90; tentativa++) {
+    try { const saude = await fetch(`${baseURL}/actuator/health`); if (saude.ok && (await saude.json()).status === 'UP') { reiniciou = true; break; } } catch {}
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+  assert.ok(reiniciou, 'Runtime deve reiniciar com BYTEA persistido');
+  csrf = (await request('session')).csrfToken;
+  await request('session/login', 'POST', { email: env.ADMIN_EMAIL, senha: env.ADMIN_PASSWORD });
+  csrf = (await request('session')).csrfToken;
+  assert.deepEqual(await (await page.request.get(`${baseURL}/api/materiais/${material.id}/download`)).body(), exportedPdf);
+  assert.deepEqual(await (await page.request.get(`${baseURL}/api/pessoas/${aluno.id}/avatar`)).body(), avatarAntes);
+  evidence.push({ persistencia: 'material e avatar BYTEA preservados após reinício dos dois serviços' });
   const outsider = await create('pessoas', { pessoa: { nome: 'Outro aluno de teste', email: `outro-${suffix}@example.test`, matricula: `o-${suffix}`, perfil: 'ALUNO', ativo: true }, senha: env.ADMIN_PASSWORD });
   for (const [person, enrolled] of [[aluno, true], [outsider, false]]) {
     const context = await browser.newContext(); contexts.push(context);
@@ -123,6 +184,7 @@ try {
     const login = await context.request.post(`${baseURL}/api/session/login`, { headers: { 'X-CSRF-TOKEN': initialToken }, data: { email: person.email, senha: env.ADMIN_PASSWORD } });
     assert.equal(login.status(), 200);
     const studentToken = (await (await context.request.get(`${baseURL}/api/session`)).json()).csrfToken;
+    assert.equal((await context.request.get(`${baseURL}/actuator/metrics`)).status(), 403, 'Aluno não consulta métricas operacionais');
     const download = await context.request.get(`${baseURL}/api/materiais/${material.id}/download`);
     assert.equal(download.status(), enrolled ? 200 : 403, 'Arquivo só pode ser baixado por aluno da disciplina');
     if (enrolled) {
@@ -145,6 +207,7 @@ try {
   assert.equal((await teacherBoletim.json()).documento, '', 'Professor não pode ler documento privado do aluno');
   await teacherContext.close();
   const anonymous = await browser.newContext(); contexts.push(anonymous);
+  assert.equal((await anonymous.request.get(`${baseURL}/actuator/metrics`)).status(), 401, 'Métricas exigem autenticação');
   assert.equal((await anonymous.request.get(`${baseURL}/api/materiais/${material.id}/download`)).status(), 401, 'Arquivo exige autenticação');
   await anonymous.close();
   evidence.push({ autorizacao: 'Aluno não cadastra nota/altera docente; arquivo exige autenticação e vínculo de matrícula; bytes preservados' });
@@ -157,6 +220,34 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: 'evidence/boletim-mobile.png', fullPage: true });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, 'Boletim mobile deve caber na viewport');
+  const privacidade = await browser.newContext(); contexts.push(privacidade);
+  const paginaAluno = await privacidade.newPage();
+  paginaAluno.on('pageerror', error => errors.push(error.message));
+  async function entrarPessoa(pessoa, senha) {
+    await paginaAluno.locator('main.login input[name="email"]').fill(pessoa.email);
+    await paginaAluno.locator('main.login input[name="senha"]').fill(senha);
+    await paginaAluno.locator('main.login button[type="submit"]').click();
+    await paginaAluno.locator('main.login').waitFor({ state: 'detached' });
+  }
+  await paginaAluno.goto(baseURL, { waitUntil: 'networkidle' });
+  await entrarPessoa(aluno, env.ADMIN_PASSWORD);
+  await paginaAluno.getByRole('button', { name: 'Boletim e histórico', exact: true }).click();
+  await paginaAluno.getByRole('button', { name: 'Consultar resultados', exact: true }).click();
+  await paginaAluno.getByRole('cell', { name: 'APROVADO', exact: true }).waitFor();
+  await paginaAluno.getByRole('button', { name: 'Sair da conta', exact: true }).click();
+  await paginaAluno.locator('main.login input[name="senha"]').waitFor();
+  await entrarPessoa(outsider, env.ADMIN_PASSWORD);
+  await paginaAluno.getByRole('button', { name: 'Boletim e histórico', exact: true }).click();
+  assert.equal(await paginaAluno.getByRole('cell', { name: 'APROVADO', exact: true }).count(), 0, 'Troca de conta deve descartar boletim anterior');
+  await paginaAluno.getByRole('button', { name: 'Meu perfil', exact: true }).click();
+  await paginaAluno.locator('input[name="atual"]').fill(env.ADMIN_PASSWORD);
+  const novaSenha = `${randomUUID()}Aa1!`;
+  await paginaAluno.locator('input[name="nova"]').fill(novaSenha);
+  await paginaAluno.getByRole('button', { name: 'Alterar senha e sair', exact: true }).click();
+  await paginaAluno.locator('main.login input[name="email"]').waitFor();
+  await entrarPessoa(outsider, novaSenha);
+  await privacidade.close();
+  evidence.push({ sessaoReact: 'logout e mudança de conta limpam boletim; alteração de senha retorna ao login e novo acesso funciona sem erro de corpo vazio' });
   assert.deepEqual(errors, [], 'Navegador não deve apresentar erro JavaScript');
   evidence.push({ fluxo: 'matrícula→aula/presença→Spring Batch→boletim→HTTP entre serviços→Spring Batch→PDF/CSV/JSON', job: finished, relatorio: reportFinished, media: 75, frequencia: 95 });
   await writeFile('evidence/fluxo-real.json', JSON.stringify(evidence, null, 2));

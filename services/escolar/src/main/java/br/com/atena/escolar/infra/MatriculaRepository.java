@@ -1,2 +1,0 @@
-package br.com.atena.escolar.infra;
-public interface MatriculaRepository extends org.springframework.data.jpa.repository.JpaRepository<Matricula,Long> { java.util.List<Matricula> findByTurmaId(Long turmaId); java.util.List<Matricula> findByAlunoId(Long alunoId); boolean existsByTurmaIdAndAlunoId(Long turmaId, Long alunoId); org.springframework.data.domain.Page<Matricula> findByTurmaId(Long turmaId, org.springframework.data.domain.Pageable pageable); }

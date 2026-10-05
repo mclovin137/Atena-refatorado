@@ -1,0 +1,1215 @@
+{
+  "experiment_id": "",
+  "task_id": "",
+  "model_role": "",
+  "execution": {
+    "status": "partial",
+    "attempt": null,
+    "needs_rework": true,
+    "rework_reason": "Usuário solicitou retrabalho de legibilidade, SOLID, factories, Object Calisthenics e organização segundo a arquitetura do MinervaFinancas, além de publicação Render/Neon."
+  },
+  "requirements": {
+    "requirements_received": [
+      "Refatorar a qualidade e legibilidade do código sem alterar desnecessariamente os contratos existentes.",
+      "Aplicar SOLID, factories justificadas, Object Calisthenics e organização backend definida pelo MinervaFinancas.",
+      "Preservar dois microsserviços Spring Boot, React, PostgreSQL, Spring Batch e Docker local.",
+      "Publicar em Render com PostgreSQL Neon por MCP dentro das autorizações e limites disponíveis.",
+      "Manter AUDIT_REPORT.json na raiz durante a execução, com resultados factuais.",
+      "Revisar ADRs existentes contra responsabilidades e molde Minerva, com alternativas, estado e aceite reais.",
+      "Manter arquivo de auditoria atualizado em cada marco e preservar governança de task, roadmap, continuidade e Obsidian."
+    ],
+    "requirements_addressed": [
+      "Arquivo de auditoria criado antes do código T-002; referência arquitetural inspecionada somente por leitura.",
+      "Baseline T-001 confirmado por operação; branch refactor/qualidade-producao criada preservando documentação autorizada.",
+      "Descoberta Render MCP autenticada e somente leitura executada por operação; nenhuma criação cloud realizada.",
+      "FDD-002 de autoria do implementador criado como proposta e submetido à revisão independente antes de código de produção.",
+      "Implementador revisou independentemente ADR001–005, PRD/HLD, épico e roadmap de autoria do planejador; ajuste de proposta/TBD solicitado sem aprovar seu próprio FDD.",
+      "FDD-002 aprovado e T-002 criada antes de produção; dois serviços reorganizados por feature/função, domínio puro, DTOs/ports/adaptadores/actors e factories de variantes reais implementados. Relatórios quatro testes e escolar um fluxo ampliado passaram PostgreSQL17 isolado; React build/formato e cliente HTTP isolado passaram.",
+      "Funcionalidades integradas T002 validadas por E2E real Docker/PostgreSQL/React: dois serviços, jobs, notas/boletim, listas/exportações, autenticação/perfis, durabilidade BYTEA após restart e descarte de estado React na mudança de sessão. Backup/restore integral T002 isolado passou.",
+      "Contrato HTTP real do BOLETIM/unidade vazia/arraysnull e cinco tipos de relatório validados em E2E adicional; export JSON nome/tipo/linhas mantido, sem alteração de produto para satisfazer expectativa errada de teste.",
+      "PR3 aberta em https://github.com/mclovin137/Atena-refatorado/pull/3 com execução local validada e cloud bloqueado explícitos. Commit de produção 4b16077; autoria não aprovou nem integrou seu próprio PR."
+    ],
+    "requirements_not_addressed": [
+      "Deploy Render/Neon não executado: Neon sem autenticação/ferramentas, MCP Render sem suporte a Docker e ausência de canal autenticado alternativo/custo confirmado.",
+      "PR3 aberta; workflows GitHub Actions e merge T002 ainda pendentes. Resultados locais não substituem execução remota."
+    ],
+    "possible_regressions": []
+  },
+  "architecture": {
+    "followed": true,
+    "violations_detected": [
+      {
+        "rule": "Object Calisthenics literal: no máximo dois campos e sem accessors (regras8/9).",
+        "location": "Records de domínio escolar/relatórios e projeções de boletim listados em quality.assumptions; DTOs dispensados expressamente na ADR004.",
+        "reason": "Dispensa explícita aprovada para estados imutáveis e contratos completos: preserva invariantes/tipos e evita wrappers decorativos; não se declara cumprimento literal das nove regras."
+      },
+      {
+        "rule": "Object Calisthenics literal: no máximo dois campos (regra8).",
+        "location": "services/escolar/src/main/java/br/com/atena/escolar/boletim/dao/BoletimDAO.java",
+        "reason": "Nove portas consultam o readmodel conectado em transação REPEATABLE_READ; dispensa concreta mantém coerência e evita wrappers que apenas escondem a colaboração. N+1 permanece limite não medido."
+      }
+    ],
+    "architectural_decisions": [
+      "ADR004 implementada em ambos os serviços: REST→Actor→Service/Builder/DAO/Helper onde há responsabilidade real; regras/domínio sem imports de framework/persistência/transporte, DTOs explícitos e persistência isolada. Access/Invariants/controllers-modelos globais do baseline removidos.",
+      "Factories selecionam variantes reais de perfil, SOMA/MEDIA e PDF/CSV/JSON; não há factory para todos construtores nem CRUD genérico/reflexão.",
+      "V5 BYTEA aditiva, metadados sem blobs e backfill compatível passaram suíte escolar PostgreSQL17 isolada; runtime/restart integrado em E2E passou.",
+      "Blueprint Docker e perfis prod preparados e schema oficial validado localmente; ADR005 implantação permanece proposta e nenhum deploy remoto foi executado."
+    ]
+  },
+  "implementation": {
+    "files_created": [
+      "AUDIT_REPORT.json",
+      "docs/adrs/adr-004-organizacao-backend.md",
+      "docs/adrs/adr-005-producao-render-neon.md",
+      "docs/agentes/README.md",
+      "docs/agentes/jarvis.md",
+      "docs/agentes/neo.md",
+      "docs/agentes/oraculo.md",
+      "docs/agentes/patrick-jane.md",
+      "docs/agentes/severino.md",
+      "docs/agentes/yoda.md",
+      "docs/epicos/epico-002-qualidade-producao.md",
+      "docs/fdds/fdd-002-qualidade-producao.md",
+      "docs/historico/2026-10.md",
+      "docs/hlds/hld-qualidade-producao.md",
+      "docs/playbooks/README.md",
+      "docs/playbooks/playbook-backend.md",
+      "docs/playbooks/playbook-database.md",
+      "docs/playbooks/playbook-documentacao.md",
+      "docs/playbooks/playbook-security.md",
+      "docs/playbooks/playbook-sistemas-redes.md",
+      "docs/prds/prd-002-qualidade-producao.md",
+      "docs/roles/README.md",
+      "docs/roles/implementar.md",
+      "docs/roles/orquestrar.md",
+      "docs/roles/planejar-revisar.md",
+      "docs/skills/README.md",
+      "docs/skills/atualizar-obsidian.md",
+      "docs/skills/auditar-dependencias.md",
+      "docs/skills/auditoria.md",
+      "docs/skills/criar-migration.md",
+      "docs/skills/criar-task.md",
+      "docs/skills/gerar-adr.md",
+      "docs/skills/gerar-fdd.md",
+      "docs/skills/gerar-hld.md",
+      "docs/skills/gerar-prd.md",
+      "docs/skills/refinar-task.md",
+      "docs/skills/security-review.md",
+      "docs/skills/security-scan.md",
+      "docs/skills/tdd-workflow.md",
+      "docs/tasks/t-002-qualidade-producao.md",
+      "frontend/src/App.jsx",
+      "frontend/src/AreaEscolar.jsx",
+      "frontend/src/api.js",
+      "frontend/src/componentes/Boletim.jsx",
+      "frontend/src/componentes/Cabecalho.jsx",
+      "frontend/src/componentes/Campo.jsx",
+      "frontend/src/componentes/ExportarDocumento.jsx",
+      "frontend/src/componentes/Login.jsx",
+      "frontend/src/componentes/Materiais.jsx",
+      "frontend/src/componentes/Navegacao.jsx",
+      "frontend/src/componentes/Perfil.jsx",
+      "frontend/src/componentes/PrepararNotas.jsx",
+      "frontend/src/componentes/RecursoEscolar.jsx",
+      "frontend/src/componentes/VisaoGeral.jsx",
+      "frontend/src/rotuloRecurso.js",
+      "render.yaml",
+      "scripts/formatar-java.sh",
+      "scripts/qualidade.py",
+      "services/escolar/src/main/java/br/com/atena/escolar/Aplicacao.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/arquivo/dao/ArquivoLegadoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/arquivo/dominio/ConteudoArquivo.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/arquivo/dominio/IArquivoLegadoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/actor/ManterAulaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/builder/AulaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dao/IAulaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dao/jpa/AulaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dao/jpa/AulaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dao/jpa/IAulaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dominio/Aula.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dto/AulaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/dto/AulaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/aula/rest/AulaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/autorizacao/actor/AutorizacaoEnsinoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/autorizacao/dominio/IAutorizacaoPerfil.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/autorizacao/service/AutorizacaoAlunoService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/autorizacao/service/AutorizacaoPerfilFactory.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/autorizacao/service/AutorizacaoProfessorService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/autorizacao/service/AutorizacaoSecretariaService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/actor/ConsolidarAvaliacoesActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/actor/ManterAvaliacaoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/builder/AvaliacaoBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dao/IAvaliacaoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dao/jpa/AvaliacaoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dao/jpa/AvaliacaoEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dao/jpa/IAvaliacaoRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dominio/Avaliacao.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dominio/IAgregacaoNotas.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dominio/ModoConsolidacaoEnum.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dto/AvaliacaoRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dto/AvaliacaoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/dto/ConsolidarAvaliacoesRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/rest/AvaliacaoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/rest/ConsolidarAvaliacoesController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/service/AgregacaoMediaService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/service/AgregacaoNotasFactory.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/avaliacao/service/AgregacaoSomaService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/actor/ConsultarBoletimActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/builder/BoletimBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dao/BoletimDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dao/IBoletimDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dominio/BoletimPreparado.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dominio/DadosBoletim.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dominio/DadosDisciplinaBoletim.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dominio/DisciplinaPreparada.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dominio/ResultadoEscolar.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dto/BoletimRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dto/DisciplinaBoletimDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dto/ResultadoBoletimDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/dto/UnidadeBoletimDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/rest/BoletimController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/boletim/service/PrepararBoletimService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/catalogo/actor/ConsultarCatalogoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/catalogo/dto/CatalogoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/catalogo/dto/PessoaDiretorioRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/catalogo/rest/CatalogoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/config/ObservabilidadeConfig.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/config/PrimeiroAcessoConfig.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/config/SegurancaConfig.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/dao/helper/ErroPersistenciaHelper.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/dominio/ErroAplicacao.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/dominio/ValidacoesDominio.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/rest/ErroControllerAdvice.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/comum/rest/FiltroCredencialServico.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/actor/AplicarCurriculoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/actor/ManterCurriculoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/builder/CurriculoBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dao/ICurriculoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dao/jpa/CurriculoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dao/jpa/CurriculoEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dao/jpa/ICurriculoRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dominio/Curriculo.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dto/AplicarCurriculoRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dto/CurriculoRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/dto/CurriculoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/rest/AplicarCurriculoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curriculo/rest/CurriculoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/actor/ManterCursoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/builder/CursoBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dao/ICursoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dao/jpa/CursoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dao/jpa/CursoEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dao/jpa/ICursoRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dominio/Curso.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dto/CursoRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/dto/CursoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/curso/rest/CursoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/actor/ManterDisciplinaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/builder/DisciplinaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dao/IDisciplinaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dao/jpa/DisciplinaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dao/jpa/DisciplinaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dao/jpa/IDisciplinaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dominio/Disciplina.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dto/DisciplinaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/dto/DisciplinaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/disciplina/rest/DisciplinaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/actor/ManterEventoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/builder/EventoBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dao/IEventoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dao/jpa/EventoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dao/jpa/EventoEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dao/jpa/IEventoRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dominio/Evento.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dto/EventoRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/dto/EventoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/evento/rest/EventoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/actor/ManterHorarioActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/builder/HorarioBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dao/IHorarioDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dao/jpa/HorarioDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dao/jpa/HorarioEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dao/jpa/IHorarioRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dominio/Horario.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dto/HorarioRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/dto/HorarioRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/horario/rest/HorarioController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/listagem/actor/ConsultarListaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/listagem/dto/LinhaListaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/listagem/dto/ListaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/listagem/rest/ListaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/actor/InicializarNotasActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/actor/PrepararNotasMatriculaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/builder/ExecucaoLoteBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dao/EscritorNotas.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dao/IInicializacaoNotasDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dao/InicializacaoNotasDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dao/LeitorMatriculas.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dao/LoteConfig.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dominio/ExecucaoLote.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dto/ExecucaoLoteRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/dto/InicializarNotasRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/lote/rest/LoteController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/actor/ManterMateriaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/builder/MateriaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dao/IMateriaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dao/jpa/IMateriaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dao/jpa/MateriaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dao/jpa/MateriaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dominio/Materia.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dto/MateriaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/dto/MateriaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/materia/rest/MateriaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/actor/ManterMaterialActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/builder/MaterialBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dao/IMaterialDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dao/jpa/IMaterialRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dao/jpa/MaterialDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dao/jpa/MaterialEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dominio/Material.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dto/MaterialRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/dto/MaterialRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/rest/MaterialController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/material/service/MaterialService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/actor/ManterMatriculaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/actor/ValidarVinculoEnsinoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/builder/MatriculaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dao/IMatriculaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dao/jpa/IMatriculaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dao/jpa/MatriculaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dao/jpa/MatriculaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dominio/Matricula.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dto/MatriculaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/dto/MatriculaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/matricula/rest/MatriculaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/actor/ManterMensagemActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/builder/MensagemBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dao/IMensagemDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dao/jpa/IMensagemRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dao/jpa/MensagemDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dao/jpa/MensagemEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dominio/Mensagem.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dto/MensagemRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/dto/MensagemRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/mensagem/rest/MensagemController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/actor/AutorizacaoNotaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/actor/ManterNotaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/builder/NotaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dao/INotaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dao/jpa/INotaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dao/jpa/NotaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dao/jpa/NotaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dominio/Nota.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dto/NotaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/dto/NotaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/rest/NotaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/nota/service/PeriodoNotaService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/actor/AutorizacaoNotaAvaliacaoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/actor/ManterNotaAvaliacaoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/builder/NotaAvaliacaoBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dao/INotaAvaliacaoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dao/jpa/INotaAvaliacaoRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dao/jpa/NotaAvaliacaoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dao/jpa/NotaAvaliacaoEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dominio/NotaAvaliacao.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dto/NotaAvaliacaoRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/dto/NotaAvaliacaoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/rest/NotaAvaliacaoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/notaavaliacao/service/ValidarNotaAvaliacaoService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/actor/AvatarPessoaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/actor/ManterPessoaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/builder/PessoaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dao/IPessoaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dao/jpa/IPessoaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dao/jpa/PessoaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dao/jpa/PessoaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dominio/Pessoa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dto/CadastroPessoaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dto/PessoaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/dto/PessoaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/rest/PessoaAvatarController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/rest/PessoaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/pessoa/service/ImagemAvatarService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/actor/AutorizacaoPresencaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/actor/ManterPresencaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/builder/PresencaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dao/IPresencaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dao/jpa/IPresencaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dao/jpa/PresencaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dao/jpa/PresencaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dominio/Presenca.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dto/PresencaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/dto/PresencaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/rest/PresencaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/presenca/service/ValidarPresencaService.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/actor/ManterRelatorioActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/builder/RelatorioBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dao/IRelatorioDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dao/RelatorioHttpDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dominio/DocumentoRelatorio.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dominio/ErroIntegracaoRelatorio.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dominio/Relatorio.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dominio/SolicitacaoRelatorio.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dto/RelatorioRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/dto/SolicitarRelatorioDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/relatorio/rest/RelatorioController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/actor/ManterSerieActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/builder/SerieBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dao/ISerieDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dao/jpa/ISerieRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dao/jpa/SerieDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dao/jpa/SerieEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dominio/Serie.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dto/SerieRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/dto/SerieRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/serie/rest/SerieController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/actor/ManterSessaoActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/dao/ISessaoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/dao/SessaoDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/dto/LoginRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/dto/PerfilRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/dto/SenhaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/dto/SessaoRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/sessao/rest/SessaoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/actor/ManterTurmaActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/builder/TurmaBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dao/ITurmaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dao/jpa/ITurmaRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dao/jpa/TurmaDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dao/jpa/TurmaEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dominio/Turma.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dto/TurmaRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/dto/TurmaRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/turma/rest/TurmaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/actor/ManterUnidadeActor.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/builder/UnidadeBuilder.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dao/IUnidadeDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dao/jpa/IUnidadeRepositorioJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dao/jpa/UnidadeDAO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dao/jpa/UnidadeEntidadeJpa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dominio/Unidade.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dto/UnidadeRequisicaoDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/dto/UnidadeRespostaDTO.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/unidade/rest/UnidadeController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/usuario/dao/UsuarioAtual.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/usuario/dominio/IUsuarioAtual.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/usuario/dominio/PerfilEnum.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/usuario/dominio/UsuarioAutenticado.java",
+      "services/escolar/src/main/resources/application-prod.yml",
+      "services/escolar/src/main/resources/db/migration/V5__conteudo_duravel.sql",
+      "services/escolar/src/test/java/br/com/atena/escolar/EscolarIntegracaoTeste.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/Aplicacao.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/comum/dto/ErroRespostaDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/comum/rest/AutenticacaoServicoFiltro.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/comum/rest/ErroREST.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/comum/rest/RegistroHttpFiltro.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/actor/ExportadorRelatorioFactory.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/actor/ExportarRelatorioActor.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/builder/TextoRelatorioBuilder.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dao/ExportadorCsvDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dao/ExportadorJsonDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dao/ExportadorPdfDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dao/IExportadorRelatorioDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dto/ArquivoRelatorioDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dto/DocumentoRelatorioDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/dto/ExportacaoJsonDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/exportacao/helper/CampoCsvHelper.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/linha/dao/ILinhaDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/linha/dao/jpa/ILinhaJpaRepository.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/linha/dao/jpa/LinhaDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/linha/dao/jpa/LinhaEntidade.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/lote/config/RelatorioLoteConfiguracao.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/lote/dao/ExecucaoRelatorioDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/lote/dao/GravadorLinhas.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/lote/dao/LeitorSnapshot.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/lote/dto/LinhaLoteDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/actor/ConsultarRelatorioActor.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/actor/IniciarRelatorioActor.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/builder/RelatorioBuilder.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dao/IExecucaoRelatorioDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dao/IRelatorioDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dao/jpa/IRelatorioJpaRepository.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dao/jpa/RelatorioDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dao/jpa/RelatorioEntidade.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dominio/ErroRelatorio.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dominio/ExecucaoRelatorio.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dominio/Relatorio.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dominio/SolicitacaoRelatorio.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dominio/TipoRelatorioEnum.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dto/RelatorioRequisicaoDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/dto/RelatorioRespostaDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/relatorio/rest/RelatorioREST.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/actor/PrepararSnapshotActor.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dao/FonteEscolarDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dao/IFonteEscolarDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dao/SnapshotJsonDAO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dto/LinhaSnapshotDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dto/ResultadoSnapshotDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dto/SnapshotDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/dto/UnidadeSnapshotDTO.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/snapshot/service/BoletimService.java",
+      "services/relatorios/src/main/resources/application-prod.yml",
+      "services/relatorios/src/test/java/br/com/atena/relatorios/RelatorioIntegracaoTeste.java"
+    ],
+    "files_modified": [
+      "EXPERIMENT_LOG.md",
+      "README.md",
+      "docs/adrs/adr-001-fronteiras.md",
+      "docs/adrs/adr-002-stack.md",
+      "docs/adrs/adr-003-interface.md",
+      "docs/continuidade.md",
+      "docs/lib.md",
+      "docs/pendencias-obsidian.md",
+      "docs/roadmap.md",
+      "docs/rules.md",
+      "frontend/index.html",
+      "frontend/package.json",
+      "frontend/src/main.jsx",
+      "frontend/src/resources.js",
+      "frontend/src/style.css",
+      "pom.xml",
+      "scripts/browser-smoke.mjs",
+      "scripts/revisar.sh",
+      "services/escolar/pom.xml"
+    ],
+    "files_deleted": [
+      "services/escolar/src/main/java/br/com/atena/escolar/Application.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/domain/Resultado.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Aula.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/AulaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Avaliacao.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/AvaliacaoRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Bootstrap.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Curriculo.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/CurriculoRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Curso.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/CursoRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Disciplina.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/DisciplinaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Evento.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/EventoRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Horario.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/HorarioRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Materia.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/MateriaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Material.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/MaterialRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Matricula.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/MatriculaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Mensagem.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/MensagemRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Nota.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/NotaAvaliacao.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/NotaAvaliacaoRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/NotaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Observability.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Pessoa.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/PessoaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Presenca.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/PresencaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/SchoolBatch.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/SecurityConfig.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Serie.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/SerieRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Turma.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/TurmaRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/Unidade.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/infra/UnidadeRepository.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/Access.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/ApiErrors.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/AulaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/AvaliacaoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/BatchController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/BoletimController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/CatalogController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/ConsolidarAvaliacoesController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/CurriculoAplicacaoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/CurriculoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/CursoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/DisciplinaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/EventoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/HorarioController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/InternalListController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/Invariants.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/MateriaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/MaterialController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/MatriculaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/MensagemController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/NotaAvaliacaoController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/NotaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/PessoaAvatarController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/PessoaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/PresencaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/ReportProxyController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/SerieController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/SessionController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/TurmaController.java",
+      "services/escolar/src/main/java/br/com/atena/escolar/web/UnidadeController.java",
+      "services/escolar/src/test/java/br/com/atena/escolar/SchoolFlowTest.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/ApiErrors.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/Application.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/Linha.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/LinhaRepository.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/Observability.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/Relatorio.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/RelatorioRepository.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/ReportBatch.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/ReportController.java",
+      "services/relatorios/src/main/java/br/com/atena/relatorios/ServiceAuth.java",
+      "services/relatorios/src/test/java/br/com/atena/relatorios/ReportFlowTest.java"
+    ],
+    "dependencies_added": [
+      {
+        "name": "google-java-format 1.25.2 (ferramenta externa temporária)",
+        "reason": "Formatação Java legível e gate determinístico requerido pela correção de qualidade.",
+        "alternative_considered": "Formatação manual apenas; Spring não oferece formatador de código e manual não garante gate reprodutível.",
+        "necessary": true
+      },
+      {
+        "name": "Prettier3.9.9 MIT (CLI temporária externa)",
+        "reason": "Fonte JSX/CSS/HTML/JSON legível e gate reprodutível solicitado pelo retrabalho.",
+        "alternative_considered": "Formatação manual sem gate; Spring e google-java-format não formatam JSX/CSS/HTML/JSON.",
+        "necessary": true
+      }
+    ],
+    "abstractions_created": [
+      {
+        "type": "interface",
+        "name": "I<Recurso>DAO (18 recursos escolares)",
+        "reason": "Porta real entre estados/casos de uso e Spring Data/JPA; contrato de persistência sem dependência de framework.",
+        "required_by": "ADR004 / RF001"
+      },
+      {
+        "type": "interface",
+        "name": "IUsuarioAtual",
+        "reason": "Isolar identidade autenticada do SecurityContext/Servlet nos casos de uso.",
+        "required_by": "ADR004 / RF001"
+      },
+      {
+        "type": "factory",
+        "name": "AutorizacaoPerfilFactory",
+        "reason": "Selecionar capacidades concretas de três perfis existentes sem dispatch genérico de recurso.",
+        "required_by": "ADR004 / RF002"
+      },
+      {
+        "type": "React_component",
+        "name": "App",
+        "reason": "Coordena bootstrap/login e identidade da sessão, separado da área com dados privados.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "AreaEscolar",
+        "reason": "Área autenticada keyed por geração, desmontando dados e setters antigos na troca de conta.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "support",
+        "name": "api",
+        "reason": "Cliente HTTP/CSRF existente extraído, corrige 200 vazio sem esconder JSON inválido.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Boletim",
+        "reason": "Consulta/exibe resultado acadêmico e compõe exportação sem inventar fórmula cliente.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Cabecalho",
+        "reason": "Apresenta título/contexto e identidade, preservando markup/estilo.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Campo",
+        "reason": "Controle de formulário reutilizado com conversão tipada e readonly de professor, sem camada genérica nova.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "ExportarDocumento",
+        "reason": "Solicita/exibe relatório e oferece os três downloads existentes.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Login",
+        "reason": "Tela/formulário de autenticação preservados, sem conhecer estado privado escolar.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Materiais",
+        "reason": "Responsabilidade de upload/lista/download de material, preservando API e autorização visual.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Navegacao",
+        "reason": "Navegação/perfis/logout preservados, responsabilidade visual e de ações próprias.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "Perfil",
+        "reason": "Mantém avatar/contato/senha, separado dos cadastros de secretaria.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "PrepararNotas",
+        "reason": "Lança/exibe job escolar mantendo payload/status e controles existentes.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "RecursoEscolar",
+        "reason": "Agrupa formulário/tabela e estado de edição local dos recursos existentes.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "React_component",
+        "name": "VisaoGeral",
+        "reason": "Apresenta indicadores e ações rápidas com dados fornecidos.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "support",
+        "name": "rotuloRecurso",
+        "reason": "Apoio puro de descrição de relações escolares existente, sem duplicar regras em componentes.",
+        "required_by": "PRD-002 RF-001/RF-002; FDD-002 e ADR-003"
+      },
+      {
+        "type": "support",
+        "name": "Aplicacao",
+        "reason": "Ponto de entrada Spring preservado, renomeado e formatado.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "ErroRespostaDTO",
+        "reason": "Preserva formato JSON de erro sem serializar exceção.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "AutenticacaoServicoFiltro",
+        "reason": "Autoriza token interserviços constante em todas rotas exceto health, preservando gate existente.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "ErroREST",
+        "reason": "Traduz categorias puras em contrato HTTP seguro, sem retornar falhas de driver.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "RegistroHttpFiltro",
+        "reason": "Preserva logging de rota/status e correlação sem dados pessoais.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "factory",
+        "name": "ExportadorRelatorioFactory",
+        "reason": "Seleciona variantes reais PDF/CSV/JSON atrás do mesmo endpoint.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "actor",
+        "name": "ExportarRelatorioActor",
+        "reason": "Verifica conclusão e coordena consulta de linhas/snapshot com estratégia de saída.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "builder",
+        "name": "TextoRelatorioBuilder",
+        "reason": "Monta texto e metadados do PDF sem misturar paginação PDFBox ou persistência.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "ExportadorCsvDAO",
+        "reason": "Adapta dados autorizados ao CSV existente com escape/neutralização.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "ExportadorJsonDAO",
+        "reason": "Serializa somente nome/tipo/linhas do contrato JSON existente.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "ExportadorPdfDAO",
+        "reason": "Isola PDFBox e paginação do texto/mapeamento e da orquestração.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "IExportadorRelatorioDAO",
+        "reason": "Contrato usado por três formatos concretos, exigido pela Factory real.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "ArquivoRelatorioDTO",
+        "reason": "Transporta bytes/content-type entre estratégia/Actor/REST sem depender de HTTP Spring.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "DocumentoRelatorioDTO",
+        "reason": "Dados já autorizados e snapshot fixo compartilhados pelos três exportadores.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "ExportacaoJsonDTO",
+        "reason": "Preserva somente nome/tipo/linhas em JSON, sem expor dados internos do documento.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "CampoCsvHelper",
+        "reason": "Protege aspas/formulas no formato de arquivo, apoio puro com comportamento.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "ILinhaDAO",
+        "reason": "Fronteira da persistência das linhas autorizadas, evitando JPA em Actor/exportadores.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "ILinhaJpaRepository",
+        "reason": "Interface obrigatória Spring Data JPA limitada ao adaptador linha.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "LinhaDAO",
+        "reason": "Persiste/upsert por relatório e número, decodifica linhas sem entidade fora da DAO.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "LinhaEntidade",
+        "reason": "Mantém tabela/colunas de linhas existentes, restrita ao adaptador JPA.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "configuration",
+        "name": "RelatorioLoteConfiguracao",
+        "reason": "Declara beans Spring Batch, mantendo job/step/chunk50/async/pool/fila/tracing.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "ExecucaoRelatorioDAO",
+        "reason": "Isola JobExplorer/Launcher e preserva job/reportId/status/restart.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "GravadorLinhas",
+        "reason": "Responsabilidade de escrita de chunk/upsert, separada do leitor e da configuração.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "LeitorSnapshot",
+        "reason": "Responsabilidade de leitura reiniciável do snapshot autorizado, separada da configuração.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "LinhaLoteDTO",
+        "reason": "Carrega relatório/número/linha entre reader e writer Spring Batch, preservando upsert.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "actor",
+        "name": "ConsultarRelatorioActor",
+        "reason": "Coordena leitura de relatório/estado e protege download ainda não concluído.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "actor",
+        "name": "IniciarRelatorioActor",
+        "reason": "Coordena requestId/owner idempotente e lançamento/restart de execução falha.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "builder",
+        "name": "RelatorioBuilder",
+        "reason": "Mapeia DTO de entrada para solicitação pura e domínio para resposta de metadata.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "IExecucaoRelatorioDAO",
+        "reason": "Fronteira de metadata/lançamento Spring Batch sem imports Batch no domínio/Actor.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "IRelatorioDAO",
+        "reason": "Fronteira de persistência de relatórios que impede Actor/REST acessar JPA.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "IRelatorioJpaRepository",
+        "reason": "Interface obrigatória Spring Data JPA limitada ao adaptador relatorio.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "RelatorioDAO",
+        "reason": "Adapta esquema JPA existente para domínio e traduz constraint de criação.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "RelatorioEntidade",
+        "reason": "Mantém tabela/colunas existentes, separada do domínio/contrato REST.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "domain",
+        "name": "ErroRelatorio",
+        "reason": "Categorias puras de ausência/conclusão/conflito/formato, traduzidas na borda REST.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "domain",
+        "name": "ExecucaoRelatorio",
+        "reason": "Estado Batch puro com comportamento falhou/concluida, sem dependência de Batch.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "domain",
+        "name": "Relatorio",
+        "reason": "Estado imutável separado da JPA, usado pelos casos de uso e mapping de metadata.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "domain",
+        "name": "SolicitacaoRelatorio",
+        "reason": "Protege tipo/requestId e aluno obrigatório em relatórios não listagem, sem framework.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "enum",
+        "name": "TipoRelatorioEnum",
+        "reason": "Restringe cinco tipos existentes e identifica listagens reais.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "RelatorioRequisicaoDTO",
+        "reason": "Allowlist/Bean Validation dos campos já públicos, evitando bind de entidade.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "RelatorioRespostaDTO",
+        "reason": "Preserva id/ownerId/alunoId/tipo/status/executionId sem entidade ou snapshot sensível.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "RelatorioREST",
+        "reason": "Recebe/devolve DTO explícito e delega Actors sem regras, SQL ou PDFBox.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "actor",
+        "name": "PrepararSnapshotActor",
+        "reason": "Coordena origem ou snapshot salvo e commit antes da escrita do chunk.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "FonteEscolarDAO",
+        "reason": "Realiza HTTP com token/timeouts/RestClient tracing e DTO de snapshot explícito.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "IFonteEscolarDAO",
+        "reason": "Contrato da integração HTTP entre contextos, não depende de entidades escolares.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "repository_adapter",
+        "name": "SnapshotJsonDAO",
+        "reason": "Serializa/decodifica o snapshot persistido somente na fronteira de integração.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "LinhaSnapshotDTO",
+        "reason": "Campos explícitos dos registros acadêmicos/listas, substituindo Maps e casts de Object.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "ResultadoSnapshotDTO",
+        "reason": "Campos explícitos de resultado acadêmico na integração, não regra escolar duplicada.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "SnapshotDTO",
+        "reason": "Contrato nomeado HTTP/JSON entre contextos sem importar entidade escolar.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "DTO",
+        "name": "UnidadeSnapshotDTO",
+        "reason": "Metadados da unidade com ausência serializada como {}, preservando contrato.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "support",
+        "name": "BoletimService",
+        "reason": "Regra pura que determina o último ano acadêmico sem conhecer HTTP/JPA/DTO.",
+        "required_by": "PRD-002 RF-001/RF-002; ADR-004 e T-002"
+      },
+      {
+        "type": "interface",
+        "name": "IPessoaDAO, IMaterialDAO e outras 16 portas escolares por recurso",
+        "reason": "Desacoplar os estados e políticas puros da persistência JPA concreta; implementação única é fronteira framework explícita, não extensão hipotética.",
+        "required_by": "ADR004/FDD002"
+      },
+      {
+        "type": "entity",
+        "name": "Entidades Jpa e I*RepositorioJpa por recurso escolar",
+        "reason": "Preservar schema existente e consultas Spring Data somente no adaptador; prefixo I conforme convenção.",
+        "required_by": "ADR004"
+      },
+      {
+        "type": "dto",
+        "name": "Requisição/Resposta DTO escolares por recurso e DTOs específicos de sessão/lote/listagem/relatório",
+        "reason": "Preservar nomes/defaults/validação dos contratos REST; respostas excluem credenciais, caminhos e blobs e entradas impedem mass assignment.",
+        "required_by": "FDD002 contratos/API e segurança"
+      },
+      {
+        "type": "builder",
+        "name": "Builders escolares por recurso, BoletimBuilder e RelatorioBuilder",
+        "reason": "Conversão explícita domínio↔DTO sem JPA/rules/I/O; separação necessária para proteger formas públicas e dados privados.",
+        "required_by": "ADR004/FDD002"
+      },
+      {
+        "type": "actor",
+        "name": "Manter*Actor escolares e casos especiais sessão/avatar/material/consolidar notas/currículo/boletim/lote/relatório",
+        "reason": "Coordenar autorização, portas e transações por caso de uso; CRUD simples usa um Actor coeso, sem oito pastas vazias.",
+        "required_by": "ADR004/FDD002"
+      },
+      {
+        "type": "factory",
+        "name": "AutorizacaoPerfilFactory com políticas Secretaria/Professor/Aluno",
+        "reason": "Selecionar três variantes reais de capacidades por perfil e evitar dispatch Object/instanceof por recurso.",
+        "required_by": "FDD002 autorização/SOLID"
+      },
+      {
+        "type": "factory",
+        "name": "AgregacaoNotasFactory: SomaNotasService e MediaNotasService",
+        "reason": "Selecionar duas modalidades reais de consolidação qualitativa preservando soma limitada e média.",
+        "required_by": "Paridade Atena/FDD002"
+      },
+      {
+        "type": "service",
+        "name": "PeriodoNotaService, ValidarPresencaService, ValidarNotaAvaliacaoService, MaterialService, ImagemAvatarService e PrepararBoletimService",
+        "reason": "Isolar regras reais e transformação somente em memória, com dados já obtidos pelo Actor; sem banco/HTTP/framework nos Services.",
+        "required_by": "ADR004/FDD002"
+      },
+      {
+        "type": "port",
+        "name": "IArquivoLegadoDAO e leitura/gravação explícita BYTEA em IPessoaDAO/IMaterialDAO",
+        "reason": "Backfill idempotente compatível sem excluir arquivos originais; queries metadata omitem blobs e leitura binária exige autorização.",
+        "required_by": "FDD002 durabilidade e segurança"
+      },
+      {
+        "type": "adapter",
+        "name": "ErroPersistenciaHelper e ErroIntegracaoRelatorio",
+        "reason": "Traduzir falhas framework das fronteiras JPA/HTTP para falhas seguras próprias; helper não define CRUD nem política.",
+        "required_by": "FDD002 fluxo4.3"
+      },
+      {
+        "type": "read_model",
+        "name": "BoletimPreparado/DisciplinaPreparada/DadosBoletim/DadosDisciplinaBoletim",
+        "reason": "Separar dados carregados, projeção autorizada/calculada e conversão DTO sem aplicar regras no Builder.",
+        "required_by": "ADR004/FDD002"
+      },
+      {
+        "type": "batch",
+        "name": "LeitorMatriculas/EscritorNotas/PrepararNotasMatriculaActor/IInicializacaoNotasDAO",
+        "reason": "Separar reader/writer/config e caso de uso idempotente de quatro notas; preservar job/chunk/params sem domínio depender de Batch.",
+        "required_by": "Spring Batch/FDD002"
+      }
+    ]
+  },
+  "overengineering": {
+    "possible_overengineering": false,
+    "items": [],
+    "justifications": [
+      "Domínio/DTO/JPA possuem fronteiras distintas de validação/serialização/persistência; mapeamento explícito evita mass assignment e exposição de credenciais. CRUD simples não recebe service/helper/factory vazio."
+    ]
+  },
+  "security": {
+    "security_concerns_found": [
+      "Render free não oferece disco persistente para uploads; publicação do armazenamento atual pode perder materiais e avatares.",
+      "Render workspace contém oito serviços existentes; operação não os alterou. Zero-spend não confirmado por ferramenta billing.",
+      "Neon MCP configurado aditivamente fora do repositório, mas OAuth falhou por entrada encerrada; sem chave disponível e sem ferramenta Neon callable.",
+      "Scanner do gate identificou cinco credenciais efêmeras geradas por testes nos dumps MockMvc do RED de relatórios em evidence ignorado; não eram credenciais cloud nem código versionado."
+    ],
+    "security_changes_made": [
+      "Mapeamento byte[] BYTEA explícito para materiais/avatar escrito sem @Lob/OID e sem expor bytes nos DTOs; limites/funcionalidade executados na suíte PG e bytes/autorização após restart comprovados no E2E.",
+      "Projeções explícitas Pessoa/Material excluem BYTEA das listagens/busca/auth; leitura binária dedicada só download/avatar. Correção escrita e revisada por leitura independente; JPQL/runtime executados na suíte e aplicação Docker escolar.",
+      "Credenciais efêmeras foram redigidas no artefato RED mantendo resultados e assertions; scanner completo passou sem adicionar allowlist. Métricas Actuator exigem SECRETARIA escolar ou credencial de serviço em relatórios, inclusive perfil prod."
+    ],
+    "new_security_risks_possible": [
+      "Endpoints Render públicos exigem TLS e credencial de serviço; proteção de token/autorização local foi validada, mas TLS/provisionamento cloud não foram executados."
+    ]
+  },
+  "validation": {
+    "tests_created": [
+      "RelatorioIntegracaoTeste.snapshotFixoSobreviveFalhaNaGravacao: novo teste RED/GREEN de snapshot persistido apesar de rollback writer e origem mutada.",
+      "RelatorioIntegracaoTeste.boletimFiltraAnoEPreservaNulosEUnidadeVazia: novo fluxo de último ano, unidade{} e quatro notas/recuperaçõesnull.",
+      "Cliente React: prova Node com fetch dublê para resposta HTTP 200 vazia, JSON válido/inválido, CSRF e erro 403; não é teste de navegador.",
+      "EscolarIntegracaoTeste substitui SchoolFlowTest preservando assertions e prova CSRF real; único fluxo ampliado com negativas por 17 recursos, catálogo/cache, autorização por perfil/objeto, jobs, proprietário de relatório, BYTEA, backfill, preservação de avatar e restauração individual de bytes."
+    ],
+    "tests_executed": [
+      "Relatórios: baseline PostgreSQL17 isolado, mvn -B -pl services/relatorios -Dtest=ReportFlowTest#snapshotFixoSobreviveFalhaNaGravacao clean test, RED esperado1failure/0errors: snapshot não persistiu após rollback do writer. Evidência evidence/t002-report-red-baseline.log, observada pelo implementador de relatórios.",
+      "RED de capacidade de armazenamento: SELECT conteudo FROM material LIMIT0 no PostgreSQL17 do baseline local retornou column does not exist; consulta somente leitura, /tmp/atena-t002-bytea-red.log. Não é teste JUnit nem GREEN de migração.",
+      "Relatórios: mvn -B -pl services/relatorios -Dtest=RelatorioIntegracaoTeste clean verify, PostgreSQL17 temporário isolado; implementador observou4tests/0fail/0errors/0skips BUILD SUCCESS, evidence/t002-report-final.log.",
+      "Frontend: Node RED resposta 200 vazia falhou SyntaxError; após correção GREEN de contrato do cliente passou (evidence/t002-frontend-api-red.log e api-green.log).",
+      "Implementador de testes escolares observou primeiro EscolarIntegracaoTeste clean verify em PostgreSQL17 isolado: um fluxo ampliado, zero falhas/erros BUILD SUCCESS (evidence/t002-escolar-test-expanded.log); organização dos helpers e prova final de restauração ainda em reexecução.",
+      "mvn -B -pl services/escolar -Dtest=EscolarIntegracaoTeste clean verify em PostgreSQL17 temporário isolado, final 09:04:19: 1 teste/0 falhas/0 erros/0 ignorados BUILD SUCCESS; evidence/t002-escolar-test-final-green.log, observado pelo implementador delegado e revisor operacional.",
+      "Última suíte congelada escolar após prefixo I, adaptação de exceções/flush e métricas: clean verify EscolarIntegracaoTeste PostgreSQL17 isolado, 1/0/0/0 BUILD SUCCESS 09:14:53; evidence/t002-escolar-test-adapters-final.log. Nenhuma fonte de teste alterada nessa rodada.",
+      "Primeiro E2E T002 executado em imagens finais: percorreu login, listas reais, tracing, notas/boletim, BYTEA após reinício e troca de conta; falhou no seletor pós-senha por confundir emailResponsavel do Perfil com email do Login, observado pela operação independente. Resultado final desse E2E: falha, não prova defeito de produto.",
+      "E2E final real Playwright/Compose executado pela operação independente, exit0 após restringir seletor de Login. Cobriu login, HISTORICO e três tipos LISTA com três formatos, listas via HTTP real, unidade{}, quatro notas/recuperações null, tracing entre serviços/Batch, médias/frequência, autorização/CPF/CNPJ, material/avatar após reinício, logout/troca de conta/senha. Screenshots desktop/mobile observados sem overflow global.",
+      "Operação executou backup/restore integral T002 em PostgreSQL isolado; conferiu conteúdo/binários e metadados com leitura autorizada e bloqueio403. Rollback T001 ainda em execução após corrigir permissão do diretório de fixture.",
+      "Operação independente executou backup pg_dump integral PG17 com fixtures BYTEA, restaurou banco separado e iniciou T002: hashes/bytes/metadados e403 preservados. Exportou bytes para UUIDs, iniciou imagem T001 preservada com schemaV5 aditivo mantido, confirmou material/avatar e403. Evidências evidence/t002-restore-rollback.json e restore-operacao.log, exit0; containers/rede próprios removidos e dados locais não alterados.",
+      "E2E focal BOLETIM foi executado e falhou na expectativa boletimJson.unidade: o contrato público existente de exportação é nome/tipo/linhas e não expõe unidade. Produto não foi alterado; automação passou a verificar unidade{} no snapshot persistido do ID próprio e quatro nulls no JSON exportado.",
+      "Último E2E real adicional BOLETIM GREEN exit0 observado pela operação: snapshot persistido recebido por HTTP preserva unidade{}, export JSON mantém nome/tipo/linhas e quatro notas/recuperaçõesnull, PDF/CSV válidos. HISTORICO e três LISTAS também passaram, total cinco tipos reais e três formatos; mesmas imagens finais, sem rebuild de produto."
+    ],
+    "tests_passed": [
+      "RelatorioIntegracaoTeste4: formatos/tipos/token/status/idempotência/falha-restart, snapshot fixo após rollback writer/origem alterada, últimoano e unidade{}+arraysnull; validação somente serviço relatórios, não escolar nem Compose T-002.",
+      "Cliente HTTP React aceita resposta 200 vazia como null e preserva rejeição de JSON inválido; execução isolada com dublê, navegador pendente.",
+      "Primeiro fluxo escolar ampliado passou CRUD/negativas/BYTEA/backfill/cópia de bytes no PostgreSQL17 isolado; não representa backup integral nem rollback de aplicação T-001.",
+      "EscolarIntegracaoTeste final: paridade CRUD/CSRF/perfis/objeto/prazos/liberação/defaults, BYTEA e backfill idempotente com origem preservada, restauração da cópia dos registros. Não prova restore de banco inteiro nem rollback do aplicativo.",
+      "EscolarIntegracaoTeste pós-adaptadores final verde; assertions originais e ampliadas preservadas, tipos/respostas/status mantidos após tradução JPA.",
+      "E2E real T002 final exit0: contratos interserviços, Spring Batch, exportações, BYTEA após restart e privacidade React comprovados; não valida cloud nem TLS Neon.",
+      "Restore integral T002 em PostgreSQL isolado preservou bytes/metadados e autorização403, observado pela operação independente.",
+      "Backup/restore integral T002 e rollback funcional para app T001 em ambiente isolado passaram. Rollback exigiu exportação UUID antes reversão e conservou V5; não foi DOWN de schema nem teste remoto.",
+      "E2E final cinco tipos de relatório reais, incluindo BOLETIM sem unidade/notas, passou; contrato JSON original foi preservado, unidade verificada no snapshot interno persistido do próprio ID."
+    ],
+    "tests_failed": [
+      "ReportFlowTest snapshotFixoSobreviveFalhaNaGravacao: RED de comportamento legado, snapshot null após falha writer; não é falha ambiental nem teste final verde.",
+      "RED esperado de coluna BYTEA ausente no baselineT-001; V5 escrita após observar a ausência, aplicação ainda pendente em banco descartável.",
+      "RED cliente React: JSON parsing de resposta vazia 200 produziu SyntaxError no baseline; corrigido com leitura textual e parse apenas quando conteúdo existe.",
+      "Extração de helpers do teste escolar falhou em testCompile por variável disciplinaId fora de escopo; corrigida para nota.disciplinaId e execução final passou. Nenhum teste foi executado na tentativa com erro de compilação.",
+      "E2E pós-senha: wait de input[type=email] encontrou emailResponsavel antes de o Login aparecer e password ficou ambíguo; seletores foram restringidos a main.login com name=email/senha. node --check passou, reexecução real passou posteriormente, sem alteração de produto.",
+      "Primeira tentativa de rollback para aplicação T001 falhou por diretório de fixture0700 não acessível ao usuário não-root; permissão do diretório isolado corrigida para0755, dump/env mantidos0600. Reexecução passou depois da correção, preservada falha original como retrabalho.",
+      "E2E BOLETIM: automação esperava unidade no export JSON, fora do contrato existente; expectation corrigida para snapshot persistido recebido via HTTP. Sintaxe passou e reexecução real posterior passou, sem mudança de API."
+    ],
+    "static_analysis_executed": [
+      "Planejador observou 11 espelhos Obsidian idênticos, ADRs com 12 seções e duas ou mais opções/sem selflinks, continuidade com seis seções e menos de8KB, zero links relativos ausentes e diffcheck0: validação documental, não de código.",
+      "Root executou parse AUDIT_REPORT e git diff --check com exit0 nesta etapa; inventário anterior estava desatualizado e foi corrigido.",
+      "Relatórios: google-java-format1.25.2 --aosp --replace executado em Docker JDK21 completo exit0. HostJDK25 falhou NoSuchMethodError e JRE21 falhou sem javac; --version não prova capacidade de formatação.",
+      "Frontend: npm run build e Prettier 3.9.9 --check executados pelo implementador e observados exit0, evidence/t002-frontend-final-build.log e format-check.log; comparação AST CSS 521 itens preservados (css-paridade.log).",
+      "Revisor independente operacional aprovou por leitura BoletimBuilder somente conversão, Service puro de projeção autorizada/calculada, IPessoaDAO metadados na autenticação e filtro de credencial de serviço; execução HTTP ainda pendente.",
+      "Escola: mvn -B -pl services/escolar -DskipTests package BUILD SUCCESS em evidence/t002-escolar-build.log; apenas compilação/empacotamento, testes ignorados explicitamente.",
+      "render.yaml passou no JSON Schema oficial Render com PyYAML/jsonschema locais; primeira validação falhou porque YAML interpretou off não citado como booleano, corrigido para string. Não houve CLI/API/deploy/TLS/custo remoto validado.",
+      "scripts/qualidade.py passou parse do schema de auditoria e inspeção lexical de importações/fronteiras Java; não é análise AST nem prova SOLID/OC semântica.",
+      "Escola foi formatada por google-java-format 1.25.2 no JDK21 Docker; compilação seguinte passou javac e falhou na montagem do JAR enquanto teste delegado iniciou clean no mesmo target. Comandos futuros serão exclusivos.",
+      "scripts/revisar.sh final exit0: documentos T001/T002, auditoria JSON, fronteiras Java lexicais, formato Java JDK21, sintaxe shell, compose e gitleaks. Evidência evidence/t002-review-gate-final.log.",
+      "Script browser ampliado passou node --check e revisão independente de seletor/logout e formatos das listas; execução real ainda pendente.",
+      "Java main escolar e ambos testes passaram google-java-format --aosp --dry-run --set-exit-if-changed; git diff --check final exit0.",
+      "Novo gate completo revisar.sh pós-adaptadores exit0: evidence/t002-review-adapters-final.log. Inspeção lexical também verifica prefixo I das interfaces; fonte/config/scripts congelados e entregues à operação.",
+      "Gate local final para PR: scripts/revisar.sh exit0 após último E2E/documentos, evidence/t002-review-pr-final.log; scanner Docker independente pós-artefatos também exit0, evidence/t002-scanner-final.log."
+    ],
+    "validation_not_performed": [
+      "Deploy Render/Neon não executado; Neon sem autenticação e capacidade/custo remoto ainda não confirmados.",
+      "Perfil produção/TLS e Blueprint escritos; schema local validado, mas handshake Neon, criação Render, custo e validação API/CLI não executados.",
+      "Gates CI remotos T002 ainda não executados; recuperação automática de Batch após kill com status STARTED não foi validada. Não houve carga/benchmark nem importação de dump legado ausente."
+    ]
+  },
+  "quality": {
+    "known_technical_debt_added": [
+      "Flush de CRUD antecipado em DAOs garante tradução de constraints, mas pode aumentar round trips por gravação; Batch continua chunk50 e upsert nativo, sem benchmark de escala."
+    ],
+    "known_technical_debt_removed": [
+      "Correção de snapshot independente do rollback do writer está implementada no serviço relatórios com REQUIRES_NEW; GREEN funcional observado nos quatro testes isolados de relatórios; integração entre serviços passou também no E2E real.",
+      "Cliente React não falha ao ler resposta 200 vazia de logout/senha.",
+      "Área de dados React desmonta por geração de autenticação, descartando estado sensível e callbacks de sessão anterior; logout/troca de conta/senha validados no navegador real.",
+      "Interfaces Spring Data escolares renomeadas com prefixo I conforme convenção, sem alterar endpoints/schema.",
+      "DAOs escolares traduzem falhas de persistência e fazem flush de save/delete dentro da fronteira para apresentar conflito seguro antes do retorno.",
+      "Capturas React preservaram visual desktop/mobile: sem overflow da página; tabela mobile conserva rolagem horizontal interna necessária para colunas."
+    ],
+    "assumptions": [
+      "experiment_id, task_id, model_role e número externo de tentativa não foram fornecidos; identificadores permanecem vazios e attempt é null. T-002 é identificador interno de governança, não task_id externo.",
+      "O prompt atual exige arquivo de auditoria adicional e prevalece sobre a restrição anterior de documentação mínima.",
+      "Arquitetura de MinervaFinancas é referência; Java/Spring/PostgreSQL de Atena não serão substituídos por versões ou banco da referência.",
+      "Object Calisthenics não é declarado cumprido literalmente: domínio usa records imutáveis com múltiplos atributos e acessores. Dispensa das regras8/9 para Aula, Avaliacao, Curriculo, Curso, Disciplina, Evento, Horario, Materia, Material, Matricula, Mensagem, Nota, NotaAvaliacao, Pessoa, Presenca, Serie, Turma, Unidade e UsuarioAutenticado: preservar estado escolar tipado e invariantes sem wrappers mecânicos; trade-off é expor leitura de atributos e mais de dois campos, mantendo escrita impossível e regra coesa. DTOs têm exceção8/9 explícita pela ADR004.",
+      "Planejador original não pôde ser reativado: ferramenta retornou agent thread limit reached. Operação atua como revisor independente de arquitetura/QA/segurança sem autoria do código; novas revisões não serão atribuídas ao planejador original.",
+      "Report build mvn -B -pl services/relatorios -DskipTests clean package observado pelo implementador de relatórios: compilação/empacotamento passam, não comprovam comportamento. Evidência evidence/t002-report-build.log.",
+      "Avatar preserva limite de entrada5MB/dimensões4096px; PNG reencodificado pode exceder entrada e V5 usa limite persistido80MB. Queries de metadados não carregam esse blob. Capacidade Neon não validada.",
+      "OC regras8/9 também dispensadas para records imutáveis de relatório Solicitação6campos/Relatório5campos, pela mesma fronteira tipada e invariantes reais sem wrappers mecânicos; não significa conformidade literal automática.",
+      "Execução retomada após limite de uso a pedido explícito; estado salvo preservado e quatro testes de relatórios já verdes não refeitos sem mudança.",
+      "Três agentes interrompidos por limite de uso e retomados após pedido explícito; entregas verdes existentes não foram descartadas nem declaradas novamente executadas.",
+      "OC regra8 dispensada concretamente para BoletimDAO: nove colaborações DAO consultam readmodel escolar conectado em transação REPEATABLE_READ; custo aceito é dependência larga para consulta coesa, evitando wrappers vazios que apenas escondem a mesma colaboração. DadosBoletim/DadosDisciplinaBoletim/ResultadoEscolar records imutáveis também dispensam8/9; invariantes/coleções prontas e mapeamento explícito justificam estado tipado.",
+      "Dispensa OC regras 8/9: BoletimPreparado e DisciplinaPreparada são projeções de domínio imutáveis de snapshot autorizado e calculado; seus campos/accessors preservam os dados completos sem wrappers decorativos. Troca: verbosidade estrutural limitada versus invariantes e pureza explícitas.",
+      "DB_URL Neon não poderá sobrescrever verify-full/DefaultJavaSSLFactory com opções menos estritas; configuração real e handshake ainda dependem de autenticação/provisionamento externo.",
+      "Dispensa OC regra 8: BoletimDAO reúne nove portas para uma projeção acadêmica consistente em REPEATABLE_READ; dividir em wrappers aumentaria camadas sem eliminar N+1. Trade-off: colaboração maior, consulta coesa e limite de escala explicitamente não medido.",
+      "Backup/restore de registro BYTEA no teste não equivale a backup integral PostgreSQL nem rollback para T001. Novos uploads em BYTEA foram exportados antes rollback para aplicação antiga em ambiente isolado, que passou; operação remota não executada.",
+      "Dispensa OC regras 8 (quando há mais de dois campos) e 9 para estados/metadados puros adicionais ExecucaoLote, SolicitacaoRelatorio, Relatorio, DocumentoRelatorio e ConteudoArquivo no escolar: representam resultado Batch, contrato interserviço ou conteúdo autorizado sem framework, com leitura tipada e sem wrappers mecânicos. Trade-off: múltiplos campos/acessores para manter assinatura coesa; blobs só são obtidos depois da autorização.",
+      "Contagem factual JUnit T002: cinco testes executados (quatro métodos RelatorioIntegracaoTeste e um fluxo EscolarIntegracaoTeste). Dois métodos de relatório são novos; fluxo escolar foi renomeado e ampliado preservando assertions. Provas Node com fetch dublê são adicionais e não entram nessa contagem JUnit.",
+      "Inventário físico conferido contra baseline4ee1baf com git diff --no-renames: 392 caminhos criados, 19 modificados e84 removidos. Rename é representado como caminho antigo removido e destino criado; não depende de heurística Git."
+    ],
+    "open_questions": [
+      "Autenticação Neon MCP indisponível e ferramentas não callable; publicação requerida permanece bloqueada.",
+      "Não há ferramenta billing para certificar zero-spend Render; nenhuma contratação/criação executada.",
+      "Publicação Docker via ferramenta Render MCP de criação não suportada; blueprint e eventual canal alternativo dependem de autenticação/quota comprovadas."
+    ]
+  },
+  "decisions": [
+    {
+      "decision": "Registrar baseline defeituoso e estado pendente antes de refatorar.",
+      "reason": "Preservar confiabilidade do experimento e separar implementado de validado.",
+      "requirement": "AUDIT_REPORT.json durante a execução",
+      "trade_off": "Relatório permanece partial até implementação, gates e publicação efetivamente observados."
+    },
+    {
+      "decision": "Separar validação operacional readonly de publicação remota.",
+      "reason": "Autenticação Render foi observada, mas Neon OAuth não concluiu e nenhuma aplicação Atena remota existe.",
+      "requirement": "Publicação Render/Neon via MCP e resultados factuais",
+      "trade_off": "Continuar refatoração local autorizada e manter publicação não atendida enquanto o bloqueio persistir."
+    },
+    {
+      "decision": "Preparar dois serviços Render Docker free sem DNS privado e sem referências cíclicas; URLs HTTPS e credenciais são sync:false para configuração após criação.",
+      "reason": "MCP Render não suporta Docker e Neon não está autenticado; não inventar endereços nem executar gastos não confirmados.",
+      "requirement": "Produção Render+Neon com Docker e segurança.",
+      "trade_off": "Blueprint estruturalmente validado fica preparatório; implantação depende de capacidade/autenticação e confirmação externa."
+    },
+    {
+      "decision": "Perfil prod usa verify-full e DefaultJavaSSLFactory do pgJDBC.",
+      "reason": "Validar certificado e hostname com truststore Java existente, conforme documentação oficial pgJDBC, sem nova biblioteca.",
+      "requirement": "TLS PostgreSQL Neon em produção.",
+      "trade_off": "Handshake real ainda não executado; URL fornecida não pode enfraquecer propriedades TLS."
+    },
+    {
+      "decision": "Traduzir exceções JPA em helper de adaptador comum e flush antes de retornar save/delete.",
+      "reason": "FDD exige erro de aplicação seguro na fronteira DAO; prevenir dependência de política nos tipos de exceção de infraestrutura.",
+      "requirement": "FDD002 fluxo4.3/arquitetura domínio puro.",
+      "trade_off": "Flush por CRUD pode aumentar round trips; nenhum CRUD genérico/reflexão/adaptador especulativo foi criado e chunk Batch50 permanece."
+    }
+  ]
+}
