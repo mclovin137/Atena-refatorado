@@ -7,7 +7,20 @@ const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const env = Object.fromEntries((await readFile('.env', 'utf8')).split('\n').filter(line => line.includes('=')).map(line => { const at = line.indexOf('='); return [line.slice(0, at), line.slice(at + 1)]; }));
 const baseURL = `http://127.0.0.1:${env.ATENA_PORT || '18080'}`;
+function redact(text) {
+  for (const [key, value] of Object.entries(env)) if (/PASSWORD|TOKEN/.test(key) && value) text = text.replaceAll(value, '[REDACTED]');
+  return text;
+}
 await mkdir('evidence', { recursive: true });
+let healthy = false;
+for (let attempt = 0; attempt < 60; attempt++) {
+  try {
+    const response = await fetch(`${baseURL}/actuator/health`, { signal: AbortSignal.timeout(3000) });
+    if (response.ok && (await response.json()).status === 'UP') { healthy = true; break; }
+  } catch { /* O processo pode estar iniciando; o próximo teste continua limitado à saúde local. */ }
+  await new Promise(resolve => setTimeout(resolve, 1000));
+}
+assert.ok(healthy, 'Aplicação não apresentou saúde UP no limite de inicialização');
 const browser = await chromium.launch({ headless: true });
 const created = [], reportIds = [], evidence = [];
 let page, csrf, mainFailure;
@@ -150,6 +163,12 @@ try {
   console.log('Fluxo real entre serviços, Spring Batch, PDF/CSV/JSON, login e desktop/mobile validados.');
 } catch (error) {
   mainFailure = error;
+  error.message = redact(error.message || String(error));
+  if (error.stack) error.stack = redact(error.stack);
+  await writeFile('evidence/erro-e2e.json', JSON.stringify({ erro: error.message }, null, 2));
+  if (page && !page.isClosed()) {
+    try { await page.screenshot({ path: 'evidence/browser-falha.png', fullPage: true }); } catch { /* Preserva o erro original quando a página já não pode ser capturada. */ }
+  }
   throw error;
 } finally {
   const cleanupErrors = [];
@@ -159,11 +178,11 @@ try {
     try {
       assert.ok(Number.isSafeInteger(id));
       execFileSync('docker', ['compose', 'exec', '-T', 'postgres', 'psql', '-U', 'postgres', '-d', 'relatorios', '-v', 'ON_ERROR_STOP=1', '-c', `DELETE FROM linha WHERE relatorio_id=${id}; DELETE FROM relatorio WHERE id=${id};`], { stdio: 'pipe' });
-    } catch (error) { cleanupErrors.push(`Relatório ${id}: ${error.message}`); }
+    } catch (error) { cleanupErrors.push(redact(`Relatório ${id}: ${error.message}`)); }
   }
   if (page && csrf) for (const path of created.reverse()) {
     try { await request(path, 'DELETE', undefined, 204); }
-    catch (error) { cleanupErrors.push(`${path}: ${error.message}`); }
+    catch (error) { cleanupErrors.push(redact(`${path}: ${error.message}`)); }
   }
   await browser.close();
   if (cleanupErrors.length) {

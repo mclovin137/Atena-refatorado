@@ -24,6 +24,6 @@ docker compose config --quiet
 if command -v gitleaks >/dev/null 2>&1; then
   gitleaks detect --source . --no-git --redact --log-level warn
 else
-  docker run --rm -v "$PWD:/repo:ro" ghcr.io/gitleaks/gitleaks:v8.30.1 \
-    detect --source /repo --no-git --redact --log-level warn
+  docker run --rm -w /repo -v "$PWD:/repo:ro" ghcr.io/gitleaks/gitleaks:v8.30.1 \
+    detect --source . --config /repo/.gitleaks.toml --no-git --redact --log-level warn
 fi

@@ -27,7 +27,8 @@ public class SecurityConfig {
   var provider=new DaoAuthenticationProvider(users); provider.setPasswordEncoder(encoder); return new ProviderManager(provider);
  }
  @Bean SecurityFilterChain security(HttpSecurity http,PessoaRepository people) throws Exception {
-  http.csrf(c->c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()).ignoringRequestMatchers("/api/internal/**"))
+  var csrfRepository=CookieCsrfTokenRepository.withHttpOnlyFalse();csrfRepository.setHeaderName("X-CSRF-TOKEN");
+  http.csrf(c->c.csrfTokenRepository(csrfRepository).csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()).ignoringRequestMatchers("/api/internal/**"))
    .securityContext(c->c.securityContextRepository(new HttpSessionSecurityContextRepository()))
    .authorizeHttpRequests(a->a.requestMatchers("/","/index.html","/assets/**","/favicon.ico","/api/session","/api/session/login","/api/internal/**","/actuator/health").permitAll().anyRequest().authenticated())
    .exceptionHandling(e->e.authenticationEntryPoint((req,res,ex)->{res.setStatus(401);res.setContentType("application/json");res.getWriter().write("{\"message\":\"Autenticação necessária\"}");}).accessDeniedHandler((req,res,ex)->{res.setStatus(403);res.setContentType("application/json");res.getWriter().write("{\"message\":\"Acesso negado\"}");}))
