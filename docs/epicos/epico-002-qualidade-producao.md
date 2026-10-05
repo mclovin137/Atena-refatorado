@@ -61,3 +61,5 @@ Dono planejamento: Yoda; FDD/produção: implementador; revisão independente e 
 Categoria: épico. Pergunta: qual sequência de capacidades/dependências atende revisão do usuário? Anterior roadmap; posterior PRD002/HLD/FDD/T002. Dono planejador; revisores implementadores/operação. Refinamento registrado neste artefato, sem criar análise extra; RFC/LLD dispensados pelo escopo definido.
 
 - 2026-10-05: implementação local refatorada e cinco testes PG isolados passaram; E2E Docker/React/tracing/reinício e backup/restore/rollback isolados passaram. CI/PR/merge ainda pendentes; publicação remota continua bloqueada.
+
+- 2026-10-05: entrega local integrada via [PR3](https://github.com/mclovin137/Atena-refatorado/pull/3), merge be532c8c04d8c6baddef6c6eb6916014f92c0105 em2026-10-05T17:04:36Z; CI review/testes verdes no HEAD1650028 e parecer independente de operação. Épico/publicação ainda parciais, sem deploy.

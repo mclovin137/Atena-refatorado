@@ -41,3 +41,5 @@ Dono: planejador/Yoda; implementador e operação fazem entregas distintas e rev
 - 2026-10-04: roadmap inicial de migração T-001.
 - 2026-10-04: T-001 local integrado PR1 a29342ac3c99be5a733d6ccb6e32c8d85465dbc2; fechamento PR2 4ee1baf8b9d4e1ab54467504d3cbebb4ba838ad6, CI/evidências reais no histórico/task.
 - 2026-10-04: roteiro de produto atualizado para qualidade, ADRs/estado/auditoria e produção remota ainda pendente conforme pedidos novos.
+
+- 2026-10-05: etapa local T002 integrada pela [PR3](https://github.com/mclovin137/Atena-refatorado/pull/3) em be532c8c04d8c6baddef6c6eb6916014f92c0105, após [review CI](https://github.com/mclovin137/Atena-refatorado/actions/runs/37310715833) e [testes CI](https://github.com/mclovin137/Atena-refatorado/actions/runs/37310716099) verdes no HEAD1650028. T002/deploy permanecem parciais por bloqueio remoto; fechamento documental tem revisão/gates próprios.
