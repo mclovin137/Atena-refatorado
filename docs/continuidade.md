@@ -1,17 +1,17 @@
 ## Task ativa
-T-001 — Refatoração do Atena; fluxo completo. Validação local concluída, liberação remota pendente.
+T-001 — Refatoração do Atena concluída; fechamento dos registros somente de documentação.
 
 ## Estado atual
-Código de dois serviços Java/Spring Boot e frontend React implementado. PostgreSQL/Flyway e Spring Batch executados; suíte completa teste5: três testes abrangentes sem falhas/erros. Após falha de login real com HTTP 403, contrato CSRF corrigido e teste escolar focado verde às 22:49:04. Docker build/runtime e E2E navegador real passaram; screenshots desktop/mobile conferidos por revisor independente. PR draft aberto; pipelines remotos e merge ainda aguardam confirmação.
+Dois serviços Java/Spring Boot e frontend React implementados e integrados no PR #1 em 2026-10-04 22:59:45 America/Sao_Paulo. Merge a29342ac3c99be5a733d6ccb6e32c8d85465dbc2. Pipelines revisão 37253333394 e testes/operação 37253333431 concluídos com sucesso no head 9da0933; artifacts integração e navegador publicados. PostgreSQL/Flyway, dois jobs Batch, Docker build/runtime e E2E real executados. Suíte local completa teste5: três testes sem falhas/erros; login com cookie/header CSRF real verificado em teste focado e navegador. Capturas desktop/mobile conferidas por revisor independente.
 
 ## Decisões vigentes
-Objetivo: preservar escola no domínio e stack exigidos. Dois contextos: escolar e relatórios; jobs inicializarNotas/consolidarHistorico. Snapshot fixo e fonte REPEATABLE_READ; PDF nativo preserva escola/CNPJ/CPF/matrícula, documento omitido professor. Spring Cache memória, Actuator/Micrometer e tracing W3C sem coletor adicional. Evidências observadas: testes PG, Docker, scanner local/Docker, E2E com jobs COMPLETED/exportações/arquivos/autorização, três registros traceId idêntico, capturas reais. Parecer revisor: aprovado localmente. Donos: implementador e operação; revisor independente: planejador.
+Dois contextos: escolar e relatórios; jobs inicializarNotas/consolidarHistorico. Snapshot fixo e fonte REPEATABLE_READ; PDF preserva escola/CNPJ/CPF/matrícula e omite documento ao professor. Spring Cache memória, Actuator/Micrometer e tracing W3C sem coletor adicional. Revisão independente aprovada local/remota, seguida por merge observado. Governança Minerva remota 76a991d; prompt prevalece sobre pausa/aprovação humana. Donos implementação/operação e planejador/revisor independente.
 
 ## Riscos e lacunas
-Legado integral preservado em legacy/ no commit ac48dc552b817233547104a5d0acba932d41ab91; dump original ausente, importação real não validada. Hora-aula de 60 min e frequência na aprovação corrigem bugs e alteram resultado legado. Layout PDF simplificado. Snapshot memória/N+1 na origem limitam escala; sem benchmark/carga. Troca senha invalida só sessão atual. Aprovações humanas conflitantes seguem autonomia expressa do prompt. Falhas e retrabalhos reais ficam no EXPERIMENT_LOG; não confundir suítes anteriores com prova de login React.
+Legado preservado em legacy/; dump original ausente, importação real não validada. Hora-aula de 60 min e frequência na aprovação corrigem bugs e alteram resultado legado. Layout PDF simplificado. Snapshot memória/N+1 na origem limitam escala; sem benchmark/carga. Troca de senha invalida só sessão atual. Resultados e falhas reais registrados no EXPERIMENT_LOG; não presumir paridade completa por sucesso dos fluxos testados.
 
 ## Próximo passo
-Operação acompanha pipelines remotos e anexa evidências no PR; revisor confirma resultados/escopo, conclui task/Obsidian e operação executa merge somente com gates verdes. Orquestrador entrega JSON factual sem estimar métricas.
+Submeter o fechamento factual somente de documentação em PR próprio, com revisão e gates normais. A entrega de produção PR #1 está concluída; não gerar nova documentação apenas para atualizar SHA do fechamento. Orquestrador entrega JSON factual após resultado desse PR, sem estimar métricas.
 
 ## Região gerada
 <!-- minerva-continuity:generated:start -->
