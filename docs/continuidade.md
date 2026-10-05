@@ -11,7 +11,7 @@ Preservar dois microsserviços, REST/JSON, React, PostgreSQL, Spring Batch e fun
 Neon MCP configurado no Codex, mas não autenticado/sem ferramentas callable nesta sessão. MCP Render create_web_service não suporta Docker/container registry; outra via exigiria credencial/capacidade real e registro de desvio do canal pedido. Render free não recebe rede privada, tem filesystem efêmero e franquias compartilhadas; exposição HTTPS autenticada e persistência de arquivos devem ser resolvidas no HLD/FDD antes produção. Custo pago não autorizado. Refatoração de DTOs/autorização pode alterar defaults, campos, CSRF ou acesso: testes existentes e E2E devem demonstrar paridade. Limites anteriores preservados no histórico e experimento.
 
 ## Próximo passo
-Implementadores escolar/relatórios executam T-002 local em escopos próprios; revisor acompanha código/testes, abstrações/ADRs e auditoria. Commit/PR e duas pipelines remotas precedem revisão final e merge por operação independente; Neon autenticação/canal Render Docker/custos continuam bloqueados, sem presumir provisionamento. Review final de cada superfície e duas pipelines precedem merge/deploy.
+Implementadores escolar/relatórios executam T-002 local em escopos próprios; revisor acompanha código/testes, abstrações/ADRs e auditoria. PR3 aberta: https://github.com/mclovin137/Atena-refatorado/pull/3 . Aguardar duas pipelines remotas no HEAD definitivo, revisão final e merge por operação independente; Neon autenticação/canal Render Docker/custos continuam bloqueados, sem presumir provisionamento. Review final de cada superfície e duas pipelines precedem merge/deploy.
 
 ## Região gerada
 <!-- minerva-continuity:generated:start -->

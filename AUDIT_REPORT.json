@@ -26,11 +26,12 @@
       "Implementador revisou independentemente ADR001–005, PRD/HLD, épico e roadmap de autoria do planejador; ajuste de proposta/TBD solicitado sem aprovar seu próprio FDD.",
       "FDD-002 aprovado e T-002 criada antes de produção; dois serviços reorganizados por feature/função, domínio puro, DTOs/ports/adaptadores/actors e factories de variantes reais implementados. Relatórios quatro testes e escolar um fluxo ampliado passaram PostgreSQL17 isolado; React build/formato e cliente HTTP isolado passaram.",
       "Funcionalidades integradas T002 validadas por E2E real Docker/PostgreSQL/React: dois serviços, jobs, notas/boletim, listas/exportações, autenticação/perfis, durabilidade BYTEA após restart e descarte de estado React na mudança de sessão. Backup/restore integral T002 isolado passou.",
-      "Contrato HTTP real do BOLETIM/unidade vazia/arraysnull e cinco tipos de relatório validados em E2E adicional; export JSON nome/tipo/linhas mantido, sem alteração de produto para satisfazer expectativa errada de teste."
+      "Contrato HTTP real do BOLETIM/unidade vazia/arraysnull e cinco tipos de relatório validados em E2E adicional; export JSON nome/tipo/linhas mantido, sem alteração de produto para satisfazer expectativa errada de teste.",
+      "PR3 aberta em https://github.com/mclovin137/Atena-refatorado/pull/3 com execução local validada e cloud bloqueado explícitos. Commit de produção 4b16077; autoria não aprovou nem integrou seu próprio PR."
     ],
     "requirements_not_addressed": [
       "Deploy Render/Neon não executado: Neon sem autenticação/ferramentas, MCP Render sem suporte a Docker e ausência de canal autenticado alternativo/custo confirmado.",
-      "Gates GitHub Actions/PR/merge T002 ainda pendentes neste marco; resultados locais não substituem execução remota."
+      "PR3 aberta; workflows GitHub Actions e merge T002 ainda pendentes. Resultados locais não substituem execução remota."
     ],
     "possible_regressions": []
   },
@@ -1170,7 +1171,8 @@
       "Dispensa OC regra 8: BoletimDAO reúne nove portas para uma projeção acadêmica consistente em REPEATABLE_READ; dividir em wrappers aumentaria camadas sem eliminar N+1. Trade-off: colaboração maior, consulta coesa e limite de escala explicitamente não medido.",
       "Backup/restore de registro BYTEA no teste não equivale a backup integral PostgreSQL nem rollback para T001. Novos uploads em BYTEA foram exportados antes rollback para aplicação antiga em ambiente isolado, que passou; operação remota não executada.",
       "Dispensa OC regras 8 (quando há mais de dois campos) e 9 para estados/metadados puros adicionais ExecucaoLote, SolicitacaoRelatorio, Relatorio, DocumentoRelatorio e ConteudoArquivo no escolar: representam resultado Batch, contrato interserviço ou conteúdo autorizado sem framework, com leitura tipada e sem wrappers mecânicos. Trade-off: múltiplos campos/acessores para manter assinatura coesa; blobs só são obtidos depois da autorização.",
-      "Contagem factual JUnit T002: cinco testes executados (quatro métodos RelatorioIntegracaoTeste e um fluxo EscolarIntegracaoTeste). Dois métodos de relatório são novos; fluxo escolar foi renomeado e ampliado preservando assertions. Provas Node com fetch dublê são adicionais e não entram nessa contagem JUnit."
+      "Contagem factual JUnit T002: cinco testes executados (quatro métodos RelatorioIntegracaoTeste e um fluxo EscolarIntegracaoTeste). Dois métodos de relatório são novos; fluxo escolar foi renomeado e ampliado preservando assertions. Provas Node com fetch dublê são adicionais e não entram nessa contagem JUnit.",
+      "Inventário físico conferido contra baseline4ee1baf com git diff --no-renames: 392 caminhos criados, 19 modificados e84 removidos. Rename é representado como caminho antigo removido e destino criado; não depende de heurística Git."
     ],
     "open_questions": [
       "Autenticação Neon MCP indisponível e ferramentas não callable; publicação requerida permanece bloqueada.",

@@ -105,3 +105,5 @@ Categoria: task. Pergunta: quais passos, donos e provas tornam o contrato aprova
 - 2026-10-05: implementação local e validações isoladas/integradas concluídas: relatórios4 e escolar1 testes JUnit verdes; React build/check/cliente isolado verdes; E2E real, tracing, reinício BYTEA, backup/restore/rollback UUID isolados passaram. Revisão independente de operação substitui planejador indisponível por limite de threads. Artefatos locais ignorados preservam falhas/retrabalhos; publicação CI e deploy ainda não executados.
 
 - 2026-10-05: E2E adicional BOLETIM via HTTP/snapshot persistido comprovou unidade{} e arraysnull, mantendo export JSON nome/tipo/linhas; cinco tipos reais e três formatos passaram. Etapa local revisada por operação independente; PR/CI/publicação ainda pendentes.
+
+- 2026-10-05: PR3 aberta https://github.com/mclovin137/Atena-refatorado/pull/3 com produção4b16077; workflows/revisão final/merge pendentes no HEAD documental atualizado. T002 parcial e deploy bloqueado mantidos, sem gate humano.
