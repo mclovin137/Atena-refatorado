@@ -12,8 +12,8 @@ const browser = await chromium.launch({ headless: true });
 const created = [], reportIds = [], evidence = [];
 let page, csrf, mainFailure;
 const contexts = [];
-async function request(path, method = 'GET', data, expected = 200) {
-  const response = await page.request.fetch(`${baseURL}/api/${path}`, { method, data, headers: method === 'GET' ? {} : { 'X-CSRF-TOKEN': csrf } });
+async function request(path, method = 'GET', data, expected = 200, extraHeaders = {}) {
+  const response = await page.request.fetch(`${baseURL}/api/${path}`, { method, data, headers: { ...(method === 'GET' ? {} : { 'X-CSRF-TOKEN': csrf }), ...extraHeaders } });
   assert.equal(response.status(), expected, `${method} ${path}: esperado ${expected}, recebido ${response.status()}`);
   if (expected === 204) return null;
   return response.json();
@@ -51,7 +51,8 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, 'Tela mobile deve caber na viewport');
   const suffix = randomUUID();
   const professor = await create('pessoas', { pessoa: { nome: 'Professor de teste', email: `professor-${suffix}@example.test`, matricula: `p-${suffix}`, perfil: 'PROFESSOR', ativo: true }, senha: env.ADMIN_PASSWORD });
-  const aluno = await create('pessoas', { pessoa: { nome: 'Aluno de teste', email: `aluno-${suffix}@example.test`, matricula: `a-${suffix}`, perfil: 'ALUNO', ativo: true }, senha: env.ADMIN_PASSWORD });
+  const aluno = await create('pessoas', { pessoa: { nome: 'Aluno de teste', email: `aluno-${suffix}@example.test`, matricula: `a-${suffix}`, perfil: 'ALUNO', ativo: true, documento: '000.000.000-00' }, senha: env.ADMIN_PASSWORD });
+  const unidade = await create('unidades', { nome: `Escola E2E ${suffix}`, endereco: 'Rua de teste', telefone: '123', cnpj: '12.345.678/0001-90' });
   const curso = await create('cursos', { nome: `Curso E2E ${suffix}` });
   const serie = await create('series', { nome: `Série E2E ${suffix}` });
   const materia = await create('materias', { nome: `Matemática E2E ${suffix}` });
@@ -69,12 +70,22 @@ try {
     await request(`notas/${grade.id}`, 'PUT', { ...grade, valor: 75, recuperacao: null, liberada: true, prazo: '2200-01-01' });
   }
   const boletim = await request(`boletins/${aluno.id}`);
+  assert.equal(boletim.unidade.nome, unidade.nome, 'Boletim deve incluir unidade escolar do snapshot');
+  assert.equal(boletim.unidade.cnpj, unidade.cnpj, 'Snapshot deve preservar CNPJ da unidade');
   assert.equal(boletim.linhas[0].resultado.media, 75);
   assert.equal(boletim.linhas[0].resultado.frequencia, 95);
   assert.equal(boletim.linhas[0].resultado.situacao, 'APROVADO');
-  const report = await request('relatorios', 'POST', { alunoId: aluno.id, tipo: 'HISTORICO', requestId: suffix }, 202);
+  const traceId = randomUUID().replaceAll('-', '');
+  const report = await request('relatorios', 'POST', { alunoId: aluno.id, tipo: 'HISTORICO', requestId: suffix }, 202, { traceparent: `00-${traceId}-1111111111111111-01` });
   reportIds.push(report.id);
   const reportFinished = await awaitCompletion(`relatorios/${report.id}`);
+  const logs = execFileSync('docker', ['compose', 'logs', '--no-color'], { encoding: 'utf8', maxBuffer: 10 * 1024 * 1024 });
+  await writeFile('evidence/compose.log', logs);
+  const traced = logs.split('\n').filter(line => line.includes(traceId) && line.includes('atena.http'));
+  assert.ok(traced.some(line => line.includes('escolar-1') && line.includes('HTTP POST /api/relatorios')), 'Serviço escolar deve registrar traceId recebido');
+  assert.ok(traced.some(line => line.includes('relatorios-1') && line.includes('HTTP POST /api/relatorios')), 'HTTP entre serviços deve preservar traceId');
+  assert.ok(traced.some(line => line.includes('/api/internal/snapshot/{alunoId}')), 'Batch deve preservar contexto ao buscar snapshot');
+  evidence.push({ tracing: 'W3C preservado entre serviços e processamento Batch', traceId, registros: traced.length });
   const reportJson = await request(`relatorios/${report.id}/download?format=json`);
   assert.equal(reportJson.linhas.length, 1, 'Relatório deve conter a disciplina do aluno');
   assert.equal(reportJson.linhas[0].resultado.media, 75, 'Relatório deve refletir o snapshot real do serviço escolar');
@@ -101,7 +112,10 @@ try {
     const studentToken = (await (await context.request.get(`${baseURL}/api/session`)).json()).csrfToken;
     const download = await context.request.get(`${baseURL}/api/materiais/${material.id}/download`);
     assert.equal(download.status(), enrolled ? 200 : 403, 'Arquivo só pode ser baixado por aluno da disciplina');
-    if (enrolled) assert.deepEqual(await download.body(), exportedPdf, 'Download deve preservar exatamente os bytes enviados');
+    if (enrolled) {
+      assert.deepEqual(await download.body(), exportedPdf, 'Download deve preservar exatamente os bytes enviados');
+      assert.equal((await (await context.request.get(`${baseURL}/api/boletins/${aluno.id}`)).json()).documento, aluno.documento, 'Aluno deve ler apenas seu próprio documento no boletim');
+    }
     const otherPerson = await context.request.get(`${baseURL}/api/pessoas/${professor.id}`);
     assert.equal(otherPerson.status(), 403, 'Aluno não consulta cadastro privado do professor');
     const writePerson = await context.request.put(`${baseURL}/api/pessoas/${professor.id}`, { headers: { 'X-CSRF-TOKEN': studentToken }, data: { pessoa: professor } });
@@ -110,6 +124,13 @@ try {
     assert.equal(writeGrade.status(), 403, 'Aluno não cadastra notas');
     await context.close();
   }
+  const teacherContext = await browser.newContext(); contexts.push(teacherContext);
+  const teacherToken = (await (await teacherContext.request.get(`${baseURL}/api/session`)).json()).csrfToken;
+  assert.equal((await teacherContext.request.post(`${baseURL}/api/session/login`, { headers: { 'X-CSRF-TOKEN': teacherToken }, data: { email: professor.email, senha: env.ADMIN_PASSWORD } })).status(), 200);
+  const teacherBoletim = await teacherContext.request.get(`${baseURL}/api/boletins/${aluno.id}`);
+  assert.equal(teacherBoletim.status(), 200);
+  assert.equal((await teacherBoletim.json()).documento, '', 'Professor não pode ler documento privado do aluno');
+  await teacherContext.close();
   const anonymous = await browser.newContext(); contexts.push(anonymous);
   assert.equal((await anonymous.request.get(`${baseURL}/api/materiais/${material.id}/download`)).status(), 401, 'Arquivo exige autenticação');
   await anonymous.close();

@@ -2,16 +2,16 @@
 T-001 — Refatoração incremental do Atena; fluxo completo.
 
 ## Estado atual
-Planejamento e FDD aprovados por revisão independente. Backend escolar em implementação: entidades JPA, migração, sessão/perfis, CRUD e resultados/jobs; relatórios e frontend em andamento. Infra Docker/Compose e CI escritas e revisadas; PostgreSQL iniciado e isolamento de acesso entre bancos verificado pela operação. A aplicação completa ainda não foi validada.
+Planejamento e FDD aprovados por revisão independente. Código dos dois serviços e frontend implementado e congelado para revisão. Integração PostgreSQL real executada: três testes abrangentes sem falhas, build Maven verify e frontend concluídos. Infra Docker/Compose e CI escritas e revisadas; PostgreSQL iniciado e isolamento de acesso entre bancos verificado pela operação. Revisão independente código/QA aprovada; Compose/E2E com navegador e pipelines ainda pendentes.
 
 ## Decisões vigentes
 Objetivo: preservar o sistema escolar na stack exigida. Decisão: dois contextos escolar e relatórios; processamento inicialização de notas e histórico em Spring Batch; PDF nativo PDFBox preserva exportação existente. Domínio Resultado puro Java; JPA na infraestrutura. Evidências: origem PHP raw, planejamento com links existentes, Obsidian planejamento conferido, FDD revisado; operação executou bash/Compose, PostgreSQL e gitleaks. Donos: implementação e operação; revisão independente: planejador.
 
 ## Riscos e lacunas
-Fetch legado ainda incompleto; schema/data original ausente. Hora-aula de 60min e aprovação com frequência>=75% alteram bugs legados explicitamente. Revisão inicial detectou controle de prazo/liberação de notas ausente; implementador corrigirá antes validação. Aprovações humanas conflitantes são substituídas pela autonomia explícita do experimento. CI remoto e deploy completo ainda sem evidência.
+Legado integral clonado e preservado em `legacy/` no commit ac48dc552b817233547104a5d0acba932d41ab91; dump de schema/dados original ausente. Hora-aula de 60min e aprovação com frequência>=75% alteram bugs legados explicitamente. Controles prazo/liberação/objeto, upload, snapshot fixo e campos pessoais/avatar foram corrigidos e cobertos pela suíte observada. Snapshot memória/N+1 e layout PDF permanecem limites; importação real não validada. Aprovações humanas conflitantes são substituídas pela autonomia explícita do experimento. CI remoto e deploy completo ainda sem evidência.
 
 ## Próximo passo
-Implementador termina contratos e correções, frontend e integração idempotente por endpoint; operação executa builds/Compose e screenshot de UI; planejador revisa diff e evidências, sem declarar paridade além do observado.
+Operação termina build Compose e E2E real com screenshots/tracing; revisor confere evidências e atualiza task/Obsidian. Publicação/PR e merge dependem dos gates reais, sem presumir CI remoto executado.
 
 ## Região gerada
 <!-- minerva-continuity:generated:start -->

@@ -9,4 +9,5 @@ public class Unidade { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) pub
  public String endereco;
  @Size(max=30)
  public String telefone;
+ @Size(max=18) public String cnpj;
 }

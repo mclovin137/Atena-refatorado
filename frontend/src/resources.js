@@ -2,7 +2,7 @@
 const name=['nome','Nome','text',true];
 export const resources={
  pessoas:{label:'Pessoas',group:'Secretaria',fields:[name,['email','E-mail','email',true],['matricula','Matrícula','text',true],['perfil','Perfil','role',true],['senha','Senha (mínimo 12 caracteres)','password'],['ativo','Conta ativa','checkbox'],['telefone','Telefone','tel'],['endereco','Endereço','text'],['documento','Documento','text'],['nascimento','Nascimento','date'],['cep','CEP','text'],['pai','Pai','text'],['mae','Mãe','text'],['estadoCivil','Estado civil','text'],['sexo','Sexo','text'],['telefoneResponsavel','Telefone responsável','tel'],['emailResponsavel','E-mail responsável','email']]},
- unidades:{label:'Unidade escolar',group:'Secretaria',fields:[name,['endereco','Endereço','text'],['telefone','Telefone','tel']]},
+ unidades:{label:'Unidade escolar',group:'Secretaria',fields:[name,['cnpj','CNPJ','text'],['endereco','Endereço','text'],['telefone','Telefone','tel']]},
  cursos:{label:'Cursos',group:'Secretaria',fields:[name]},series:{label:'Séries',group:'Secretaria',fields:[name]},materias:{label:'Matérias',group:'Secretaria',fields:[name]},
  curriculos:{label:'Grades curriculares',group:'Secretaria',fields:[name,['materiaId','Matéria','materias',true],['cargaHoraria','Carga horária','number',true]]},
  turmas:{label:'Turmas',group:'Ensino',fields:[name,['cursoId','Curso','cursos',true],['serieId','Série','series',true],['ano','Ano letivo','number',true]]},
