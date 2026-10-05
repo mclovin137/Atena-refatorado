@@ -97,7 +97,7 @@ Definições de agentes, roles e skills são markdown neutro, versionado no repo
 | [Patrick Jane](agentes/patrick-jane.md) | Planejar/revisar | Estratégia, casos e evidências de QA; não implementa a feature |
 | [Neo](agentes/neo.md) | Planejar/revisar | Investiga e prova falhas em sistemas/redes por A0/A1; mantém gates de segurança contextuais e não corrige nem muda ambiente |
 | [Jarvis](agentes/jarvis.md) | Implementar operação | Ambientes, pós-pipeline, deploy, rollback, observabilidade, backup e incidente |
-| [c4-diagram-generator](agentes/c4-diagram-generator.md) | Planejar/revisar | Diagramas C4 em PlantUML, fundamentados em FDD aprovado |
+| [c4-diagram-generator](https://github.com/Cris042/Minerva/blob/76a991d7296cddba5e595a07e9b3b6f8da581b78/docs/agentes/c4-diagram-generator.md) | Planejar/revisar | Diagramas C4 em PlantUML, fundamentados em FDD aprovado |
 
 ### Semeadura de aplicação consumidora
 
@@ -298,7 +298,7 @@ Decisões deste contrato que não nasceram de ADR:
 
 ### Cópia canônica e espelho
 
-A **base Obsidian é a cópia canônica** de ADR, PRD, HLD, FDD, LLD, RFC e das notas de responsabilidade (regra de ferro 3). O repositório guarda um **espelho de leitura** em [`docs/adrs/`](adrs/), [`docs/prds/`](prds/), [`docs/hlds/`](hlds/), [`docs/fdds/`](fdds/), [`docs/llds/`](llds/), [`docs/rfcs/`](rfcs/) e [`docs/roles/`](roles/), para que um agente trabalhando no código leia a decisão sem depender do vault. Três regras:
+A **base Obsidian é a cópia canônica** de ADR, PRD, HLD, FDD, LLD, RFC e das notas de responsabilidade (regra de ferro 3). O repositório guarda um **espelho de leitura** em [`docs/adrs/`](adrs/), [`docs/prds/`](prds/), [`docs/hlds/`](hlds/), [`docs/fdds/`](fdds/), [`docs/llds/`](https://github.com/Cris042/Minerva/blob/76a991d7296cddba5e595a07e9b3b6f8da581b78/docs/llds), [`docs/rfcs/`](https://github.com/Cris042/Minerva/blob/76a991d7296cddba5e595a07e9b3b6f8da581b78/docs/rfcs) e [`docs/roles/`](roles/), para que um agente trabalhando no código leia a decisão sem depender do vault. Três regras:
 
 1. **Pendência rastreada primeiro.** Criação, edição ou remoção é registrada imediatamente em `docs/pendencias-obsidian.md`, com origem, destino, responsável e prazo máximo de 24 horas; se o usuário decidir reprazar, aplica-se o regime explícito de reprazo da seção *Documentação no Obsidian*; pedido do usuário antecipa a sincronização.
 2. **A base vence após conferência.** Em divergência confirmada, vale a base; o espelho é regenerado a partir dela, não reconciliado à mão. Antes da conferência, registro operacional temporário não pode alegar que a base foi atualizada.
@@ -400,3 +400,11 @@ Consulta seletiva. **Não substituem ADR, HLD, FDD ou skill prescritiva, e não 
 ## Aplicação Atena — precedência e ambiente
 
 Referência: Minerva commit `76a991d7296cddba5e595a07e9b3b6f8da581b78`. Este consumidor opera em `/mnt/c/Users/mclov/IdeaProjects/Atena`; base exclusiva gravável: `/mnt/c/Users/mclov/OneDrive/Documentos/Obsidian Vault/mclov/Documents/SecondBrain/Bases/Atena`. O prompt do experimento prevalece: decisões ambíguas e conflitos são registrados sem solicitar aprovação humana. Stack obrigatória Java/Spring Boot, React, PostgreSQL e Docker; nenhuma outra infraestrutura.
+
+## Direcionamentos adicionais autorizados para T-002
+
+Em 2026-10-04, usuário exige revisão dos ADRs contra roles/skill gerar-adr, roadmap de produto e estado conforme caminhos canônicos, qualidade SOLID/factories/OC e organização real de MinervaFinancas, e produção Render/Neon via MCP. Referência seletiva MinervaFinancas remoto `34fc98a6ac47f2ffc2bf23f055a3fd9ac15c7530`: roles/skills/ADR003 e playbook backend A–C; não importar stack, regras de negócio ou contratos de API de outro produto. Stack/fronteiras Atena originais permanecem. ADR004 detalha organização; ADR005 mantém detalhes de publicação como proposta até revisão e capacidade autenticada/gratuita comprovada.
+
+Pedido posterior autoriza explicitamente `AUDIT_REPORT.json` na raiz, formato completo solicitado, atualizado com fatos e revisado independentemente. É exceção à restrição original de documentação somente Minerva+EXPERIMENT_LOG; autorização veio do usuário, não de necessidade inferida. Não inventar IDs externos, tentativas, resultados ou métricas estimadas. Retrabalho de qualidade/ADRs/roadmap é registrado objetivamente. Arquivos de estado seguem exclusivamente docs/continuidade.md, docs/lib.md, docs/pendencias-obsidian.md e histórico mensal append-only; nenhum alias root STATE/ROADMAP. Autonomia original resolve conflito com perguntas/confirmação dos skills, sem converter lacuna de MCP em sucesso.
+
+As definições locais semeadas são instruções de governança exigidas, não nova documentação de produto nem autorização de runtime. Consulta é por gatilho; não criar RFC/LLD/análise/QA markdown apenas porque o catálogo os menciona. Cadeia T002 responde perguntas distintas e declara origem/dono/revisor/níveis dispensados. O workflow TDD semeado não impõe cobertura percentual arbitrária contra o prompt de testes necessários por fluxo; RED/GREEN/REFACTOR aplica-se a comportamento novo, não toda renomeação. Calistenia não foi redefinida como formatação: dispensas concretas devem aparecer em auditoria com classe/regra/justificativa/trade-off e review.

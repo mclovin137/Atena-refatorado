@@ -4,7 +4,7 @@ cd "$(dirname "$0")/.."
 for file in scripts/*.sh infra/postgres/*.sh; do bash -n "$file"; done
 python3 - <<'PY'
 from pathlib import Path
-required = ['docs/rules.md', 'docs/continuidade.md', 'docs/lib.md', 'docs/pendencias-obsidian.md', 'docs/prds/prd-001-refatoracao.md', 'docs/hlds/hld-refatoracao.md', 'docs/fdds/FDD-001-refatoracao.md', 'docs/tasks/t-001-refatoracao.md', 'EXPERIMENT_LOG.md']
+required = ['docs/rules.md', 'docs/continuidade.md', 'docs/lib.md', 'docs/pendencias-obsidian.md', 'docs/prds/prd-001-refatoracao.md', 'docs/hlds/hld-refatoracao.md', 'docs/fdds/FDD-001-refatoracao.md', 'docs/tasks/t-001-refatoracao.md', 'EXPERIMENT_LOG.md', 'AUDIT_REPORT.json', 'docs/prds/prd-002-qualidade-producao.md', 'docs/hlds/hld-qualidade-producao.md', 'docs/fdds/fdd-002-qualidade-producao.md', 'docs/tasks/t-002-qualidade-producao.md', 'docs/adrs/adr-004-organizacao-backend.md', 'docs/adrs/adr-005-producao-render-neon.md']
 missing = [file for file in required if not Path(file).is_file()]
 if missing:
     raise SystemExit('Documentos obrigatórios ausentes: ' + ', '.join(missing))
@@ -15,6 +15,8 @@ if len(headings) != len(expected) or set(headings) != set(expected):
 if Path('docs/continuidade.md').stat().st_size > 8192:
     raise SystemExit('Continuidade excede 8 KB.')
 PY
+python3 scripts/qualidade.py
+./scripts/formatar-java.sh
 if [[ -n "$(git ls-files -- .env '.env.*' | sed '/^\.env\.example$/d')" ]]; then
   printf '%s\n' 'Arquivo de credenciais está versionado.' >&2
   exit 1

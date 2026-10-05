@@ -1,5 +1,0 @@
-package br.com.atena.relatorios;
-public interface RelatorioRepository extends org.springframework.data.jpa.repository.JpaRepository<Relatorio,Long>{java.util.Optional<Relatorio> findByOwnerIdAndRequestId(Long ownerId,String requestId);
- @org.springframework.data.jpa.repository.Modifying @org.springframework.transaction.annotation.Transactional @org.springframework.data.jpa.repository.Query("update Relatorio r set r.executionId=:execution where r.id=:id") void execution(@org.springframework.data.repository.query.Param("id")Long id,@org.springframework.data.repository.query.Param("execution")Long execution);
- @org.springframework.data.jpa.repository.Modifying @org.springframework.transaction.annotation.Transactional @org.springframework.data.jpa.repository.Query("update Relatorio r set r.nome=:nome,r.snapshot=:snapshot where r.id=:id") void snapshot(@org.springframework.data.repository.query.Param("id")Long id,@org.springframework.data.repository.query.Param("nome")String nome,@org.springframework.data.repository.query.Param("snapshot")String snapshot);
-}

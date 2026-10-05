@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      data-source-properties:
+        sslmode: verify-full
+        sslfactory: org.postgresql.ssl.DefaultJavaSSLFactory
+      maximum-pool-size: 6
+      minimum-idle: 0
+      connection-timeout: 30000
+      idle-timeout: 300000
+      max-lifetime: 900000
+server:
+  address: 0.0.0.0
+  forward-headers-strategy: native
+  shutdown: graceful
+  servlet:
+    session:
+      cookie:
+        secure: true
+        http-only: true
+        same-site: strict
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+  endpoint:
+    health:
+      show-details: never
+atena:
+  school-url: ${SCHOOL_URL}

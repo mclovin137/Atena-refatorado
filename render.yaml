@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+# Preparação validável; criação remota depende de Neon autenticado e plano gratuito confirmado.
+# DB_URL: JDBC Neon sem opções que enfraqueçam TLS; perfil usa verify-full e truststore Java.
+# URLs recíprocas: HTTPS público atribuído pelo Render; sem DNS privado ou valores presumidos.
+services:
+  - type: web
+    name: atena-escolar
+    runtime: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/mclovin137/Atena-refatorado
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    autoDeployTrigger: "off"
+    envVars:
+      - key: SERVICE
+        value: escolar
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=60.0
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: SERVICE_TOKEN
+        sync: false
+      - key: REPORTS_URL
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+  - type: web
+    name: atena-relatorios
+    runtime: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/mclovin137/Atena-refatorado
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    autoDeployTrigger: "off"
+    envVars:
+      - key: SERVICE
+        value: relatorios
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=60.0
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: SERVICE_TOKEN
+        sync: false
+      - key: SCHOOL_URL
+        sync: false
