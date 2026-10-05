@@ -1,0 +1,11 @@
+.git
+.env
+**/node_modules
+**/target
+frontend/dist
+legacy
+Lib
+Views
+Models
+Controller
+evidence
