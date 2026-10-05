@@ -10,7 +10,7 @@ ai-first: true
 # T-002: Qualidade por domínio e publicação verificável
 
 ## Para o futuro agente
-Entregar fonte legível/DDD/SOLID/factories concretas, ADRs/roadmap/estado conformes e produção Render/Neon autorizada, preservando fluxos e contratos T-001. Implementação local e validação integradas concluídas; CI/PR/merge pendentes; publicação remota bloqueada por autenticação/capacidade das ferramentas, não presumida concluída.
+Entregar fonte legível/DDD/SOLID/factories concretas, ADRs/roadmap/estado conformes e produção Render/Neon autorizada, preservando fluxos e contratos T-001. Implementação local e validação integradas concluídas; CI/PR3 integrados; publicação remota bloqueada por autenticação/capacidade das ferramentas, não presumida concluída.
 
 ## Origem
 - Caminho: fluxo completo; muda estrutura, persistência de arquivos e superfície operacional pública.
@@ -24,7 +24,7 @@ Entregar fonte legível/DDD/SOLID/factories concretas, ADRs/roadmap/estado confo
 - Decisão: organização por recurso/função, domínio puro, DTOs, políticas/factories reais; bytes duráveis implementados e validados em PostgreSQL local, nenhuma infra nova.
 - Evidências: fonte atual/refêrencia MinervaFinancas pinada, role/skills Minerva locais semeadas, revisão cruzada dos artefatos e FDD.
 - Riscos e lacunas: refatoração amplia diff; migração/backup/restore/rollback isolados executados, sem prova de capacidade cloud; Neon não autenticado e MCP Render sem Docker, quota não comprovada.
-- Próximo passo: revisão final factual da auditoria/estado e commit/PR; duas pipelines remotas antes de merge por operação independente.
+- Próximo passo: fechamento documental local com revisão/gates próprios; publicar somente após autenticação/capacidade/quota remotas disponíveis, sem inventar execução.
 
 ## Responsáveis
 - Planejamento: Yoda/planejador.
@@ -77,8 +77,8 @@ Dois serviços e React com código legível e contratos preservados, artefatos d
 - [x] Fluxo navegador React desktop/mobile, tracing HTTP/Batch e novas factories/invariantes quando relevantes. RED/GREEN/REFACTOR para regra/endpoint novo, não cada renomeação.
 
 ## Evidências obrigatórias
-- [ ] Builds/testes/scanner/quality review observados e artifacts CI ligados ao PR; relatórios JUnit não vazios após renomear testes.
-- [ ] Imagem e/ou vídeo dos testes de endpoint publicado pelo pipeline; screenshots reais desktop/mobile e JSON de fluxo.
+- [x] Builds/testes/scanner/quality review observados e artifacts CI ligados ao PR; relatórios JUnit não vazios após renomear testes.
+- [x] Imagem e/ou vídeo dos testes de endpoint publicado pelo pipeline; screenshots reais desktop/mobile e JSON de fluxo.
 - [ ] Publicação LIVE SHA, HTTPS/health/login/E2E/restart/bytes no remoto quando executada; se impossível, evidência específica do bloqueio.
 
 ## Documentação e Obsidian
@@ -92,10 +92,10 @@ Dois serviços e React com código legível e contratos preservados, artefatos d
 
 ## Definição de pronto
 - [x] Implementação respeita contratos e todos critérios ou registra não atendidos sem status sucesso fictício.
-- [ ] Testes/evidências obrigatórias produzidos e observados.
+- [x] Testes/evidências locais e CI produzidos e observados; publicação LIVE permanece pendente.
 - [x] Documentação/base e auditoria factual atualizadas.
-- [ ] PR auditado por agente diferente do implementador de cada superfície.
-- [ ] Pipelines review/testes verdes antes merge e deploy.
+- [x] PR3 auditado por agente diferente do implementador de cada superfície; fechamento documental terá revisão própria.
+- [x] Pipelines review/testes verdes no HEAD1650028 antes merge PR3; deploy não executado.
 
 ## Histórico
 - 2026-10-04: task criada pronta após FDD aprovado independentemente; etapa remota bloqueada, execução local liberada. Revisões de redação: implementador escolar e relatório, ajustes de evidências/origem/mapping aplicados; aprovação local não declara código novo validado.
@@ -107,3 +107,5 @@ Categoria: task. Pergunta: quais passos, donos e provas tornam o contrato aprova
 - 2026-10-05: E2E adicional BOLETIM via HTTP/snapshot persistido comprovou unidade{} e arraysnull, mantendo export JSON nome/tipo/linhas; cinco tipos reais e três formatos passaram. Etapa local revisada por operação independente; PR/CI/publicação ainda pendentes.
 
 - 2026-10-05: PR3 aberta https://github.com/mclovin137/Atena-refatorado/pull/3 com produção4b16077; workflows/revisão final/merge pendentes no HEAD documental atualizado. T002 parcial e deploy bloqueado mantidos, sem gate humano.
+
+- 2026-10-05: etapa local integrada via [PR3](https://github.com/mclovin137/Atena-refatorado/pull/3) em be532c8c04d8c6baddef6c6eb6916014f92c0105 em2026-10-05T17:04:36Z. [Review CI](https://github.com/mclovin137/Atena-refatorado/actions/runs/37310715833) e [testes CI](https://github.com/mclovin137/Atena-refatorado/actions/runs/37310716099) SUCCESS no HEAD1650028; cinco JUnit e artefatos conferidos. [Parecer independente](https://github.com/mclovin137/Atena-refatorado/pull/3#issuecomment-5999227764). T002/RF003 publicação continuam parciais/abertos; fechamento documental local não equivale a deploy.

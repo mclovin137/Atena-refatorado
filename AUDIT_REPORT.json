@@ -27,11 +27,11 @@
       "FDD-002 aprovado e T-002 criada antes de produção; dois serviços reorganizados por feature/função, domínio puro, DTOs/ports/adaptadores/actors e factories de variantes reais implementados. Relatórios quatro testes e escolar um fluxo ampliado passaram PostgreSQL17 isolado; React build/formato e cliente HTTP isolado passaram.",
       "Funcionalidades integradas T002 validadas por E2E real Docker/PostgreSQL/React: dois serviços, jobs, notas/boletim, listas/exportações, autenticação/perfis, durabilidade BYTEA após restart e descarte de estado React na mudança de sessão. Backup/restore integral T002 isolado passou.",
       "Contrato HTTP real do BOLETIM/unidade vazia/arraysnull e cinco tipos de relatório validados em E2E adicional; export JSON nome/tipo/linhas mantido, sem alteração de produto para satisfazer expectativa errada de teste.",
-      "PR3 aberta em https://github.com/mclovin137/Atena-refatorado/pull/3 com execução local validada e cloud bloqueado explícitos. Commit de produção 4b16077; autoria não aprovou nem integrou seu próprio PR."
+      "PR3 aberta em https://github.com/mclovin137/Atena-refatorado/pull/3 com execução local validada e cloud bloqueado explícitos. Commit de produção 4b16077; autoria não aprovou nem integrou seu próprio PR.",
+      "PR3 revisada independentemente e integrada em https://github.com/mclovin137/Atena-refatorado/pull/3, merge be532c8c04d8c6baddef6c6eb6916014f92c0105 em2026-10-05T17:04:36Z. Dois workflows passaram no HEAD1650028 e publicaram artefatos; etapa local integrada, produção cloud não executada."
     ],
     "requirements_not_addressed": [
-      "Deploy Render/Neon não executado: Neon sem autenticação/ferramentas, MCP Render sem suporte a Docker e ausência de canal autenticado alternativo/custo confirmado.",
-      "PR3 aberta; workflows GitHub Actions e merge T002 ainda pendentes. Resultados locais não substituem execução remota."
+      "Deploy Render/Neon não executado: Neon sem autenticação/ferramentas, MCP Render sem suporte a Docker e ausência de canal autenticado alternativo/custo confirmado."
     ],
     "possible_regressions": []
   },
@@ -1098,7 +1098,8 @@
       "Operação executou backup/restore integral T002 em PostgreSQL isolado; conferiu conteúdo/binários e metadados com leitura autorizada e bloqueio403. Rollback T001 ainda em execução após corrigir permissão do diretório de fixture.",
       "Operação independente executou backup pg_dump integral PG17 com fixtures BYTEA, restaurou banco separado e iniciou T002: hashes/bytes/metadados e403 preservados. Exportou bytes para UUIDs, iniciou imagem T001 preservada com schemaV5 aditivo mantido, confirmou material/avatar e403. Evidências evidence/t002-restore-rollback.json e restore-operacao.log, exit0; containers/rede próprios removidos e dados locais não alterados.",
       "E2E focal BOLETIM foi executado e falhou na expectativa boletimJson.unidade: o contrato público existente de exportação é nome/tipo/linhas e não expõe unidade. Produto não foi alterado; automação passou a verificar unidade{} no snapshot persistido do ID próprio e quatro nulls no JSON exportado.",
-      "Último E2E real adicional BOLETIM GREEN exit0 observado pela operação: snapshot persistido recebido por HTTP preserva unidade{}, export JSON mantém nome/tipo/linhas e quatro notas/recuperaçõesnull, PDF/CSV válidos. HISTORICO e três LISTAS também passaram, total cinco tipos reais e três formatos; mesmas imagens finais, sem rebuild de produto."
+      "Último E2E real adicional BOLETIM GREEN exit0 observado pela operação: snapshot persistido recebido por HTTP preserva unidade{}, export JSON mantém nome/tipo/linhas e quatro notas/recuperaçõesnull, PDF/CSV válidos. HISTORICO e três LISTAS também passaram, total cinco tipos reais e três formatos; mesmas imagens finais, sem rebuild de produto.",
+      "GitHub Actions integration no HEAD1650028: SUCCESS, https://github.com/mclovin137/Atena-refatorado/actions/runs/37310716099. Operação independente conferiu JUnit escolar1+relatórios4, logs e artefatos navegador/E2E. Resultados remotos observados, não inferidos do teste local."
     ],
     "tests_passed": [
       "RelatorioIntegracaoTeste4: formatos/tipos/token/status/idempotência/falha-restart, snapshot fixo após rollback writer/origem alterada, últimoano e unidade{}+arraysnull; validação somente serviço relatórios, não escolar nem Compose T-002.",
@@ -1109,7 +1110,8 @@
       "E2E real T002 final exit0: contratos interserviços, Spring Batch, exportações, BYTEA após restart e privacidade React comprovados; não valida cloud nem TLS Neon.",
       "Restore integral T002 em PostgreSQL isolado preservou bytes/metadados e autorização403, observado pela operação independente.",
       "Backup/restore integral T002 e rollback funcional para app T001 em ambiente isolado passaram. Rollback exigiu exportação UUID antes reversão e conservou V5; não foi DOWN de schema nem teste remoto.",
-      "E2E final cinco tipos de relatório reais, incluindo BOLETIM sem unidade/notas, passou; contrato JSON original foi preservado, unidade verificada no snapshot interno persistido do próprio ID."
+      "E2E final cinco tipos de relatório reais, incluindo BOLETIM sem unidade/notas, passou; contrato JSON original foi preservado, unidade verificada no snapshot interno persistido do próprio ID.",
+      "CI integration SUCCESS no HEAD1650028, cinco testes JUnit e E2E/artefatos: https://github.com/mclovin137/Atena-refatorado/actions/runs/37310716099."
     ],
     "tests_failed": [
       "ReportFlowTest snapshotFixoSobreviveFalhaNaGravacao: RED de comportamento legado, snapshot null após falha writer; não é falha ambiental nem teste final verde.",
@@ -1134,12 +1136,15 @@
       "Script browser ampliado passou node --check e revisão independente de seletor/logout e formatos das listas; execução real ainda pendente.",
       "Java main escolar e ambos testes passaram google-java-format --aosp --dry-run --set-exit-if-changed; git diff --check final exit0.",
       "Novo gate completo revisar.sh pós-adaptadores exit0: evidence/t002-review-adapters-final.log. Inspeção lexical também verifica prefixo I das interfaces; fonte/config/scripts congelados e entregues à operação.",
-      "Gate local final para PR: scripts/revisar.sh exit0 após último E2E/documentos, evidence/t002-review-pr-final.log; scanner Docker independente pós-artefatos também exit0, evidence/t002-scanner-final.log."
+      "Gate local final para PR: scripts/revisar.sh exit0 após último E2E/documentos, evidence/t002-review-pr-final.log; scanner Docker independente pós-artefatos também exit0, evidence/t002-scanner-final.log.",
+      "CI review SUCCESS no HEAD1650028: https://github.com/mclovin137/Atena-refatorado/actions/runs/37310715833. Parecer independente pré-merge observado em https://github.com/mclovin137/Atena-refatorado/pull/3#issuecomment-5999227764; integração PR3 confirmada por operação, sem aprovação do autor.",
+      "Workflows automáticos pós-merge PR3 no mainbe532c8 também SUCCESS, confirmados pela operação: review https://github.com/mclovin137/Atena-refatorado/actions/runs/37345699861 e integration https://github.com/mclovin137/Atena-refatorado/actions/runs/37345699768. Nenhuma execução local redundante realizada.",
+      "Fechamento documental: parse/schema auditoria e git diff --check passaram; três espelhos roadmap/épico/task Base idênticos e continuidade menor que8KB. Scanner local pós-textos passou (evidence/t002-doc-fechamento-scanner.log). Revisão independente operacional aprovou sete caminhos documentais sem alteração de produto/config/testes; gates próprios do PR documental serão evidenciados no PR e resposta final, sem ciclo de registrar seu próprio SHA."
     ],
     "validation_not_performed": [
       "Deploy Render/Neon não executado; Neon sem autenticação e capacidade/custo remoto ainda não confirmados.",
       "Perfil produção/TLS e Blueprint escritos; schema local validado, mas handshake Neon, criação Render, custo e validação API/CLI não executados.",
-      "Gates CI remotos T002 ainda não executados; recuperação automática de Batch após kill com status STARTED não foi validada. Não houve carga/benchmark nem importação de dump legado ausente."
+      "Recuperação automática de Batch após kill/status STARTED, carga/benchmark e importação de dump legado ausente não executados. Publicação/handshake TLS Neon/quotas remotas permanecem não executados."
     ]
   },
   "quality": {
@@ -1172,7 +1177,8 @@
       "Backup/restore de registro BYTEA no teste não equivale a backup integral PostgreSQL nem rollback para T001. Novos uploads em BYTEA foram exportados antes rollback para aplicação antiga em ambiente isolado, que passou; operação remota não executada.",
       "Dispensa OC regras 8 (quando há mais de dois campos) e 9 para estados/metadados puros adicionais ExecucaoLote, SolicitacaoRelatorio, Relatorio, DocumentoRelatorio e ConteudoArquivo no escolar: representam resultado Batch, contrato interserviço ou conteúdo autorizado sem framework, com leitura tipada e sem wrappers mecânicos. Trade-off: múltiplos campos/acessores para manter assinatura coesa; blobs só são obtidos depois da autorização.",
       "Contagem factual JUnit T002: cinco testes executados (quatro métodos RelatorioIntegracaoTeste e um fluxo EscolarIntegracaoTeste). Dois métodos de relatório são novos; fluxo escolar foi renomeado e ampliado preservando assertions. Provas Node com fetch dublê são adicionais e não entram nessa contagem JUnit.",
-      "Inventário físico conferido contra baseline4ee1baf com git diff --no-renames: 392 caminhos criados, 19 modificados e84 removidos. Rename é representado como caminho antigo removido e destino criado; não depende de heurística Git."
+      "Inventário físico conferido contra baseline4ee1baf com git diff --no-renames: 392 caminhos criados, 19 modificados e84 removidos. Rename é representado como caminho antigo removido e destino criado; não depende de heurística Git.",
+      "Execução interrompida novamente por limite de uso e retomada a pedido do usuário; fonte/config verdes foram preservados, nenhum build local repetido sem delta. Fechamento documental local registra CI/merge observados e não encerra T002 nem declara deploy."
     ],
     "open_questions": [
       "Autenticação Neon MCP indisponível e ferramentas não callable; publicação requerida permanece bloqueada.",
@@ -1210,6 +1216,12 @@
       "reason": "FDD exige erro de aplicação seguro na fronteira DAO; prevenir dependência de política nos tipos de exceção de infraestrutura.",
       "requirement": "FDD002 fluxo4.3/arquitetura domínio puro.",
       "trade_off": "Flush por CRUD pode aumentar round trips; nenhum CRUD genérico/reflexão/adaptador especulativo foi criado e chunk Batch50 permanece."
+    },
+    {
+      "decision": "Integrar somente a entrega local validada e registrar fechamento documental único após merge real.",
+      "reason": "CI/revisão independentes passaram, mas autenticação Neon/capacidade Docker MCP/quota continuam bloqueando publicação.",
+      "requirement": "Governança Minerva, métricas factuais e produção Render/Neon.",
+      "trade_off": "Entrega local disponível em main; tarefa global e status permanecem parciais. O fechamento documental passa seus próprios gates, sem alterar produto ou inventar publicação."
     }
   ]
 }
