@@ -18,7 +18,7 @@
     <!--===============================================================================================-->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <!--===============================================================================================-->
-    <meta charset="viewport" content="width=device-width;initial-scale=1.0;maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--===============================================================================================-->
 
     <!--========================================= FONTES ==============================================-->
@@ -46,9 +46,9 @@
 <header>
 
 <div class="center">
-        <div class="menu-btn left">
+        <button type="button" class="menu-btn left" aria-label="Menu de navegação" aria-controls="atena-menu" aria-expanded="false">
             <i class="fa fa-bars"></i>
-        </div><!--menu-btn-->
+        </button><!--menu-btn-->
 <div class="clear"></div>
 </div><!-- centre -->
 
@@ -60,7 +60,7 @@
 <div class="clear"></div>
 </div><!--botoes-->
 
-<div class="menu left">
+<div id="atena-menu" class="menu left" role="navigation" aria-label="Navegação principal">
     <h2 class="text-center titulo">IFG</h2>
     <div class="menu-wraper">
         <div class="box-usuario">

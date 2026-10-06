@@ -82,6 +82,7 @@ class Client:
             response=self.opener.open(request,timeout=10)
         except urllib.error.HTTPError as error:
             response=error
+        self.response_headers = response.headers
         bytes_=response.read()
         if response.code != expected:
             raise AssertionError(f'HTTP {request.get_method()} {path.split("?")[0]}: esperado{expected}, recebido{response.code}')
@@ -263,6 +264,17 @@ try:
     elif os.environ.get('PLAYWRIGHT_MODULE'):
         browser_env = {**os.environ, 'LEGADO_TEST_URL': base, 'LEGADO_TEST_PASSWORD': password}
         subprocess.run(['node', 'scripts/browser-legado.mjs'], cwd=ROOT, env=browser_env, check=True)
+    compose('exec','-T','legado','php','tests/limite-login.php')
+    compose('exec','-T','legado','php','-r',"unlink(sys_get_temp_dir() . '/atena-legado-login/contador');")
+    for tentativa in range(20):
+        anonymous=Client()
+        anonymous.request('')
+        anonymous.request('',{'acao':'Enviar','nome':'ausente@qa.invalid','matricula':'invalid','senha':'invalid'})
+    anonymous=Client()
+    anonymous.request('')
+    anonymous.request('',{'acao':'Enviar','nome':'ausente@qa.invalid','matricula':'invalid','senha':'invalid'},expected=429)
+    assert 1 <= int(anonymous.response_headers['Retry-After']) <= 60
+    results.append({'fluxo':'limite-login','tentativas':20,'nova_sessao':'HTTP 429','janela':'expiração determinística validada'})
     (EVIDENCE/'legado-fluxo.json').write_text(json.dumps({'status':'success','resultados':results},indent=2))
     print('Fluxo PHP PostgreSQL completo: SUCCESS')
 except BaseException as error:

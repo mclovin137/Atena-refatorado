@@ -10,7 +10,7 @@ ai-first: true
 # Roadmap Atena
 
 ## Para o futuro agente
-Produto escolar para secretaria, professores e alunos. Prioridade: preservar funcionalidades e segurança, tornar fonte/decisões legíveis, depois publicar dois serviços Render com PostgreSQL Neon quando operação autenticada/gratuita estiver comprovada. Este é o roadmap canônico de produto no caminho docs/roadmap.md e base Atena; não criar aliases STATE/ROADMAP na raiz.
+Produto escolar para secretaria, professores e alunos. Prioridade: preservar funcionalidades e segurança, tornar fonte/decisões legíveis, depois publicar os dois serviços Java e o PHP adicional autorizado no Render com PostgreSQL Neon quando operação autenticada/gratuita estiver comprovada. A Base Atena é a cópia canônica; docs/roadmap.md é seu espelho de leitura; não criar aliases STATE/ROADMAP na raiz.
 
 ## Etapas, prioridades e dependências
 
@@ -21,11 +21,11 @@ Produto escolar para secretaria, professores e alunos. Prioridade: preservar fun
 | P0 | T-002 qualidade por domínio e contratos tipados | Implementado localmente: relatórios 4 testes PG verdes, escolar 1 fluxo integrado ampliado verde, React build/formato verdes; E2E Docker real passou | Gate FDD/task cumprido antes produção; factory tem variantes/invariantes reais |
 | P0 | Paridade de fluxos e legibilidade após refatoração | Cinco JUnit, E2E real cinco tipos, tracing, reinício/restore/rollback local e dois CI PR3 passaram | Builds/PG/E2E/segurança/jobs/tracing reais, review por recurso e artifacts |
 | P1 | Durabilidade de arquivos/avatar PostgreSQL | V5/BYTEA/backfill e restauração individual passaram PG isolado; reinício/backup integral/E2E Docker real passou | SQL aditivo e compatibilidade/backfill/rollback no FDD; teste após reinício |
-| P1 | Produção Render/Neon via MCP | NÃO EXECUTADA; Neon não autenticado, quota/compatibilidade pendentes | Dois serviços Docker gratuitos, TLS/token/cookies, bancos separados; health/login/E2E público e persistência observados |
+| P1 | Produção Render/Neon via MCP | Neon autenticado/API: três bases/roles isoladas, TLS production, nove/duas migrações Java, bootstrap privado e restore de contagens comprovados. Render não publicado; canal Docker/workspace/billing pendentes | Três serviços Docker gratuitos conforme ADR007, TLS/token/cookies, bancos separados; health/login/E2E público e persistência só após publicação efetiva |
 | P1 | Encerramento auditável local T002 | Integrado PR4 74886e3; task/produção cloud permanecem parciais | AUDIT_REPORT.json completo e atualizado, revisão independente, dois CI verdes, merge/deploy factual e base sincronizada |
 
 | P0 | T003 modelo acadêmico por IDs e importação107 registros auditada | Em implementação: últimos11casos escolares locais verdes por suíte+focal; importação sintética validada; E2E React acadêmico/restore escolar passaram; importação da fonte original de 107 registros pendente | FDD aprovado, migrações aditivas, replay/segurança e paridade contratos reais |
-| P1 | T003 PHP legado real PostgreSQL | PHP/PG local, 146 lint, backend/PDF/bytes/restart/restore e navegador três perfis passaram; mobile tem limitação de conteúdo cortado | FDD/versão/dependências/rotas reais e correções mínimas, revisão/gates antes publicação |
+| P1 | T003 PHP legado real PostgreSQL | PHP/PG local, 148 lint, dez fluxos backend/PDF/bytes/restart/restore/login429 e navegador três perfis em cinco faixas passaram. Login/body500 corrigido com prova focal nova HTML/body/PNGIHDR320–1440; última CSS não provocou repetição integral do backend | FDD/versão/dependências/rotas reais e correções mínimas, revisão/gates antes publicação |
 
 Nenhuma data de entrega, SLA, custo/tokens/latência estimada. Hibernação e franquia free são limitações operacionais, não conclusão de publicação.
 
@@ -36,7 +36,7 @@ Nenhuma data de entrega, SLA, custo/tokens/latência estimada. Hibernação e fr
 - [Continuidade](continuidade.md) contém somente estado ativo; [histórico](historico/2026-10.md) é append-only; [pendências](pendencias-obsidian.md) contêm obrigações abertas; docs/lib.md inventário. Auditoria estruturada solicitada: ../AUDIT_REPORT.json.
 
 ## Riscos e limites
-Contratos/autorização podem regredir durante extração; factories/ports sem responsabilidade são overengineering. Neon MCP não autenticado e configuração/quota Render gratuita bloqueiam remota; não contratar, usar credenciais indevidas ou substituir provedor silenciosamente. Dump T003 fornecido/privado e analisado; dados órfãos e schema diferente impedem importação automática sem reconciliação. Carga de produção não testada. Não confundir código de produção integrado com deploy de produção: T-001 validou ambiente local; Render/Neon ainda não publicados.
+Contratos/autorização podem regredir durante extração; factories/ports sem responsabilidade são overengineering. Neon API autenticada e preparado; ferramentas MCP Neon callable ausentes são limite de canal. Render ainda requer confirmação workspace/billing e canal Docker autenticado, bloqueando publicação; não contratar, usar credenciais indevidas ou substituir provedor silenciosamente. Dump T003 fornecido/privado e analisado; dados órfãos e schema diferente impedem importação automática sem reconciliação. Carga de produção não testada. Não confundir código de produção integrado com deploy de produção: T-001 validou ambiente local; Render/Neon ainda não publicados.
 
 ## Origem e responsabilidade
 Dono: planejador/Yoda; implementador e operação fazem entregas distintas e revisão independente. Governança Minerva remota76a991d e referência seletiva MinervaFinancas remoto34fc98a; prompt/autonomia e pedidos adicionais prevalecem sobre entrevistas ou restrição original de docs quando autorizam AUDIT_REPORT.json.
@@ -57,3 +57,5 @@ Dono: planejador/Yoda; implementador e operação fazem entregas distintas e rev
 - 2026-10-06: revisão independente leu os resumos Java/E2E e visualizou requisito mobile utilizável. E2E corrigiu defeito real de keys duplicadas entre componentes irmãos; chaves distintas e execução final passaram. Sanitização de artefatos protege credenciais sem apagar falhas/status; publicação prevista somente como draft parcial, com CI e requisitos restantes explícitos.
 
 - 2026-10-06: [PR draft #5](https://github.com/mclovin137/Atena-refatorado/pull/5) publicada com código/testes no SHA `7f0642899c5659b47821630319255d3207636486`; [revisão](https://github.com/mclovin137/Atena-refatorado/actions/runs/37462886067) e [testes](https://github.com/mclovin137/Atena-refatorado/actions/runs/37462885838) SUCCESS. CI integral conferido: 15 JUnit sem falhas/erros/skips, PHP/React/fluxos reais sintéticos e artefatos publicados. Task mantém escopo parcial por fonte original, tradução PHP, mobile PHP, reversão e cloud; nenhum ready/merge/deploy.
+
+- 2026-10-06: retomada autorizada de todos os passos de deploy permite integração incremental após revisão distinta e dois CI verdes no HEAD, mantendo RF002/03 históricos parciais. Neon foi preparado sem custo contratado, com roles mínimas/isolamento/TLS/migrações/bootstrap/restore de contagens observados; isso não publica os serviços no Render. PHP real passou dez fluxos e três perfis/cinco faixas; revisão visual encontrou login320 com PNG500, corrigido e conferido em prova focal nova com PNGs exatos. Nenhum dado histórico foi importado; bytes/snapshot AES e rollback anterior/cloud não são provados pelo restore da produção vazia. Últimos arquivos aguardam CI do HEAD final; nenhuma integração ou publicação é presumida por esta atualização.

@@ -2,6 +2,7 @@ package br.com.atena.escolar.comum.config;
 
 import br.com.atena.escolar.comum.rest.FiltroCredencialServico;
 import br.com.atena.escolar.pessoa.dao.IPessoaDAO;
+import br.com.atena.escolar.sessao.rest.LimitarLoginFiltro;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -150,6 +151,7 @@ public class SegurancaConfig {
                 },
                 AuthorizationFilter.class);
         http.addFilterBefore(new FiltroCredencialServico(token), AuthorizationFilter.class);
+        http.addFilterBefore(new LimitarLoginFiltro(), AuthorizationFilter.class);
         return http.build();
     }
 }

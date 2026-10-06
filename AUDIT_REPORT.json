@@ -6,7 +6,7 @@
     "status": "partial",
     "attempt": null,
     "needs_rework": true,
-    "rework_reason": "Usuário solicitou retrabalho de legibilidade, SOLID, factories, Object Calisthenics e organização segundo a arquitetura do MinervaFinancas, além de publicação Render/Neon."
+    "rework_reason": "Entrega incremental revisada independentemente, Neon preparado e testes locais/focal de login final verdes. Render depende de API autenticada/workspace/billing confirmados e dois CI verdes do HEAD final. Importação histórica permanece parcial por fonte ausente/tradução incompleta; blobs/AES/rollback anterior não validados na produção vazia."
   },
   "requirements": {
     "requirements_received": [
@@ -1418,11 +1418,13 @@
       "T003 PHP: revisão incremental observou CadastroNotas autorizado ao professor somente após oferta/aluno/faixas/prazo/liberação; escapes inválidos de bimestre removidos. Correções escritas e lidas, ainda sem php-lint/runtime observado.",
       "2026-10-06: Pesquisa/PesquisaAdm/Horario/Gestaotumas/CadastrarHorario/EnviarAlaiacao passaram a escapar conteúdo HTML; regra Apache bloqueia diretórios privados também inexistentes antes fallback. Autor executa regressão PostgreSQL/navegador; sem publicação remota.",
       "2026-10-06: templates incluem escape de scalars/arrays/listas echo/print_r foraJS, cobrindo nomes/atributos/textarea e mPDF. Bridge sanitizada CLI mantém allowlist/lock/query preparada; guard materiais valida GETid oferta e POST contexto. Importação preserva empréstimo como PENDENTE ESTADO_NAO_MAPEADO mesmo após resolver pessoa, conforme PRD/FDD.",
-      "Sanitização de artefatos textuais de Maven/MockMvc/PHP inclui segredos de env/.env, JSON/XML/CDATA/property, headers e Parameters nativo com csrf/senha/token. Falhas JUnit/HTTP/código de saída são preservadas. Guard fail-closed dos uploads e cleanup do script test foram revisados; sem nova biblioteca."
+      "Sanitização de artefatos textuais de Maven/MockMvc/PHP inclui segredos de env/.env, JSON/XML/CDATA/property, headers e Parameters nativo com csrf/senha/token. Falhas JUnit/HTTP/código de saída são preservadas. Guard fail-closed dos uploads e cleanup do script test foram revisados; sem nova biblioteca.",
+      "2026-10-06 operação: credenciais .env.neon/.env.producao/.env.render.escolar/.env.render.relatorios/.env.render.legado600 ignoradas; backups/logs privados .atena-cloud-private700 fora evidence/**. Nenhum segredo em argumentos/stdout ou artifactJSON.",
+      "2026-10-06 provisionamento preservou neondb/recursos existentes e criou só escolar/relatorios/legado com rolesSQL mínimas semneon_superuser e CONNECTPUBLICrevogado. Adminsrandomprivados semfixtures/demo; backuprestoreexercitado."
     ],
     "new_security_risks_possible": [
-      "Endpoints Render públicos exigem TLS e credencial de serviço; proteção de token/autorização local foi validada, mas TLS/provisionamento cloud não foram executados.",
-      "T003 testes novos em mesmoDB/contextos com credenciais bootstrap distintas podem dar falso verde isolado e falhar juntos; revisor apontou conflito do PrimeiroAcessoConfig, autor escreveu fixture CredenciaisIntegracao compartilhada e token fixo; combinação/runtime ainda não executados, produção/auth preservados."
+      "Endpoints Render públicos exigem TLS e credencial de serviço; proteção de token/autorização local foi validada, mas Render não publicado; Neon TLS/provisionamento comprovados em 2026-10-06.",
+      "T003 conflito histórico de bootstrap/fixtures foi corrigido com CredenciaisIntegracao compartilhada e validado no CI anterior integral15casos. Novas mudanças de login/operação aguardam os dois CI do HEAD final."
     ]
   },
   "validation": {
@@ -1459,7 +1461,15 @@
       "2026-10-06: evidence/legado-fluxo.json foi lido, backend PHP passou ponte catálogos/replay, entradas anônimas46rotas/13AJAX/5PDF, seis famílias XSSAJAX, GETsemescrita12famílias/PDF6positivos, notas/presença/privacidade, uploads/avatar BYTEA/restart/pgdumprestore/logout/SQL. Execução global falhou navegador no host por libasound ausente e emDocker por seletorBoletim oculto; último loteXSS/templates ainda aguardava execução final. Não declarar runner global verde antes novo artefato.",
       "2026-10-06: revisão independente leu evidence/legado-fluxo.json SUCCESS9etapas e legado-navegador.json SUCCESS3perfis; legado-lint.log146linhas e146No syntax errors. Upload/avatarprivado/IDOR/restart/restorePGappnova, notas/presença/PDFreais, negações46rotas13AJAX5PDF e XSS6AJAX+HTMLmateriais comprovados. TecladoEnter/desktopmobile observados, responsividadeplena não passa (conteúdo cortado1070vs390).",
       "2026-10-06: evidence/t003-browser-react.json PASSOU e t003-java-resumo.json PASSOU lidos. E2E real encontrou bug de keys iguais entre RecursoEscolar/AssociacoesAcademicas, acumulando botões ao navegar; autor diferenciou key de associação, preservou assertions strict, reconstruiu React e E2E final passou. Restore escolar do autor confirma nove migrações e snapshot/tag/AAD/digest/bytes com chave externa ao DB.",
-      "CI remoto integral no SHA 7f0642899c5659b47821630319255d3207636486: run https://github.com/mclovin137/Atena-refatorado/actions/runs/37462885838 SUCCESS. Revisor baixou artefatos integração/navegador e conferiu XML: escolares11 + relatórios4 = 15 testes, zero falhas/erros/skips. t003-browser-react.json PASSOU com quatro capturas/zero erro React; fluxo-real.json tem11 registros do E2E existente. PHP job SUCCESS, nove etapas/backend e navegador três perfis conferidos pela operação."
+      "CI remoto integral no SHA 7f0642899c5659b47821630319255d3207636486: run https://github.com/mclovin137/Atena-refatorado/actions/runs/37462885838 SUCCESS. Revisor baixou artefatos integração/navegador e conferiu XML: escolares11 + relatórios4 = 15 testes, zero falhas/erros/skips. t003-browser-react.json PASSOU com quatro capturas/zero erro React; fluxo-real.json tem11 registros do E2E existente. PHP job SUCCESS, nove etapas/backend e navegador três perfis conferidos pela operação.",
+      "2026-10-06 Neon real free PostgreSQL18.6: libpqverifyfull/CA e JavaJDBCverifyfull perfilprod; relatórioshealthUP/Flyway2 e escolarhealthUP/Flyway9/adminprivado1. evidence/neon-java-prod.json PASS. Não é publicaçãoRender.",
+      "2026-10-06 PHP bootstrap CLIprod2x idempotente noNeon: countadmin1/hashprivadoverificado/diretorativo; evidence/neon-php-bootstrap.json, sem senha/PII.",
+      "2026-10-06 rolesSQL comuns Neon semadmin/neon_superuser/readall/writeall; seisCONNECTprivilegecruzadosfalse. evidence/neon-isolamento.json.",
+      "2026-10-06 restore real 3dumpsNeon emPG18.6 localnetworknone PASS, todasROWcounts iguais+schema35/192,9/68,26/202 e metadadosFlyway9/2/admin1/1. evidence/neon-restore.json. Basevazia semmaterial/AES: não prova bytes/dadoshistóricos.",
+      "2026-10-06 Blueprint final validou schemaoficial Render; Gitleaks redactedconfigfinal exit0 após gateexato de credenciais operacionais não versionadas.",
+      "2026-10-06 PHP final local legado-fluxo.json SUCCESS10fluxos (inclui loginrate20→429) e legado-navegador.json SUCCESS três perfis×5larguras320/390/768/1024/1440, assertion semoverflow do elemento raiz/menu teclado/colunas preservadas; revisão visual encontrou login320 body500 não coberto, correção focal ainda pendente.",
+      "2026-10-06 novo Java loginrate integração real comCSRF/novaSession429+Retry-After e teste capacidade/janela passaram2/0/0; Mavenpackage atual passou e JARsforam usados no testeprodNeon. CI finalhead ainda pendente.",
+      "2026-10-06 achado visual login320/body500 corrigido com CSS; execução focal nova evidence/legado-login-focal.json/evidence/legado-login-navegador.json SUCCESS apenas login cinco larguras320/390/768/1024/1440, assertsbody/html e PNGIHDR exatos conferidos e PNG320 revisto independentemente sem faixa branca. PHP148lint/0erro. Não é repetição integral pósCSS dos10fluxos/3perfis anteriores."
     ],
     "tests_passed": [
       "RelatorioIntegracaoTeste4: formatos/tipos/token/status/idempotência/falha-restart, snapshot fixo após rollback writer/origem alterada, últimoano e unidade{}+arraysnull; validação somente serviço relatórios, não escolar nem Compose T-002.",

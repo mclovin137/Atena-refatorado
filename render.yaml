@@ -74,6 +74,7 @@ services:
     branch: main
     dockerfilePath: ./legacy/Dockerfile
     dockerContext: ./legacy
+    dockerCommand: sh -c "php bin/inicializar.php && exec apache2-foreground"
     healthCheckPath: /health.php
     autoDeployTrigger: "off"
     envVars:
@@ -90,4 +91,8 @@ services:
       - key: LEGADO_DB_USER
         sync: false
       - key: LEGADO_DB_PASSWORD
+        sync: false
+      - key: LEGADO_ADMIN_EMAIL
+        sync: false
+      - key: LEGADO_ADMIN_PASSWORD
         sync: false

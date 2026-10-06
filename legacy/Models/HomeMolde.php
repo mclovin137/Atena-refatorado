@@ -5,6 +5,13 @@ class HomeMolde
 {
     public static function login(): void
     {
+        $espera = (new \LimiteLogin(sys_get_temp_dir() . '/atena-legado-login'))->consumir($_SERVER['REMOTE_ADDR'] ?? 'desconhecido');
+        if ($espera > 0) {
+            header('Retry-After: ' . $espera);
+            http_response_code(429);
+            echo '<div class="erro-box">Muitas tentativas. Aguarde e tente novamente.</div>';
+            return;
+        }
         $email = trim((string) ($_POST['nome'] ?? ''));
         $matricula = trim((string) ($_POST['matricula'] ?? ''));
         $senha = (string) ($_POST['senha'] ?? '');
