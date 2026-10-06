@@ -40,11 +40,12 @@
       "T003 autores iniciaram seus escopos; primeiras classes acadêmicas escritas. Revisor conferiu amostra Faculdade REST/Actor/domínio/DAO sem bloqueante de fronteira, autorização e mapeamento; formatação/compilação/testes ainda pendentes neste marco.",
       "2026-10-06: Base Atena exclusiva inspecionada e escrita permitida pelo ambiente atual;63 notas SQL V6–V9/schema PHP relidas, duas regras T003 e dependências/cadeia/roadmap/task conferidas. Obrigações encerradas preservadas append-only no histórico; ledger sem obrigações abertas neste marco. Nenhum dado privado publicado nem execução presumida por nota.",
       "2026-10-06: parecer independente PHP final favorável somente a draft parcial. Revisor leu fluxoPHP SUCCESS9etapas+navegadorSUCCESS3perfis e146lint146sucessos, conferiu sinksXSS/prepared/guard/arquivos/Apache/bridge; screenshot boletim mobile confirma tabela parcial. Sem autoaprovação, merge ou deploy.",
-      "2026-10-06: E2E React acadêmico PASSOU contra Java21/PostgreSQL reais; quatro capturas, zero erros React e sem overflow global desktop1440/mobile390. Revisor leu resumo Java de 11 últimos resultados verdes por duas execuções, restore de nove migrações/snapshot AES-GCM com chave externa e visualizou requisito mobile utilizável."
+      "2026-10-06: E2E React acadêmico PASSOU contra Java21/PostgreSQL reais; quatro capturas, zero erros React e sem overflow global desktop1440/mobile390. Revisor leu resumo Java de 11 últimos resultados verdes por duas execuções, restore de nove migrações/snapshot AES-GCM com chave externa e visualizou requisito mobile utilizável.",
+      "PR draft #5 publicada: https://github.com/mclovin137/Atena-refatorado/pull/5, SHA de código/testes 7f0642899c5659b47821630319255d3207636486. Revisão https://github.com/mclovin137/Atena-refatorado/actions/runs/37462886067 e testes https://github.com/mclovin137/Atena-refatorado/actions/runs/37462885838 SUCCESS no mesmo SHA; integration/legado passaram e publicaram três artefatos não expirados. Nenhum ready/merge/deploy."
     ],
     "requirements_not_addressed": [
       "Deploy Render/Neon não executado: Neon sem autenticação/ferramentas, descrição MCP Render anuncia limitação Docker, schema runtime contraditório e capacidade não confirmada e ausência de canal autenticado alternativo/custo confirmado.",
-      "T003 parcial: arquivo original de 107 registros não disponível/aplicado, tradução completa fonte2020→PHP2024 não demonstrada, responsividade PHP plena não cumprida, reversão nova completa/dois CI no HEAD e deploy HTTPS ainda não comprovados. Java/React/PHP/restore sintéticos locais passaram; isso não encerra requisitos restantes."
+      "T003 parcial: fonte original de 107 registros não aplicada, tradução completa fonte2020→PHP2024 não demonstrada, responsividade PHP plena e reversão nova integral não cumpridas, integração/produção HTTPS não executadas. CI funcional integral Java/PHP/React passou; fechamento documental tem revisão/checks próprios e não encerra os requisitos restantes."
     ],
     "possible_regressions": []
   },
@@ -880,6 +881,12 @@
         "reason": "Executar legado PHP real em PostgreSQL, PDF/avatar e cálculo calendário existentes; runtime separado explicitamente autorizado.",
         "alternative_considered": "PHP8.0 sem suporte e MariaDB runtime descartados; Spring não executa código PHP.",
         "necessary": true
+      },
+      {
+        "name": "Actionlint 1.7.7 (ferramenta temporária local)",
+        "reason": "Valida sintaxe/composição de workflows GitHub Actions; gate local executado com exit0.",
+        "alternative_considered": "Leitura manual do YAML, sem validação reproduzível do workflow e shell embutido.",
+        "necessary": true
       }
     ],
     "abstractions_created": [
@@ -1451,7 +1458,8 @@
       "2026-10-06 JDK21.0.11: revisão independente leu log da suíte11casos,10verdes/1failure em novo negativo de Modelo (payload inválido produziu400 antes Actor, expectativa403 da fixture). Autor ajustou payload válido. Reexecução focal Escolar1+Modelo2 BUILD SUCCESS3/0/0/0; combinada aos parser2/import4/integridade2 verdes anteriores, últimos resultados dos11casos estão verdes. Não se declara execução única integral do HEAD final ou CI remoto.",
       "2026-10-06: evidence/legado-fluxo.json foi lido, backend PHP passou ponte catálogos/replay, entradas anônimas46rotas/13AJAX/5PDF, seis famílias XSSAJAX, GETsemescrita12famílias/PDF6positivos, notas/presença/privacidade, uploads/avatar BYTEA/restart/pgdumprestore/logout/SQL. Execução global falhou navegador no host por libasound ausente e emDocker por seletorBoletim oculto; último loteXSS/templates ainda aguardava execução final. Não declarar runner global verde antes novo artefato.",
       "2026-10-06: revisão independente leu evidence/legado-fluxo.json SUCCESS9etapas e legado-navegador.json SUCCESS3perfis; legado-lint.log146linhas e146No syntax errors. Upload/avatarprivado/IDOR/restart/restorePGappnova, notas/presença/PDFreais, negações46rotas13AJAX5PDF e XSS6AJAX+HTMLmateriais comprovados. TecladoEnter/desktopmobile observados, responsividadeplena não passa (conteúdo cortado1070vs390).",
-      "2026-10-06: evidence/t003-browser-react.json PASSOU e t003-java-resumo.json PASSOU lidos. E2E real encontrou bug de keys iguais entre RecursoEscolar/AssociacoesAcademicas, acumulando botões ao navegar; autor diferenciou key de associação, preservou assertions strict, reconstruiu React e E2E final passou. Restore escolar do autor confirma nove migrações e snapshot/tag/AAD/digest/bytes com chave externa ao DB."
+      "2026-10-06: evidence/t003-browser-react.json PASSOU e t003-java-resumo.json PASSOU lidos. E2E real encontrou bug de keys iguais entre RecursoEscolar/AssociacoesAcademicas, acumulando botões ao navegar; autor diferenciou key de associação, preservou assertions strict, reconstruiu React e E2E final passou. Restore escolar do autor confirma nove migrações e snapshot/tag/AAD/digest/bytes com chave externa ao DB.",
+      "CI remoto integral no SHA 7f0642899c5659b47821630319255d3207636486: run https://github.com/mclovin137/Atena-refatorado/actions/runs/37462885838 SUCCESS. Revisor baixou artefatos integração/navegador e conferiu XML: escolares11 + relatórios4 = 15 testes, zero falhas/erros/skips. t003-browser-react.json PASSOU com quatro capturas/zero erro React; fluxo-real.json tem11 registros do E2E existente. PHP job SUCCESS, nove etapas/backend e navegador três perfis conferidos pela operação."
     ],
     "tests_passed": [
       "RelatorioIntegracaoTeste4: formatos/tipos/token/status/idempotência/falha-restart, snapshot fixo após rollback writer/origem alterada, últimoano e unidade{}+arraysnull; validação somente serviço relatórios, não escolar nem Compose T-002.",
@@ -1470,7 +1478,8 @@
       "T003 FonteLegadoTeste após delta metadados passou2/0/0/0. Nenhum teste PG/PHP runtime declarado.",
       "2026-10-06: últimos resultados verdes dos11casos escolares locais JDK21, por suíte anterior+focal3. Incluem parser/AES-GCM, acadêmico/constraints/concurrency/profile/CSRF, importação/replay/restart/fonte capturada/negativas e estado desconhecido de empréstimo preservado. Dump107original continua não aplicado nesta retomada.",
       "PHP local final runner+lint146+navegador3perfis SUCCESS, dados sintéticos, imagem/PG reais e bytes/restauração/autorização. Parecer independente libera draftparcial, sem cloud ou ready/merge.",
-      "E2E React final: Faculdade→Curso→Grade→Requisito por tela, associação/remover requisito-matéria e análise/aplicação sintética em desktop/mobile. Restore escolar isolado/snapshot autenticado confirmado no resumo do autor. Últimos 11 casos Java verdes por suíte+focal, sem alegar execução única integral/CI."
+      "E2E React final: Faculdade→Curso→Grade→Requisito por tela, associação/remover requisito-matéria e análise/aplicação sintética em desktop/mobile. Restore escolar isolado/snapshot autenticado confirmado no resumo do autor. Últimos 11 casos Java verdes por suíte+focal, sem alegar execução única integral/CI.",
+      "GitHub Actions no SHA 7f0642899c5659b47821630319255d3207636486: review SUCCESS e casos de teste SUCCESS (integration/legado). JUnit15/0/0/0 integral, E2E existente/React acadêmico/PHP e artifacts saneados publicados. Isso supera a limitação de execução local focal, sem afirmar aplicação da fonte privada ausente ou produção remota."
     ],
     "tests_failed": [
       "ReportFlowTest snapshotFixoSobreviveFalhaNaGravacao: RED de comportamento legado, snapshot null após falha writer; não é falha ambiental nem teste final verde.",
@@ -1518,13 +1527,14 @@
       "T003 preparar-diff-formatacao-java.sh escrito para CI futuro, revisão independente proporcional aceita: worktree temporário do HEAD e formatter pinado produzem patch/SHA ignorados sem alterar checkout. bash -n passou pelo autor; script/Docker/formatter não executados neste sandbox.",
       "2026-10-06: orquestrador observou scripts/qualidade.py, git diff --check e gitleaks nativo config .gitleaks.toml --no-git --redact no checkout: exit0. Diff ainda em alteração; não é aceite final/CI/cloud ou prova runtime.",
       "2026-10-06: revisor executou gitdiffcheck e scripts/qualidade.py após loteXSS, exit0. AutorJava anunciou formatter todos serviços e Prettier6arquivos verdes. Isso não é CI/review completo final de artefato em mudança.",
-      "2026-10-06: revisor executou sanitizar-evidencias.py --verificar (JSON/XML/CDATA/headers/Parameters, idempotência e preservação de falhas/status), bash -n scripts/testar.sh, git diff --check e scripts/qualidade.py, todos exit0. Workflow sanitiza antes de três uploads always e bloqueia upload se sanitizador falhar; trap preserva status nãozero original, sem mascarar falha de teste."
+      "2026-10-06: revisor executou sanitizar-evidencias.py --verificar (JSON/XML/CDATA/headers/Parameters, idempotência e preservação de falhas/status), bash -n scripts/testar.sh, git diff --check e scripts/qualidade.py, todos exit0. Workflow sanitiza antes de três uploads always e bloqueia upload se sanitizador falhar; trap preserva status nãozero original, sem mascarar falha de teste.",
+      "CI revisão SUCCESS https://github.com/mclovin137/Atena-refatorado/actions/runs/37462886067 no SHA 7f0642899c5659b47821630319255d3207636486. Actionlint1.7.7 local exit0 observado pelo autor após correção de contador healthloop sem mudança de produto. Novo marco documental segue revisão independente/gates e não aprova seu próprio merge."
     ],
     "validation_not_performed": [
       "Deploy Render/Neon não executado; Neon sem autenticação e capacidade/custo remoto ainda não confirmados.",
       "Perfil produção/TLS e Blueprint escritos; schema local validado, mas handshake Neon, criação Render, custo e validação API/CLI não executados.",
       "Recuperação automática de Batch após kill/status STARTED, carga/benchmark e importação de dump legado ausente não executados. Publicação/handshake TLS Neon/quotas remotas permanecem não executados.",
-      "T003 atual: fonte original de 107 registros não importada, tradução completa para PHP2024, responsividade PHP plena e reversão nova integral não comprovadas. Deploy/handshake TLS/quotas/autenticação cloud e CI do HEAD novo não executados nesta evidência local. Recuperação automática de Batch STARTED após kill não prometida/testada."
+      "T003 atual: importação original107, tradução completaPHP2024, responsividadePHP plena, reversão nova integral e deploy/TLS/quota/autenticação cloud continuam não comprovados. CI funcional integral passou noSHA 7f0642899c5659b47821630319255d3207636486; novo fechamento documental e integração devem seguir seus checks. Recuperação automáticaSTARTED após kill não prometida."
     ]
   },
   "quality": {
@@ -1580,8 +1590,8 @@
       "Fonte privada original de 107 registros ausente nesta retomada; aplicação real depende do caminho/anexo solicitado. Nenhum dado privado foi fabricado ou publicado.",
       "PHP2024 e fonte2020 têm contratos distintos; ponte sanitizada de catálogos passou com fixture sintética, tradução completa não demonstrada.",
       "PHP mobile tem tabela cortada, medição do autor 1070 px contra viewport390; responsividade plena é requisito aberto.",
-      "Dois CI do HEAD novo, revisão de integração e reversão nova integral ainda não observados. Parecer independente favorece draft parcial, sem ready/merge/deploy.",
-      "Neon sem autenticação/ferramentas callable; capacidade Docker Render contraditória/não confirmada, quota gratuita e TLS remotos não comprovados. Nenhum recurso cloud criado."
+      "Neon sem autenticação/ferramentas callable; capacidade Docker Render contraditória/não confirmada, quota gratuita e TLS remotos não comprovados. Nenhum recurso cloud criado.",
+      "PR5 permanece draft; review/testes de código SUCCESS noSHA 7f0642899c5659b47821630319255d3207636486. Conferência/publicação do followup documental e seus checks precedem qualquer integração; requisitos dados/mobile/cloud/reversão mantém task parcial. Sem autoaprovação/merge/deploy."
     ]
   },
   "decisions": [

@@ -30,6 +30,7 @@ Versões verificadas nos metadados Maven Central/npm e BOM Spring Boot. Status: 
 | GitHub Actions checkout/setup-python/setup-java/setup-node/upload-artifact | v4/v5/v4/v4/v4 | Dois papéis pipelines Minerva e publicação evidência, runners padrão sujeitos à franquia gratuita da conta, sem contratação de excedentes |
 | google-java-format | 1.25.2 | Ferramenta temporária de formatação/gate Java legível T-002; Spring não formata código. Alternativa: apenas formatação manual, descartada por falta de gate reprodutível. Nenhuma dependência runtime. |
 | Prettier | 3.9.9 (MIT) | CLI temporária para formatar/verificar JSX, CSS, HTML e JSON T-002; Spring/google-java-format não cobrem essas fontes. Alternativa manual sem gate descartada; não instalada no runtime nem manifesto da aplicação. |
+| Actionlint | 1.7.7 | Ferramenta temporária local para validar workflow GitHub Actions; autor executou com exit 0 após tornar usado o contador do health loop. Alternativa leitura manual sem parser não valida sintaxe/composição. Sem dependência runtime. |
 | Python | 3 | Ferramenta de preparação/env/gates locais já disponível, ausente runtime |
 
 Não há Redis, Kafka, brokers, Elasticsearch, Kubernetes, H2, Testcontainers ou bibliotecas de UI. Na entrega T001/T002, bibliotecas PHP preservadas em legacy eram somente referência. T003 autoriza runtime PHP adicional separado; dependências propostas/efetivas abaixo não são adotadas pela stack Java.
@@ -38,7 +39,7 @@ T-002 usa a skill Render Blueprints e as referências Docker/env-vars para prepa
 
 ## T003: PHP legado adicional
 
-Status em 2026-10-06: lock/audit Composer conferidos; imagem PHP construída e runner real PostgreSQL executou login três perfis, PDFs positivos, uploads/avatar BYTEA, reinício e pg_dump/restore com bytes/autorização. Artefatos legado-fluxo.json e legado-navegador.json finais SUCCESS foram conferidos, assim como 146 lint sem erro. XSS em lote corrigido e navegador em Docker passou com três perfis/teclado/desktop/mobile; tabela mobile cortada permanece limite explícito. Falhas anteriores de ambiente/seletor foram corrigidas e preservadas no log. CI/cloud continuam pendentes. A falha anterior de download é histórica.
+Status em 2026-10-06: lock/audit Composer conferidos; imagem PHP construída e runner real PostgreSQL executou login três perfis, PDFs positivos, uploads/avatar BYTEA, reinício e pg_dump/restore com bytes/autorização. Artefatos legado-fluxo.json e legado-navegador.json finais SUCCESS foram conferidos, assim como 146 lint sem erro. XSS em lote corrigido e navegador em Docker passou com três perfis/teclado/desktop/mobile; tabela mobile cortada permanece limite explícito. Falhas anteriores de ambiente/seletor foram corrigidas e preservadas no log. CI funcional PHP passou no SHA 7f0642899c5659b47821630319255d3207636486; cloud permanece pendente. A falha anterior de download é histórica.
 
 | Dependência | Versão proposta | Finalidade e alternativa considerada |
 | --- | --- | --- |
@@ -55,3 +56,5 @@ Lock PHP T003 resolvido: mPDF8.3.1; transitivas já existentes atualizadas mycla
 - 2026-10-06: navegador PHP local usa módulo temporário Playwright1.63.0 e imagem existente mcr.microsoft.com/playwright:v1.63.0-noble para resolver libasound ausente no host sem modificá-lo. CI mantém Playwright1.61.1 pinado e instala dependências no runner. Nenhuma dependência runtime da aplicação foi adicionada; resultados das execuções são registrados separadamente.
 
 - 2026-10-06: E2E React acadêmico também executado com Playwright temporário 1.63.0 em Docker, contra Java 21 real. Sanitizador de evidências usa somente Python stdlib já inventariado; nenhuma dependência runtime nova.
+
+- 2026-10-06: dependências/imagens PHP foram exercitadas também no CI funcional, com runtime/navegador e artifacts publicados. Actionlint 1.7.7 é ferramenta temporária local; nenhuma infraestrutura/runtime foi adicionada por ela.
