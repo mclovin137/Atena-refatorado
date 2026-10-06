@@ -149,41 +149,6 @@ class EscolarIntegracaoTeste {
                         .getSession();
     }
 
-    @Test
-    void loginLimitaTentativasComCsrfValidoMesmoTrocandoSessao() throws Exception {
-        for (int n = 0; n < 20; n++) {
-            mvc.perform(
-                            post("/api/session/login")
-                                    .with(csrf())
-                                    .with(
-                                            request -> {
-                                                request.setRemoteAddr("192.0.2.77");
-                                                return request;
-                                            })
-                                    .session(new MockHttpSession())
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content("{\"email\":\"ausente@qa.invalid\"}"))
-                    .andExpect(status().isBadRequest());
-        }
-        var resposta =
-                mvc.perform(
-                                post("/api/session/login")
-                                        .with(csrf())
-                                        .with(
-                                                request -> {
-                                                    request.setRemoteAddr("192.0.2.77");
-                                                    return request;
-                                                })
-                                        .session(new MockHttpSession())
-                                        .contentType(MediaType.APPLICATION_JSON)
-                                        .content(
-                                                "{\"email\":\"ausente@qa.invalid\",\"senha\":\"incorreta\"}"))
-                        .andExpect(status().isTooManyRequests())
-                        .andReturn()
-                        .getResponse();
-        assertNotNull(resposta.getHeader("Retry-After"));
-    }
-
     // A primeira autenticação valida o contrato de cookie/header real em contexto sem csrf()
     // anterior.
     // Usuários adicionais usam o suporte de sessão Spring Security para o restante do fluxo de

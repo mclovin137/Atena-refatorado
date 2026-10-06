@@ -88,3 +88,13 @@ Revisitar se ciclos por recurso, duplicação ou factories decorativas aparecere
 
 ## Histórico
 - 2026-10-04: ADR criada para o pedido T-002.
+
+## Adendo: dispensa técnica específica de calistenia — 2026-10-06
+
+Object Calisthenics permanece aplicado parcialmente; esta decisão não certifica as nove regras, não transforma SOLID/formatação em calistenia e não autoriza dispensas gerais para domínio, frontend ou PHP. A pergunta atual do usuário não solicita reescrever toda a aplicação para cumprimento literal. Desvios existentes do parser, ator de relatórios, factory, tipos primitivos e coleções do domínio permanecem explícitos na auditoria, com o estado factual de implantação separado.
+
+Classe afetada: `br.com.atena.escolar.sessao.rest.LimitarLoginFiltro`, incluindo seu estado técnico privado `Janela`. Dispensa contextual das regras3/4/5/8: IP/tempo/contador/status HTTP são valores do adaptador Servlet, não conceitos do domínio escolar; o mapa de janelas é privado, limitado por capacidade e expirado, com atualização sincronizada; relógio e capacidade permitem política de janela e prova determinística, formando três campos necessários ao mesmo mecanismo. A cadeia `response.getWriter().write(...)` escreve a resposta pela API Servlet e não navega um agregado de domínio. O filtro não expõe o mapa nem seus contadores.
+
+Motivo/trade-off: preservar mecanismo técnico pequeno e verificável sem criar objetos de domínio para IP/HTTP, wrappers de coleção/configuração ou objetos intermediários sem comportamento próprio apenas para reduzir contagem de campos/pontos. Aceita-se a violação literal desses quatro exercícios no adaptador; não se dispensa limite de memória, concorrência, CSRF, encapsulamento ou revisão de comportamento. Reinício perde contadores; proxy pode agrupar clientes e ataques distribuídos permanecem possíveis, riscos já registrados.
+
+Responsável decisório: revisor_deploy/Yoda, distinto do implementador. A auditoria identifica classe/regras/motivo/trade-off e deve receber revisão documental independente pela operação. A integração continua condicionada aos dois CI verdes no HEAD correto; falha funcional do HEAD2a80f8d não é suprimida por esta dispensa. Nenhuma mudança de produção foi feita por esta decisão.

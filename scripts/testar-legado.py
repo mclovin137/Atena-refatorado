@@ -38,6 +38,7 @@ command = ['docker','compose','--project-name',run_id,'--env-file',str(env_file)
 base = f'http://localhost:{port}/'
 results = []
 restore_container = run_id + "-restore"
+login_container = run_id + "-login"
 
 def compose(*args, input=None, capture=True):
     result = subprocess.run(command+list(args), input=input, stdout=subprocess.PIPE if capture else None,
@@ -265,15 +266,30 @@ try:
         browser_env = {**os.environ, 'LEGADO_TEST_URL': base, 'LEGADO_TEST_PASSWORD': password}
         subprocess.run(['node', 'scripts/browser-legado.mjs'], cwd=ROOT, env=browser_env, check=True)
     compose('exec','-T','legado','php','tests/limite-login.php')
-    compose('exec','-T','legado','php','-r',"unlink(sys_get_temp_dir() . '/atena-legado-login/contador');")
-    for tentativa in range(20):
+    # Outra instância da mesma imagem: o limite começa vazio, sem apagar estado de workers ativos.
+    with socket.socket() as sock:
+        sock.bind(('127.0.0.1',0))
+        login_port=sock.getsockname()[1]
+    compose('run','--detach','--no-deps','--name',login_container,'--publish',f'127.0.0.1:{login_port}:8080',
+            '--env',f'LEGADO_BASE_URL=http://localhost:{login_port}/','legado','apache2-foreground')
+    original_base=base
+    try:
+        base=f'http://localhost:{login_port}/'
+        for _ in range(60):
+            try:
+                if json.loads(Client().request('health.php'))['status']=='UP':break
+            except (OSError,ValueError,AssertionError):time.sleep(1)
+        else:raise AssertionError('PHP de limite não iniciou')
+        for tentativa in range(20):
+            anonymous=Client()
+            anonymous.request('')
+            anonymous.request('',{'acao':'Enviar','nome':'ausente@qa.invalid','matricula':'invalid','senha':'invalid'})
         anonymous=Client()
         anonymous.request('')
-        anonymous.request('',{'acao':'Enviar','nome':'ausente@qa.invalid','matricula':'invalid','senha':'invalid'})
-    anonymous=Client()
-    anonymous.request('')
-    anonymous.request('',{'acao':'Enviar','nome':'ausente@qa.invalid','matricula':'invalid','senha':'invalid'},expected=429)
-    assert 1 <= int(anonymous.response_headers['Retry-After']) <= 60
+        anonymous.request('',{'acao':'Enviar','nome':'ausente@qa.invalid','matricula':'invalid','senha':'invalid'},expected=429)
+        assert 1 <= int(anonymous.response_headers['Retry-After']) <= 60
+    finally:
+        base=original_base
     results.append({'fluxo':'limite-login','tentativas':20,'nova_sessao':'HTTP 429','janela':'expiração determinística validada'})
     (EVIDENCE/'legado-fluxo.json').write_text(json.dumps({'status':'success','resultados':results},indent=2))
     print('Fluxo PHP PostgreSQL completo: SUCCESS')
@@ -291,6 +307,7 @@ finally:
     except Exception as error:
         cleanup_errors.append(str(error))
     try:
+        subprocess.run(['docker','rm','--force',login_container],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=False)
         subprocess.run(['docker','rm','--force',restore_container],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=False)
         compose('down','--volumes','--remove-orphans') # Apenas projeto UUID, nunca a stack local.
     except Exception as error:
