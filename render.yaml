@@ -31,6 +31,8 @@ services:
         sync: false
       - key: REPORTS_URL
         sync: false
+      - key: IMPORT_ENCRYPTION_KEY
+        sync: false
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD
@@ -62,4 +64,30 @@ services:
       - key: SERVICE_TOKEN
         sync: false
       - key: SCHOOL_URL
+        sync: false
+  - type: web
+    name: atena-legado
+    runtime: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/mclovin137/Atena-refatorado
+    branch: main
+    dockerfilePath: ./legacy/Dockerfile
+    dockerContext: ./legacy
+    healthCheckPath: /health.php
+    autoDeployTrigger: "off"
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: LEGADO_ENV
+        value: production
+      - key: LEGADO_COOKIE_SECURE
+        value: "true"
+      - key: LEGADO_BASE_URL
+        sync: false
+      - key: LEGADO_DB_DSN
+        sync: false
+      - key: LEGADO_DB_USER
+        sync: false
+      - key: LEGADO_DB_PASSWORD
         sync: false

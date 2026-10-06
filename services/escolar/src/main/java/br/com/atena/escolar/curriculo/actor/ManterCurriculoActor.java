@@ -7,6 +7,7 @@ import br.com.atena.escolar.curriculo.dao.ICurriculoDAO;
 import br.com.atena.escolar.curriculo.dominio.Curriculo;
 import br.com.atena.escolar.curriculo.dto.CurriculoRequisicaoDTO;
 import br.com.atena.escolar.curriculo.dto.CurriculoRespostaDTO;
+import br.com.atena.escolar.gradecurricular.dao.IGradeCurricularDAO;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +19,15 @@ public class ManterCurriculoActor {
 
     private final ICurriculoDAO registros;
     private final AutorizacaoEnsinoActor autorizacao;
+    private final IGradeCurricularDAO grades;
 
-    public ManterCurriculoActor(ICurriculoDAO registros, AutorizacaoEnsinoActor autorizacao) {
+    public ManterCurriculoActor(
+            ICurriculoDAO registros,
+            AutorizacaoEnsinoActor autorizacao,
+            IGradeCurricularDAO grades) {
         this.registros = registros;
         this.autorizacao = autorizacao;
+        this.grades = grades;
     }
 
     public List<CurriculoRespostaDTO> listar() {
@@ -50,8 +56,15 @@ public class ManterCurriculoActor {
 
     @Transactional
     public CurriculoRespostaDTO atualizar(Long identificador, CurriculoRequisicaoDTO requisicao) {
-        exigirPermissao(buscar(identificador), true);
-        var registro = CurriculoBuilder.dominio(requisicao, identificador);
+        var atual = buscar(identificador);
+        exigirPermissao(atual, true);
+        var registro =
+                new Curriculo(
+                        identificador,
+                        requisicao.nome,
+                        requisicao.materiaId,
+                        requisicao.cargaHoraria,
+                        requisicao.temGradeInformada() ? requisicao.gradeId : atual.gradeId());
         exigirPermissao(registro, true);
         return CurriculoBuilder.resposta(registros.salvar(registro));
     }
@@ -84,6 +97,8 @@ public class ManterCurriculoActor {
         autorizacao.usuario();
         if (escrita) {
             autorizacao.exigirSecretaria();
+            if (registro.gradeId() != null && grades.buscar(registro.gradeId()).isEmpty())
+                throw ErroAplicacao.ausente("Grade não encontrada");
         }
     }
 }

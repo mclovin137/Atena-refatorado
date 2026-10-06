@@ -1,9 +1,9 @@
 # Pendências Obsidian
 
-Gatilhos T-001 cumpridos e preservados no histórico. Em T-002, roadmap/épico002/PRD002/HLD qualidade, ADR001–005, FDD002 aprovado e T002 pronta foram escritos, espelhados e conferidos na base exclusiva Bases/Atena. Governança atualizada; 27 definições neutras pertinentes copiadas do Minerva remoto76a991 têm registros skills/agentes/roles na base. Nenhum hook/adaptador de ferramenta foi instalado/ativado.
+Nenhuma obrigação aberta neste marco de 2026-10-06. Registro completo das origens, destinos, donos e prazos anteriores preservado sem reescrita em docs/historico/2026-10.md.
 
-Pendências abertas atuais: nenhuma. V5 escrita e ferramenta de formatação foram registradas depois do fechamento documental; notas table-material/table-pessoa e dependencias conferidas em Bases/Atena em2026-10-04, sem alegar aplicação/validação da migração. Gatilho FDD/T002 em 2026-10-04, dono implementador/planejador, prazo 2026-10-05 23:30 America/Sao_Paulo: sincronizado na criação/revisão antes implementação. V5 está escrita e suas notas SQL estão sincronizadas; execução real da migração/backfill/reinício e backup/restore/rollback isolados atualizaram table-material/table-pessoa com evidência observada em 2026-10-05; futuros marcos de regra/dependência deverão atualizar a base, origem, destino, dono e prazo absoluto máximo de 24 horas.
+Base exclusiva conferida: `/mnt/c/Users/mclov/OneDrive/Documentos/Obsidian Vault/mclov/Documents/SecondBrain/Bases/Atena`. Foram relidos 63 objetos SQL de V6–V9/schema PHP, dependências, regras rn-003/rn-004 e cadeia/roadmap/task. PRD003/HLD/ADR006/ADR007 iguais; atualizações pendenciadas conhecidas de FDD/task/roadmap incorporadas como marco explícito sem apagar decisões. Fonte SQL escrita continua distinta de aplicada/validada.
 
-Mirror não declara implementação/publicação validada. Neon configurado mas não autenticado e canal Render MCP sem Docker seguem lacunas operacionais nos documentos de estado, não pendências fictícias da base.
+Correção de destino: task vive em `Bases/Atena/tasks`, sem prefixo `docs`; continuidade permanece somente estado operacional em `docs/continuidade.md`, não gatilho documental autônomo nem segunda cópia de decisão.
 
-- 2026-10-05: roadmap/épico/task002 sincronizados e conferidos com integração local PR3/CI reais; T002 e deploy remoto continuam abertos. Nenhum objeto SQL/produção foi alterado neste fechamento.
+Próximas mudanças reais em objetos, contratos, dependências, regra/roadmap/task exigem nova pendência antes da sincronização. CI/cloud/importação do dump original continuam critérios de implementação abertos, não obrigações de notas fictícias.

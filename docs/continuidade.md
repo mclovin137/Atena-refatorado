@@ -1,19 +1,35 @@
 ## Task ativa
-T-002 parcial, etapa local integrada: qualidade estrutural, ADRs conformes e publicação Render/Neon. FDD aprovado independentemente; implementação incremental local liberada, remota bloqueada.
+
+T-003 em andamento: modelo acadêmico/importação privada e PHP legado real isolado. T-002 permanece parcial pela publicação cloud não executada.
 
 ## Estado atual
-T-001 e fechamento PR #2 integrados; workspace main limpo confirmado por operação antes desta rotação. Pedido novo aponta código comprimido, baixa legibilidade e organização inadequada; solicita referência MinervaFinancas, factories/SOLID/Object Calisthenics, revisão de ADRs e produção Render/Neon via MCP. Referência remota MinervaFinancas 34fc98a6ac47f2ffc2bf23f055a3fd9ac15c7530 consultada via git show, sem alterar seu working tree. PRD/HLD/épico/ADRs foram escritos e revisados cruzadamente; FDD do implementador aprovado antes task pronta. Definições locais de roles/skills/agentes/playbooks pertinentes semeadas, sem hooks/adaptadores. Serviço relatórios refatorado executou quatro testes PostgreSQL17 isolados e verify com sucesso. Frontend refatorado passou build, Prettier e prova isolada do cliente HTTP; navegador E2E real passou. Escola refatorada passou um fluxo integrado ampliado em PostgreSQL17 isolado, incluindo BYTEA/backfill/restauração individual. Fonte/config/scripts congelados passaram Compose/E2E real com cinco tipos de relatório com reinício BYTEA e privacidade React; backup/restore integral T002 isolado passou. Rollback T001 isolado passou após exportar bytes a UUIDs, mantendo V5 sem DOWN; permissão de fixture foi corrigida. Blueprint passou schema oficial local; perfis prod estão escritos, sem handshake nem deploy remoto. Primeira compilação intermediária falhou no builder Pessoa e foi corrigida; não confundir isso com validação funcional. Execução retomada após limite de uso, arquivos preservados na branch refactor/qualidade-producao; publicação não executada. CI review37310715833/integration37310716099 passaram e PR3 foi integrada em2026-10-05T17:04:36Z.
+
+Branch feature/modelo-importacao-legado, base main 74886e38a6a3195a8984b821bee421d097fcc970. Cadeia PRD/HLD/ADR006–007/FDD003 aprovada antes implementação, autoria distinta dos revisores.
+
+Java/Spring/React: modelo e V6–V9 escritos; últimos resultados dos 11 casos escolares locais JDK21 estão verdes, combinando suíte anterior e reexecução focal de Escolar1+Modelo2. Incluem parser/AES-GCM, acadêmico/constraints/concorrência de associações, importação sintética/replay/restart/negativas. Não é uma execução integral única no HEAD final nem CI remoto. E2E React final passou contra Java/PostgreSQL reais: cadastro Faculdade→Curso→Grade→Requisito, associação de matéria e análise/aplicação sintética em desktop 1440 e mobile 390, sem overflow global ou erro React. O revisor leu os artefatos e visualizou a tela mobile. Restauração escolar isolada com nove migrações e snapshot AES-GCM íntegro foi registrada no resumo do autor e conferida; chave mantida fora do banco.
+
+PHP final local passou: artefatos legado-fluxo.json e legado-navegador.json SUCCESS lidos, 146 arquivos PHP sem erro de sintaxe. Login três perfis/teclado, negativas globais de 46 rotas, 13 AJAX e 5 PDFs, seis famílias XSS, catálogo/matrícula, notas/presença, seis PDFs positivos, uploads/avatar privado/restart/pg_dump/restore/autorização/logout/SQL foram exercitados. Templates/atributos/textarea/PDF e AJAX identificados em lote foram corrigidos e conferidos. Desktop/mobile foram observados, com limite visual explícito abaixo.
 
 ## Decisões vigentes
-Preservar dois microsserviços, REST/JSON, React, PostgreSQL, Spring Batch e funcionalidades da entrega T-001. Organização por recurso e função, domínio puro e DTOs explícitos; factories só para invariantes de criação ou seleção real de pelo menos duas estratégias. OC pragmático sem tipos/camadas especulativos. ADR001–003 passam por correção documental contra role e skill canônica; direção técnica nova será ADR004/005. Autonomia do prompt dispensa entrevistas e aceite humano futuro, sem inventar evidência de implementação.
+
+Dois serviços Java, React, Spring Batch, PostgreSQL e Docker preservados. PHP é exceção adicional autorizada, base/role isoladas e sem sincronização automática. Faculdade desconhecida não é inventada; Curso legado só com nome continua aceito. Matrícula deriva Curso pela Turma, requisitos são administrativos sem motor de formação.
+
+Origem por digest/tabela/ordinal, snapshot privado AES-GCM confirmado antes chunks e credenciais não ativadas. Cargos/estado/órfãos/grades ambíguas permanecem pendentes; empréstimo com pessoa resolvida e estado desconhecido continua ESTADO_NAO_MAPEADO. Migrações V1–V5 não alteradas; DDL/backfill/validação separados.
 
 ## Riscos e lacunas
-Neon MCP configurado no Codex, mas não autenticado/sem ferramentas callable nesta sessão. MCP Render create_web_service não suporta Docker/container registry; outra via exigiria credencial/capacidade real e registro de desvio do canal pedido. Render free não recebe rede privada, tem filesystem efêmero e franquias compartilhadas; exposição HTTPS autenticada e persistência de arquivos devem ser resolvidas no HLD/FDD antes produção. Custo pago não autorizado. Refatoração de DTOs/autorização pode alterar defaults, campos, CSRF ou acesso: testes existentes e E2E devem demonstrar paridade. Limites anteriores preservados no histórico e experimento.
+
+Fonte original das 24 tabelas e 107 registros não foi encontrada na retomada; caminho/anexo solicitado. Análise privada histórica é evidência de parser, não importação do arquivo real. PHP 2024 e dump 2020 têm contratos diferentes; ponte sintética de catálogos não comprova tradução completa.
+
+Mobile PHP preservado tem tabela/conteúdo cortados; autor mediu canvas de 1070 px em viewport de 390 px. Responsividade plena não foi aprovada. Faltam importação da fonte original, tradução completa para PHP, responsividade PHP plena, reversão nova completa e dois CI do HEAD final. Autenticação/capacidade cloud continuam abertas. Nenhum merge/deploy nesta etapa.
+
+Docker e gh estão acessíveis no ambiente atual; restrições antigas eram históricas. Base Atena exclusiva gravável,63 notas SQL, dependências/regras e cadeia/roadmap/task relidos; ledger sem obrigações abertas neste marco, prazos anteriores preservados no histórico. Neon não autenticado nem callable; capacidade/quota/TLS/canal Docker Render não comprovados e nenhuma produção publicada.
 
 ## Próximo passo
-Implementadores escolar/relatórios executam T-002 local em escopos próprios; revisor acompanha código/testes, abstrações/ADRs e auditoria. PR3 integrada em be532c8c04d8c6baddef6c6eb6916014f92c0105 após revisão independente e dois CI verdes no HEAD1650028. Fechamento documental local deve passar revisão e dois gates próprios; Neon autenticação/canal Render Docker/custos continuam bloqueados, sem presumir provisionamento. Review final de cada superfície e duas pipelines precedem merge/deploy.
+
+Evidências Java/PHP locais e revisão de fonte favorecem draft parcial auditável. Sanitização de artefatos e gates finais devem acompanhar a publicação; limites de dados, mobile, reversão e cloud mantêm a task aberta. O operador delegado prepara commit/push/draft PR após estabilização e acompanha dois CI antes de qualquer integração, sem autoaprovação ou merge. Dados reais só após gates específicos e fonte autorizada disponível.
 
 ## Região gerada
+
 <!-- minerva-continuity:generated:start -->
 Sem automação de estado habilitada.
 <!-- minerva-continuity:generated:end -->

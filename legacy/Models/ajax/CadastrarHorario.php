@@ -1,8 +1,8 @@
 <?php
 
-include('../../config.php');
+require_once __DIR__ . '/../../config.php';
 use \Models\MainMolde;
- 
+
     $data['mensagem'] = "";
     $data['sucesso'] = true;
     $dom = array();
@@ -17,14 +17,14 @@ use \Models\MainMolde;
                 $horario = strip_tags($_POST['horario']);
                 $Y = $ano;
                 $dataInvalida = false;
-                for ($i=1; $i <= 12; $i++) 
-                { 
+                for ($i=1; $i <= 12; $i++)
+                {
                     $numeroDias = cal_days_in_month(CAL_GREGORIAN,$i,$Y);
-                    for ($c=1; $c <= $numeroDias ; $c++) 
-                    {  
-                       
-                     
-                       
+                    for ($c=1; $c <= $numeroDias ; $c++)
+                    {
+
+
+
                         if($c < 10 && $i < 10)
                           $data_dia = $Y.'-'.'0'.$i.'-'.'0'.$c;
 
@@ -36,10 +36,10 @@ use \Models\MainMolde;
 
                          else if($c < 10 && $i >= 10)
                           $data_dia = $Y.'-'.$i.'-'.'0'.$c;
-                     
+
                         $diaSemana = date('w',strtotime($data_dia));
 
-                        if ($diaSemana == 1) 
+                        if ($diaSemana == 1)
                         {
                             $segunda[] = $data_dia;
                         }
@@ -59,55 +59,55 @@ use \Models\MainMolde;
                         {
                             $sexta[] = $data_dia;
                         }
-                    
+
                     }
 
-                    
+
                 }
-              
-                if (isset($_POST['segunda'])) 
+
+                if (isset($_POST['segunda']))
                 {
-                
-      
-                      
-                        foreach ($segunda as $dia) 
+
+
+
+                        foreach ($segunda as $dia)
                         {
-                            $verifica = MainMolde::selectAll('horario','cod_curos = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
+                            $verifica = MainMolde::selectAll('horario','cod_curso = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
                             $nv = ceil(count($verifica));
 
                             $verifica1 = MainMolde::selectAll('horario','data = ? AND horario = ? AND cod_professo = ?',array($dia,$horario,$professor));
                             $nv1 = ceil(count($verifica1));
 
-                            if ($nv == 0 && $nv1 == 0) 
+                            if ($nv == 0 && $nv1 == 0)
                             {
                                 $datas[] = $dia;
-                              
+
                             }
                             else
                             {
                                 $dataInvalida = true;
                                 break;
                             }
-                            
-                        }                  
-                
-                } 
 
-                if (isset($_POST['terca'])) 
+                        }
+
+                }
+
+                if (isset($_POST['terca']))
                 {
-                    foreach ($terca as $dia) 
+                    foreach ($terca as $dia)
                     {
-                           
-                             $verifica = MainMolde::selectAll('horario','cod_curos = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
+
+                             $verifica = MainMolde::selectAll('horario','cod_curso = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
                             $nv = ceil(count($verifica));
 
                             $verifica1 = MainMolde::selectAll('horario','data = ? AND horario = ? AND cod_professo = ?',array($dia,$horario,$professor));
                             $nv1 = ceil(count($verifica1));
 
-                            if ($nv == 0 && $nv1 == 0) 
+                            if ($nv == 0 && $nv1 == 0)
                             {
                                 $datas[] = $dia;
-                                
+
                             }
                             else
                             {
@@ -115,23 +115,23 @@ use \Models\MainMolde;
                                 break;
                             }
                     }
-                } 
+                }
 
-                if (isset($_POST['quarta'])) 
+                if (isset($_POST['quarta']))
                 {
-                    foreach ($quarta as $dia) 
+                    foreach ($quarta as $dia)
                     {
-                           
-                           $verifica = MainMolde::selectAll('horario','cod_curos = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
+
+                           $verifica = MainMolde::selectAll('horario','cod_curso = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
                             $nv = ceil(count($verifica));
 
                             $verifica1 = MainMolde::selectAll('horario','data = ? AND horario = ? AND cod_professo = ?',array($dia,$horario,$professor));
                             $nv1 = ceil(count($verifica1));
 
-                            if ($nv == 0 && $nv1 == 0) 
+                            if ($nv == 0 && $nv1 == 0)
                             {
                                 $datas[] = $dia;
-                               
+
                             }
                             else
                             {
@@ -140,23 +140,23 @@ use \Models\MainMolde;
                             }
 
                     }
-                } 
+                }
 
-                if (isset($_POST['quinta'])) 
+                if (isset($_POST['quinta']))
                 {
-                    foreach ($quinta as $dia) 
+                    foreach ($quinta as $dia)
                     {
-                           
-                           $verifica = MainMolde::selectAll('horario','cod_curos = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
+
+                           $verifica = MainMolde::selectAll('horario','cod_curso = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
                             $nv = ceil(count($verifica));
 
                             $verifica1 = MainMolde::selectAll('horario','data = ? AND horario = ? AND cod_professo = ?',array($dia,$horario,$professor));
                             $nv1 = ceil(count($verifica1));
 
-                            if ($nv == 0 && $nv1 == 0) 
+                            if ($nv == 0 && $nv1 == 0)
                             {
                                 $datas[] = $dia;
-                              
+
                             }
                             else
                             {
@@ -164,22 +164,22 @@ use \Models\MainMolde;
                                 break;
                             }
                     }
-                } 
-                if (isset($_POST['sexta'])) 
+                }
+                if (isset($_POST['sexta']))
                 {
-                    foreach ($sexta as $dia) 
+                    foreach ($sexta as $dia)
                     {
-                          
-                            $verifica = MainMolde::selectAll('horario','cod_curos = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
+
+                            $verifica = MainMolde::selectAll('horario','cod_curso = ? AND cod_serie = ? AND cod_ano = ? AND data = ? AND horario = ? AND cod_ano = ?',array($curso,$serie,$ano,$dia,$horario,$ano));
                             $nv = ceil(count($verifica));
 
                             $verifica1 = MainMolde::selectAll('horario','data = ? AND horario = ? AND cod_professo = ?',array($dia,$horario,$professor));
                             $nv1 = ceil(count($verifica1));
 
-                            if ($nv == 0 && $nv1 == 0) 
+                            if ($nv == 0 && $nv1 == 0)
                             {
                                 $datas[] = $dia;
-                               
+
                             }
                             else
                             {
@@ -187,14 +187,14 @@ use \Models\MainMolde;
                                 break;
                             }
                     }
-                } 
-                 
-                if(@$datas != "")   
+                }
+
+                if(@$datas != "")
                 {
                         foreach (@$datas as $datas)
                         {
                                $dia_n = date('w',strtotime($datas));
-                               switch ($dia_n) 
+                               switch ($dia_n)
                                {
                                     case 1:
                                        $dia = "segunda";
@@ -211,17 +211,17 @@ use \Models\MainMolde;
                                     case 5:
                                        $dia = "sexta";
                                        break;
-                                   
+
                                      default:
                                        break;
-                               } 
+                               }
 
                                $verifica = MainMolde::select('diciplina','cod_curso = ? AND cod_serie = ? AND cod_ano = ?  ',
                                array($curso,$serie,$ano));
-                              
+
                                if($verifica != 0)
                                {
-                                    $sql = \MySql::conectar()->prepare("INSERT INTO `horario` VALUES (null,?,?,?,?,?,?,?,?)");
+                                    $sql = \MySql::conectar()->prepare("INSERT INTO horario (id, cod_professo, cod_diciplina, cod_curso, cod_ano, cod_serie, data, horario, dia) VALUES (DEFAULT,?,?,?,?,?,?,?,?)");
                                     $sql->execute(array($professor,$materia,$curso,$ano,$serie,$datas,$horario,$dia));
                                     $data['mensagem'] =  "cadastro realizado com sucesso!";
                                }
@@ -230,14 +230,14 @@ use \Models\MainMolde;
                                     $data['sucesso'] = false;
                                     $data['mensagem'] =  "Diciplina nao encontrada!";
                                }
-                              
+
                         }
 
-                   
+
                 }
                 else
                 {
-                     if ($dataInvalida == true) 
+                     if ($dataInvalida == true)
                      {
                             $data['sucesso'] = false;
                             $data['mensagem'] =  "horario ocupado!";
@@ -248,27 +248,27 @@ use \Models\MainMolde;
                             $data['mensagem'] =  "nehuma data foi selecionada!";
                      }
 
-                   
+
                 }
 
         die(json_encode($data));
 
     }
 
- 
+
      @$professor = strip_tags($_POST['professor']);
      $AnoAtual = date('Y');
      $materia = MainMolde::selectAll('diciplina','cod_professo = ? AND cod_ano = ?',array($professor,$AnoAtual));
-     
+
      $dom.='<label>Materia:</label>';
      $dom.='<select name="materia" required>';
-    
 
-        foreach ($materia as $key => $value) 
-        {           
+
+        foreach ($materia as $key => $value)
+        {
             $dom.=
-            '<option value="'.$value['nome'].'">'.$value['nome'].'</option>';
-                  
+            '<option value="'.Seguranca::texto($value['nome']).'">'.Seguranca::texto($value['nome']).'</option>';
+
         }
 
       $dom.='</select>';

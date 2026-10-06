@@ -9,10 +9,14 @@ public final class CursoBuilder {
     private CursoBuilder() {}
 
     public static Curso dominio(CursoRequisicaoDTO requisicao, Long identificador) {
-        return new Curso(identificador, requisicao.nome);
+        return new Curso(identificador, requisicao.nome, requisicao.faculdadeId);
     }
 
     public static CursoRespostaDTO resposta(Curso registro) {
-        return new CursoRespostaDTO(registro.id(), registro.nome());
+        return new CursoRespostaDTO(
+                registro.id(),
+                registro.nome(),
+                registro.faculdadeId(),
+                registro.faculdadeId() == null);
     }
 }

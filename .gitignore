@@ -7,3 +7,6 @@ frontend/dist/
 services/escolar/src/main/resources/static/
 evidence/
 *.log
+
+__pycache__/
+*.py[cod]

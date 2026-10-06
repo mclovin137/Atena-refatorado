@@ -2,38 +2,38 @@
 namespace Controller;
 use \Views\mainview;
 
-    
+
 class EditarCurricularController
 {
-	   
-	public function index()
-	{
-		    $token = md5(@$_SESSION['matricula'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
 
-		    if ($token != @$_SESSION['sessao'])
-		    {
-		    	\Models\HomeMolde::redirect(INCLUDE_PATH);
-		    }
+    public function index()
+    {
+            $token = md5(@$_SESSION['matricula'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
 
-     	    if(@$_SESSION['login_secretaria'] != true)
-		    {
+            if ($token != @$_SESSION['sessao'])
+            {
+                \Models\HomeMolde::redirect(INCLUDE_PATH);
+            }
+
+            if(@$_SESSION['login_secretaria'] != true)
+            {
                \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);
-			}
-			
-			if(isset($_POST['Cadastre']))
-			{		    
-				\Models\MainMolde::atualizargrade();
-			}
-			
-			if(isset($_POST['Deleta']))
-			{		    
-				\Models\MainMolde::deletargrade();
-		    }
-    
+            }
+
+            if(isset($_POST['Cadastre']))
+            {
+                \Models\MainMolde::atualizargrade();
+            }
+
+            if(isset($_POST['Deleta']))
+            {
+                \Models\MainMolde::deletargrade();
+            }
+
             if(@$_SESSION['login_secretaria'] = true)
-		    {
-		 			mainView::render('editar-grade-curricular.php',[],'headersecretaria.php');
-		    }
-	}
+            {
+                    mainView::render('editar-grade-curricular.php',[],'headersecretaria.php');
+            }
+    }
 }
 ?>

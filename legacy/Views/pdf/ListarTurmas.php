@@ -1,7 +1,7 @@
 <?php
-    include('../../config.php');
-   
-    use \Models\MySql;
+    require_once __DIR__ . '/../../config.php';
+
+
     use \Models\MainMolde;
 
     $turmas = MainMolde::selectAll('turmas','',array());
@@ -10,39 +10,39 @@
 ?>
 <html>
 <head>
-		<link rel="stylesheet" href="<?php echo INCLUDE_PATH ?>Views/estilo/pdf.css">
+        <link rel="stylesheet" href="<?php echo INCLUDE_PATH ?>Views/estilo/pdf.css">
 </head>
 
 <body>
-    <h2> <?php echo $escolar[1]; ?> </h2>
+    <h2> <?php echo \Seguranca::texto($escolar[1]); ?> </h2>
 
-    <table> 
+    <table>
         <tr >
-            <th>TELEFONE</th> 
+            <th>TELEFONE</th>
             <th>ENDEREÇO</th>
             <th>CNPJ</th>
         </tr>
         <tr >
-            <td> <?php echo $escolar[6]; ?> </td> 
-            <td> <?php echo $escolar[2]; ?> </td>
-            <td> <?php echo $escolar[7]; ?> </td> 
+            <td> <?php echo \Seguranca::texto($escolar[6]); ?> </td>
+            <td> <?php echo \Seguranca::texto($escolar[2]); ?> </td>
+            <td> <?php echo \Seguranca::texto($escolar[7]); ?> </td>
         </tr>
-    </table> 
+    </table>
     <h2>Turmas</h2>
 
     <?php foreach($turmas as $key => $value) {?>
-	    <table>  		
-				<tr >
-					<th >Ano</th>
-					<th >Curso</th>
-					<th >Serie</th>		
-                    <th >Aluno</th>	
-                    <th >Situaçao</th>					
-				</tr>
+        <table>
+                <tr >
+                    <th >Ano</th>
+                    <th >Curso</th>
+                    <th >Serie</th>
+                    <th >Aluno</th>
+                    <th >Situaçao</th>
+                </tr>
 
-				
-                <?php 
-                    
+
+                <?php
+
                     $alunos = MainMolde::selectAll('matriculados','cod_ano = ? AND cod_serie = ? AND cod_curso = ?',array($value['ano'],$value['serie'],$value['curso']));
                     foreach($alunos as $key => $valuee) {
 
@@ -65,18 +65,18 @@
                      ,array($value['ano'],$value['serie'],$value['curso']));
                      $MateriasExistentes = ceil( count($MateriasTurma) );
 
-                     $MateriasFinalizadas = MainMolde::selectAll('notas','cod_ano = ? AND cod_serie = ? AND cod_curso = ? AND aprovado != 0  AND cod_aluno = ?'
+                     $MateriasFinalizadas = MainMolde::selectAll('notas','cod_ano = ? AND cod_serie = ? AND cod_curso = ? AND aprovado != \'0\'  AND cod_aluno = ?'
                      ,array($value['ano'],$value['serie'],$value['curso'],$valuee['cod_aluno']));
                      $MateriasFinalizadasExistentes = ceil( count( $MateriasFinalizadas ) );
-                     
+
                      if( ($NotasExistentes != 0) && ($MateriasFinalizadasExistentes == $MateriasExistentes) )
                      {
-                       
-                        $Situacao = MainMolde::selectAll('notas','cod_ano = ? AND cod_aluno = ? AND NOT aprovado = 1 ',
+
+                        $Situacao = MainMolde::selectAll('notas','cod_ano = ? AND cod_aluno = ? AND NOT aprovado = \'1\' ',
                         array($value['ano'],$valuee['cod_aluno']));
                         $estados1 = ceil ( count( $Situacao ) );
 
-                        $Situacaoo = MainMolde::selectAll('notas','cod_ano = ? AND cod_aluno = ? AND NOT aprovado = 1 ',
+                        $Situacaoo = MainMolde::selectAll('notas','cod_ano = ? AND cod_aluno = ? AND NOT aprovado = \'1\' ',
                         array("(dp) ".$value['ano'],$valuee['cod_aluno']));
                         $estados2 = ceil ( count( $Situacaoo ) );
 
@@ -89,17 +89,17 @@
                         else
                         {
                           @$materias = "";
-                          foreach ($Situacao as $key => $materia) 
+                          foreach ($Situacao as $key => $materia)
                           {
                               $materias .= $materia['cod_diciplina'].". ";
                           }
-                          foreach ($Situacaoo as $key => $materia) 
+                          foreach ($Situacaoo as $key => $materia)
                           {
                               $materias .= $materia['cod_diciplina'].". ";
                           }
                            $estado .= "Depedencia( ".$materias." )";
                         }
-                      
+
                      }
                      else
                      {
@@ -107,16 +107,16 @@
                      }
 
                 ?>
-                    <tr>	
-                            <td ><?php echo $value['ano'] ?></td>						
-                            <td ><?php echo $value['curso'] ?></td>
-                            <td ><?php echo $value['serie'] ?></td>
-                            <td ><?php echo $valuee['nome'] ?></td>	
-                            <td ><?php echo @$estado ?></td>							
+                    <tr>
+                            <td ><?php echo \Seguranca::texto($value['ano'])?></td>
+                            <td ><?php echo \Seguranca::texto($value['curso'])?></td>
+                            <td ><?php echo \Seguranca::texto($value['serie'])?></td>
+                            <td ><?php echo \Seguranca::texto($valuee['nome'])?></td>
+                            <td ><?php echo \Seguranca::texto($estado) ?></td>
                     </tr>
                 <?php }?>
 
-	    </table> <br><br>
+        </table> <br><br>
     <?php }?>
 
 </body>

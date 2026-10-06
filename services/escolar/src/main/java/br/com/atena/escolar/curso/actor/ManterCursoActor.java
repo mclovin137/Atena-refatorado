@@ -7,6 +7,7 @@ import br.com.atena.escolar.curso.dao.ICursoDAO;
 import br.com.atena.escolar.curso.dominio.Curso;
 import br.com.atena.escolar.curso.dto.CursoRequisicaoDTO;
 import br.com.atena.escolar.curso.dto.CursoRespostaDTO;
+import br.com.atena.escolar.faculdade.dao.IFaculdadeDAO;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +19,13 @@ public class ManterCursoActor {
 
     private final ICursoDAO registros;
     private final AutorizacaoEnsinoActor autorizacao;
+    private final IFaculdadeDAO faculdades;
 
-    public ManterCursoActor(ICursoDAO registros, AutorizacaoEnsinoActor autorizacao) {
+    public ManterCursoActor(
+            ICursoDAO registros, AutorizacaoEnsinoActor autorizacao, IFaculdadeDAO faculdades) {
         this.registros = registros;
         this.autorizacao = autorizacao;
+        this.faculdades = faculdades;
     }
 
     public List<CursoRespostaDTO> listar() {
@@ -50,8 +54,15 @@ public class ManterCursoActor {
 
     @Transactional
     public CursoRespostaDTO atualizar(Long identificador, CursoRequisicaoDTO requisicao) {
-        exigirPermissao(buscar(identificador), true);
-        var registro = CursoBuilder.dominio(requisicao, identificador);
+        var atual = buscar(identificador);
+        exigirPermissao(atual, true);
+        var registro =
+                new Curso(
+                        identificador,
+                        requisicao.nome,
+                        requisicao.temFaculdadeInformada()
+                                ? requisicao.faculdadeId
+                                : atual.faculdadeId());
         exigirPermissao(registro, true);
         return CursoBuilder.resposta(registros.salvar(registro));
     }
@@ -84,6 +95,9 @@ public class ManterCursoActor {
         autorizacao.usuario();
         if (escrita) {
             autorizacao.exigirSecretaria();
+            if (registro.faculdadeId() != null
+                    && faculdades.buscar(registro.faculdadeId()).isEmpty())
+                throw ErroAplicacao.ausente("Faculdade não encontrada");
         }
     }
 }

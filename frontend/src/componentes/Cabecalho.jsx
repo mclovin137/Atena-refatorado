@@ -11,6 +11,7 @@ export default function Cabecalho({ meta, page, user }) {
               boletim: "Boletim e histórico",
               lote: "Preparar notas",
               perfil: "Meu perfil",
+              importacao: "Importação do legado",
             }[page]}
         </h1>
       </div>

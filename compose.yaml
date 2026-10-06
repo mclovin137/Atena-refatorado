@@ -11,7 +11,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./infra/postgres/init.sh:/docker-entrypoint-initdb.d/10-atena.sh:ro
     healthcheck:
-      test: [CMD-SHELL, "pg_isready -U postgres"]
+      test: [CMD-SHELL, "pg_isready -h 127.0.0.1 -U postgres"]
       interval: 3s
       timeout: 3s
       retries: 30
@@ -24,6 +24,7 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/escolar
       DB_USER: escolar
       DB_PASSWORD: ${ESCOLAR_DB_PASSWORD}
+      IMPORT_ENCRYPTION_KEY: ${IMPORT_ENCRYPTION_KEY:-}
       SERVICE_TOKEN: ${SERVICE_TOKEN:?Token interno obrigatório}
       ADMIN_EMAIL: ${ADMIN_EMAIL:?Email de bootstrap obrigatório}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Senha de bootstrap obrigatória}
@@ -51,6 +52,39 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
+  legado-init:
+    profiles: [legado]
+    image: postgres:17-alpine
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      LEGADO_DB_PASSWORD: ${LEGADO_DB_PASSWORD:-}
+    volumes:
+      - ./infra/legado/init.sh:/infra/init.sh:ro
+      - ./infra/legado/schema.sql:/infra/schema.sql:ro
+    command: [sh, /infra/init.sh]
+    depends_on:
+      postgres:
+        condition: service_healthy
+  legado:
+    profiles: [legado]
+    build:
+      context: ./legacy
+      dockerfile: Dockerfile
+    environment:
+      LEGADO_DB_DSN: pgsql:host=postgres;port=5432;dbname=legado
+      LEGADO_DB_USER: legado
+      LEGADO_DB_PASSWORD: ${LEGADO_DB_PASSWORD:-}
+      LEGADO_BASE_URL: http://localhost:${LEGADO_PORT:-18082}/
+      LEGADO_COOKIE_SECURE: "false"
+      LEGADO_ADMIN_EMAIL: ${LEGADO_ADMIN_EMAIL:-}
+      LEGADO_ADMIN_PASSWORD: ${LEGADO_ADMIN_PASSWORD:-}
+    command: [sh, -c, "php bin/inicializar.php && apache2-foreground"]
+    ports:
+      - 127.0.0.1:${LEGADO_PORT:-18082}:8080
+    depends_on:
+      legado-init:
+        condition: service_completed_successfully
     restart: unless-stopped
 volumes:
   postgres-data:

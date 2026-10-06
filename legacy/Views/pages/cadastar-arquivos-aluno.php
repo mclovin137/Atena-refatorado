@@ -1,4 +1,4 @@
-<?php 
+<?php
      use \Models\MainMolde;
      $matricula = $_SESSION['matricula'];
      $ano = date('Y',time());
@@ -14,18 +14,18 @@
 <h2><i class="fa fa-pencil"></i> Materiais cadastrado</h2><br>
 
 <div class="box-tarefas">
-		<?php  foreach ($materiais as $key => $value) {	?>
-			<div class="box-tarefas-single">
-			  <ul>
-					  <li class="list-group-item"><?php echo $value['cod_serie']?> - <?php echo $value['cod_curso']?> - <?php echo $value['nome'] ?>  (<?php echo $value['cod_ano'] ?>)</li>
-					  <li class="list-group-item"><a href="<?php echo INCLUDE_PATH?>Views/uploads/<?php echo $value['arquivo']; ?>"> Baixar</a></li>
+        <?php  foreach ($materiais as $key => $value) { ?>
+            <div class="box-tarefas-single">
+              <ul>
+                      <li class="list-group-item"><?php echo \Seguranca::texto($value['cod_serie'])?> - <?php echo \Seguranca::texto($value['cod_curso'])?> - <?php echo \Seguranca::texto($value['nome'])?>  (<?php echo \Seguranca::texto($value['cod_ano'])?>)</li>
+                      <li class="list-group-item"><a href="<?php echo INCLUDE_PATH?>arquivo.php?nome=<?php echo \Seguranca::texto($value['arquivo']); ?>"> Baixar</a></li>
 
-			  </ul>
-			</div><!--box-tarefas-sling-->				
+              </ul>
+            </div><!--box-tarefas-sling-->
        <?php }?>
        <div class="clear"></div>
 </div><!--box-tarefas-->
 
-		
+
 </section><!--box-principal-->
 </div><!-- content -- >

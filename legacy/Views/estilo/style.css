@@ -68,7 +68,7 @@ html,body{
 
 section.main{
 	position: relative;
-	background-image:url('../uploads/user.jpg');
+	background-image:url('../../arquivo.php?nome=user.jpg');
 	background-size: cover;
 	background-position: center;
 	width: 100%;

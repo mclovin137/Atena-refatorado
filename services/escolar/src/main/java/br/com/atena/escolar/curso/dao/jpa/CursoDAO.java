@@ -55,13 +55,14 @@ public class CursoDAO implements ICursoDAO {
     }
 
     private Curso dominio(CursoEntidadeJpa entidade) {
-        return new Curso(entidade.id, entidade.nome);
+        return new Curso(entidade.id, entidade.nome, entidade.faculdadeId);
     }
 
     private CursoEntidadeJpa entidade(Curso registro) {
         CursoEntidadeJpa entidade = new CursoEntidadeJpa();
         entidade.id = registro.id();
         entidade.nome = registro.nome();
+        entidade.faculdadeId = registro.faculdadeId();
         return entidade;
     }
 }

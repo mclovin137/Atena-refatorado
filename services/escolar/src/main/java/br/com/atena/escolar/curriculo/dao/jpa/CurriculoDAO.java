@@ -55,7 +55,12 @@ public class CurriculoDAO implements ICurriculoDAO {
     }
 
     private Curriculo dominio(CurriculoEntidadeJpa entidade) {
-        return new Curriculo(entidade.id, entidade.nome, entidade.materiaId, entidade.cargaHoraria);
+        return new Curriculo(
+                entidade.id,
+                entidade.nome,
+                entidade.materiaId,
+                entidade.cargaHoraria,
+                entidade.gradeId);
     }
 
     private CurriculoEntidadeJpa entidade(Curriculo registro) {
@@ -64,6 +69,7 @@ public class CurriculoDAO implements ICurriculoDAO {
         entidade.nome = registro.nome();
         entidade.materiaId = registro.materiaId();
         entidade.cargaHoraria = registro.cargaHoraria();
+        entidade.gradeId = registro.gradeId();
         return entidade;
     }
 }
