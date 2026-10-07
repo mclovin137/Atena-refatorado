@@ -1,6 +1,6 @@
 
 <footer>
-     <p class="text-center">Copyright 2019 - by Jovem Legolas</p>
+     <p class="text-center">Copyright 2019 - by McLovin</p>
 </footer>
 </body>
 

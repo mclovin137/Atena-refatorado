@@ -1,5 +1,5 @@
 <footer>
-     <p class="text-center">Copyright 2019 - by jovenlegolas</p>
+     <p class="text-center">Copyright 2019 - by McLovin</p>
 </footer>
 
 </body>
