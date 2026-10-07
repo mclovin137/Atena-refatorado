@@ -6,7 +6,7 @@
     "status": "partial",
     "attempt": null,
     "needs_rework": true,
-    "rework_reason": "Neon preparado e correções proporcionais de caracterização pósCI2a80 vermelho passaram17JUnit/PHPfocal locais; novoCIHEAD remoto pendente. OCparcial registrado com dispensa contextual específica/dívidas; Render depende API/workspace/billing e dadoshistóricos/blobsAES/rollback anterior permanecem parciais."
+    "rework_reason": "PR5 integrada/main ef4 e dois CI pós-merge verdes. Carga DEMO manual implementada em nova branch feature/dados-demonstracao: QA isolado36Java/37PHP,12logins, rerun/hashes preservados e negações passaram; revisão independente final/runnerCI favoráveis e dois CI da novaentrega ainda pendentes. Nenhuma carga DEMO Neon nem publicação Render; autenticação/workspace/billing e histórico/blobsAES/rollback anterior continuam parciais."
   },
   "requirements": {
     "requirements_received": [
@@ -46,7 +46,7 @@
     ],
     "requirements_not_addressed": [
       "Aplicações Render não publicadas: APIkey compatível Docker ausente, workspace/billing sem confirmação e proteção contra cobrança de excedentes pendente. Neon API/free/roles/bases/TLS/Flyway/bootstrap/restore de contagens foram efetivamente preparados e comprovados; MCP Neon callable ausente é limite de canal.",
-      "T003 parcial: fonte histórica107registros não aplicada e tradução2020→PHP2024 incompleta. ResponsividadePHP foi corrigida e conferida em3perfis/5faixas mais focal de login posterior. Restore atual prova schema/metadados/admins, não blobs/AES/rollback anterior. CI funcional anterior15JUnit/React/PHP passou historicamente; novoHEAD2a80 falhou em integration/legado e correções proporcionais estão em curso, portanto integração/HTTPSRender permanecem abertas.",
+      "T003 parcial: fonte histórica107registros não aplicada e tradução2020→PHP2024 incompleta. ResponsividadePHP corrigida/conferida em3perfis/5faixas e loginfocal. Restore prova schema/metadados/admins, não blobs/AES/rollback anterior. FalhaCI2a80 histórica resolvida por isolamento de testes; PR5/main ef4 integrada após CI a093verde, pósmerge tambémverde. Nova preparação DEMO tem QAisolado/revisão favoráveis, mas doisCI novoHEAD e execução pública condicionada ainda pendentes; Render não publicado.",
       "Object Calisthenics permanece PARCIAL: dispensa técnica específica do LimitarLoginFiltro nas regras3/4/5/8 e dívidas concretas existentes em parser/ator/factory/domínio/DTO; sem percentual/conformidade literal às nove regras ou dispensa automática geral."
     ],
     "possible_regressions": []
@@ -159,6 +159,7 @@
       "legacy/arquivo.php",
       "legacy/bin/importar-catalogos.php",
       "legacy/bin/inicializar.php",
+      "legacy/bin/povoar-demonstracao.php",
       "legacy/health.php",
       "legacy/infra/apache.conf",
       "legacy/infra/php.ini",
@@ -169,12 +170,15 @@
       "scripts/browser-legado.mjs",
       "scripts/formatar-java.sh",
       "scripts/operar-cloud.py",
+      "scripts/povoar-demonstracao.py",
       "scripts/preparar-diff-formatacao-java.sh",
       "scripts/preparar-render.py",
       "scripts/qualidade.py",
       "scripts/restaurar-backup-neon.py",
       "scripts/sanitizar-evidencias.py",
+      "scripts/testar-demonstracao.py",
       "scripts/testar-legado.py",
+      "scripts/tests/test_povoar_demonstracao.py",
       "scripts/validar-java-neon.py",
       "services/escolar/src/main/java/br/com/atena/escolar/Aplicacao.java",
       "services/escolar/src/main/java/br/com/atena/escolar/arquivo/dao/ArquivoLegadoDAO.java",
@@ -1401,6 +1405,12 @@
         "name": "CriptografarFonteService/FonteCriptografada",
         "reason": "AES-GCM JDK protege fonte privada e permite restart após retirada do arquivo; nonce/AAD/digest autenticados sem biblioteca extra.",
         "required_by": "FDD003 fonte imutável/restart e proteção de credenciais"
+      },
+      {
+        "type": "script operacional",
+        "name": "Carga DEMO manual e QA isolado",
+        "reason": "Funções coesas Pythonstdlib/PDOCLI e manifesto privado para carregamento conservador; sem novo domínio/endpoint/dependência/migração ou seed automático, OC adaptada sem nove regras literais.",
+        "required_by": "Pedido explícito de dados/perfis após sistemas online e adendo T003/FDD003."
       }
     ]
   },
@@ -1484,7 +1494,8 @@
       "2026-10-06 PHP final local legado-fluxo.json SUCCESS10fluxos (inclui loginrate20→429) e legado-navegador.json SUCCESS três perfis×5larguras320/390/768/1024/1440, assertion semoverflow do elemento raiz/menu teclado/colunas preservadas; revisão visual encontrou login320 body500 não coberto, correção focal ainda pendente.",
       "2026-10-06 novo Java loginrate integração real comCSRF/novaSession429+Retry-After e teste capacidade/janela passaram2/0/0; Mavenpackage atual passou e JARsforam usados no testeprodNeon. CI finalhead ainda pendente.",
       "2026-10-06 achado visual login320/body500 corrigido com CSS; execução focal nova evidence/legado-login-focal.json/evidence/legado-login-navegador.json SUCCESS apenas login cinco larguras320/390/768/1024/1440, assertsbody/html e PNGIHDR exatos conferidos e PNG320 revisto independentemente sem faixa branca. PHP148lint/0erro. Não é repetição integral pósCSS dos10fluxos/3perfis anteriores.",
-      "2026-10-06 correção proporcional CI: nova LimiteLoginIntegracaoTeste usa contexto/cookies/headerCSRF reais e Escolarflluxo original preservado. scripts/testar.sh17JUnit/0fail/0error/0skip local PASS em evidence/ci-correcao-java.json. PHP focal usa instânciaUUIDisolada sem limpar contador da principal:20negativas200/21com novaSessao429, contadorprincipal8preservado em evidence/legado-limite-isolado.json PASS. Fonte produção não alterada e CI2a80FAIL preservado; próximo CIHEAD pendente."
+      "2026-10-06 correção proporcional CI: nova LimiteLoginIntegracaoTeste usa contexto/cookies/headerCSRF reais e Escolarflluxo original preservado. scripts/testar.sh17JUnit/0fail/0error/0skip local PASS em evidence/ci-correcao-java.json. PHP focal usa instânciaUUIDisolada sem limpar contador da principal:20negativas200/21com novaSessao429, contadorprincipal8preservado em evidence/legado-limite-isolado.json PASS. Fonte produção não alterada e CI2a80FAIL preservado; próximo CIHEAD pendente.",
+      "Nova DEMO QAisolado:36Java/37PHP/6logins por aplicação, rerun sem alteração de dados/hashes, colisãoPHP sem escritaJava, Aluno notasvisíveis e Professor409 com prazo fechado, negaçõesautorização; evidence/demo-qa.json SUCCESS/cloud_escritas0. Oito testes focais de manifesto/gate/retomada/preflight filhos passaram segundo autor/revisor; revisão final antes publicação."
     ],
     "tests_passed": [
       "RelatorioIntegracaoTeste4: formatos/tipos/token/status/idempotência/falha-restart, snapshot fixo após rollback writer/origem alterada, últimoano e unidade{}+arraysnull; validação somente serviço relatórios, não escolar nem Compose T-002.",
@@ -1505,7 +1516,8 @@
       "PHP local final runner+lint146+navegador3perfis SUCCESS, dados sintéticos, imagem/PG reais e bytes/restauração/autorização. Parecer independente libera draftparcial, sem cloud ou ready/merge.",
       "E2E React final: Faculdade→Curso→Grade→Requisito por tela, associação/remover requisito-matéria e análise/aplicação sintética em desktop/mobile. Restore escolar isolado/snapshot autenticado confirmado no resumo do autor. Últimos 11 casos Java verdes por suíte+focal, sem alegar execução única integral/CI.",
       "GitHub Actions no SHA 7f0642899c5659b47821630319255d3207636486: review SUCCESS e casos de teste SUCCESS (integration/legado). JUnit15/0/0/0 integral, E2E existente/React acadêmico/PHP e artifacts saneados publicados. Isso supera a limitação de execução local focal, sem afirmar aplicação da fonte privada ausente ou produção remota.",
-      "2026-10-06 Java correçãoCI local17JUnit/0/0/0 e PHPfocalisolado20→21novaSessao429/contadorprincipal8preservado, relidos pelo revisor independente. Não equivalem a novo CIremoto verde."
+      "2026-10-06 Java correçãoCI local17JUnit/0/0/0 e PHPfocalisolado20→21novaSessao429/contadorprincipal8preservado, relidos pelo revisor independente. Não equivalem a novo CIremoto verde.",
+      "CI37520983193/37520983328 SUCCESS no a0936c884abedf3e1efcb7e4dd7489bd4c6d8c15: artifacts remotos17JUnit/0/0/0, PHP10fluxos/3perfis×5faixas SUCCESS, PNGlogin exatos e React4fluxos PASSOU, conferidos por operador/revisor. PR5 merged pelo revisor; pósmerge37553610660/37553610546 SUCCESS em ef4c873."
     ],
     "tests_failed": [
       "ReportFlowTest snapshotFixoSobreviveFalhaNaGravacao: RED de comportamento legado, snapshot null após falha writer; não é falha ambiental nem teste final verde.",
@@ -1561,7 +1573,7 @@
       "Publicação efetiva Render LIVE, URLs públicas reais, conexões recíprocas/HTTPS, login/PDF/upload/persistência/E2E pós-deploy, confirmação de workspace/billing sem cobrança e criação Docker via API compatível ainda não executados. Neon API/free/roles/bases/TLSprod/Flyway/bootstrap/restore de contagens já comprovados.",
       "Fonte histórica autorizada107registros ausente; importação real/reconciliação e tradução completa dump2020→PHP2024 não executadas. Fixtures sintéticas não substituem essa fonte.",
       "ProduçãoNeon vazia não prova bytes/avatar/blobs/snapshotAES nem rollback para versão anterior/cloud. Recuperação automática Batch após kill/statusSTARTED, carga/benchmark e dimensionamento de franquias/capacidade de produção não executados.",
-      "CI funcional do HEAD2a80f8d falhou em integration/legado; correções de caracterização e dois pipelines do próximo HEAD final precisam validar antes integração. ResponsividadePHP passou três perfis/cincofaixas e focal posterior de login/body/PNGIHR; não é validação pendente nem repetição integral pósCSS."
+      "Carga DEMO pública ainda não executada: Render não publicado e pré-condições de saúde pública/autenticação/custo pendentes. QAisolado local já comprovou carga/rerun/colisão/perfis e oito focais; revisãofinal favorável e CI novoHEAD ainda pendente, sem inferir sucesso remoto."
     ]
   },
   "quality": {
@@ -1616,14 +1628,14 @@
       "HISTÓRICO de inventário naquele marco: InventáriodeltaT003 conferido semrenames contra74886e38a6a3195a8984b821bee421d097fcc970: 115criados/176modificados/0removidos, incluindo arquivosuntracked reais. ListasImplementation permanecem cumulativas; deltaT003 tem baseline próprio.",
       "HISTÓRICO de inventário naquele marco: Inventário final local cumulativo T002, base 4ee1baf8b9d4e1ab54467504d3cbebb4ba838ad6: 507 caminhos criados, 168 modificados e 84 removidos. Sem heurística rename; inclui arquivos untracked reais e distingue baseline cumulativa do delta desta task.",
       "HISTÓRICO de inventário naquele marco: Inventário final local delta T003, base 74886e38a6a3195a8984b821bee421d097fcc970: 115 caminhos criados, 177 modificados e 0 removidos. Sem heurística rename; inclui arquivos untracked reais e distingue baseline cumulativa do delta desta task.",
-      "Inventário físico corrente em2026-10-06 após revisãoOC, sem heurística rename e incluindo untracked não ignorados: cumulativoT002 baseline4ee1baf8b9d4e1ab54467504d3cbebb4ba838ad6 possui516criados/170modificados/84removidos; deltaT003 baseline74886e38a6a3195a8984b821bee421d097fcc970 possui124criados/183modificados/0removidos. Implementation contém listas físicas cumulativas atuais; snapshots anteriores permanecem históricos."
+      "Inventário físico corrente da preparação DEMO, sem heurística rename e excluindo artifacts do benchmark usuário/arquivos ignorados: cumulativoT002 baseline4ee1baf8b9d4e1ab54467504d3cbebb4ba838ad6 possui520criados/170modificados/84removidos; deltaT003 baseline74886e38a6a3195a8984b821bee421d097fcc970 possui128criados/183modificados/0removidos. Implementation contém listas físicas cumulativas; snapshots de testes anteriores são históricos."
     ],
     "open_questions": [
       "Fonte privada original de107registros ausente; RF002/RF003 históricos permanecem parciais e a importação real depende da fonte autorizada. Nenhum dado privado foi fabricado ou publicado.",
       "PHP2024 e dump2020 têm contratos distintos; ponte sintética passou, mas tradução completa e reconciliação histórica não demonstradas.",
       "Render MCP autenticado, porém RENDER_API_KEY ausente, workspace/billing não confirmados e criação Docker via MCP limitada. Neon API/free/roles/bases/TLS/Flyway/bootstrap/restore de contagens estão comprovados; nenhuma aplicação Render foi publicada.",
       "Produção inicialmente vazia não contém blobs/avatar/fonteAES; restore atual validou schema, metadados e administradores, não blobs/AES nem rollback anterior/cloud. Backups sem owner/ACL não recompõem grants/identidades.",
-      "Entrega incremental PR5 depende de dois CI verdes do próximoHEAD final: noHEAD2a80 revisãoSUCCESS/funcionalFAIL, correção de caracterização local17JUnit e PHPfocal20/21 jápassou com parecer distinto. OCparcial e dispensa específica do filtro/dívidas existentes declaradas; sem autoaprovação ou merge."
+      "PR5/main ef4 integradas com CIverde. Nova DEMO manual tem QAisolado SUCCESS36Java/37PHP/12logins/rerunhashes/colisãoPHPzeroJava; reviewfinal favorável e novoCI ainda pendente. Produção só pode carregar após ambas aplicações online e três serviços HTTPShealthy; nenhuma escrita DEMO Neon realizada."
     ]
   },
   "decisions": [
@@ -1659,9 +1671,9 @@
     },
     {
       "decision": "Integrar entrega incremental após revisão independente e dois CI verdes do HEADfinal.",
-      "reason": "CI anterior passou historicamente e Neon foi preparado, mas CI2a80funcional falhou em caracterização. Correções locais passaram17JUnit e focalPHP20/21; novo CIremoto ainda precisa executar.",
+      "reason": "Entrega incremental integrada por revisor distinto após dois CI a093 verdes e conferência independente dos artifacts; dois CI pós-merge ef4c873 também verdes. A falha anterior2a80 é histórica e suas correções foram somente de testes.",
       "requirement": "Governança Minerva, métricas factuais e produção Render/Neon.",
-      "trade_off": "Dadoshistóricos/Render permanecem parciais; nenhum merge/deploy ou verde remoto novo é inferido das provas locais."
+      "trade_off": "Integração não conclui dados históricos nem publica Render. Nova DEMO prepara operação manual em QA, com carga real condicionada a HTTPS/health/autenticação/custo confirmados; nenhuma escrita Neon nova."
     },
     {
       "decision": "ADR006/007/FDD003 adotadas para modelo aditivo/importação privada e PHPDockerPostgreSQL isolado.",
