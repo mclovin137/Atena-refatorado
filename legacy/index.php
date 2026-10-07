@@ -1,5 +1,5 @@
-<?php 
-include('config.php');
+<?php
+require_once __DIR__ . '/config.php';
 
 $Home = new Controller\HomeController();
 $main = new Controller\MainController();
@@ -45,244 +45,244 @@ $editar = new Controller\EditarController();
 
 if(isset($_GET['url']))
 {
-	$url = explode('/',$_GET['url']);
-	if($url[0] != 'main')	
-	{ 
-		\Models\HomeMolde::redirect(INCLUDE_PATH);
-			if($url[0] == 'main') 
-			{
-				if(isset($url[1]))
-				{
-					
-						if(file_exists('Views/pages/'.$url[1].'.php'))
-						{	
-						   \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);
-						}
+    $url = explode('/',$_GET['url']);
+    if($url[0] != 'main')
+    {
+        \Models\HomeMolde::redirect(INCLUDE_PATH);
+            if($url[0] == 'main')
+            {
+                if(isset($url[1]))
+                {
 
-						else
-						{
-							
-							\Models\HomeMolde::redirect(INCLUDE_PATH);
-						}
-				}
-				else
-				{
-					
-				   		if(@$_SESSION['login_Aluno'] != true && @$_SESSION['login_Professo'] != true && @$_SESSION['login_secretaria'] != true)
-					    {
-			               \Models\HomeMolde::redirect(INCLUDE_PATH);
-					    }
-					    else
-					    {
+                        if(file_exists('Views/pages/'.$url[1].'.php'))
+                        {
                            \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);
-					    }
-					    
-				}
-			}
-		
-	}
-	elseif(isset($url[1]))
-	{ 
-		
-		if(!file_exists('Views/pages/'.$url[1].'.php'))
-		{			  
-		  
-             \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);          
-		} 
-	  
-		
-	}
-	
-} 
+                        }
+
+                        else
+                        {
+
+                            \Models\HomeMolde::redirect(INCLUDE_PATH);
+                        }
+                }
+                else
+                {
+
+                        if(@$_SESSION['login_Aluno'] != true && @$_SESSION['login_Professo'] != true && @$_SESSION['login_secretaria'] != true)
+                        {
+                           \Models\HomeMolde::redirect(INCLUDE_PATH);
+                        }
+                        else
+                        {
+                           \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);
+                        }
+
+                }
+            }
+
+    }
+    elseif(isset($url[1]))
+    {
+
+        if(!file_exists('Views/pages/'.$url[1].'.php'))
+        {
+
+             \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);
+        }
+
+
+    }
+
+}
 
 // erro 404 fim //
-	
+
 
 Router::get('/',function() use ($Home){
-	$Home->index();
+    $Home->index();
 });
 
 Router::get('/main/Home',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/Home/',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/home',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/home/',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/Home/?',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/cadastrar-alunos',function() use ($CadastroAluno){
-	$CadastroAluno->index();
+    $CadastroAluno->index();
 });
 
 Router::get('/main/cadastrar-professores',function() use ($CadastroProfesso){
-	$CadastroProfesso->index();
+    $CadastroProfesso->index();
 });
 
 Router::get('/main/cadastrar-sectario',function() use ($CadastroSectario){
-	$CadastroSectario->index();
+    $CadastroSectario->index();
 });
 
 
 Router::get('/main/listagem-alunos',function() use ($VerAluno){
-	$VerAluno->index();
+    $VerAluno->index();
 });
 
 Router::get('/main/listagem-professores',function() use ($VerProfesso){
-	$VerProfesso->index();
+    $VerProfesso->index();
 });
 
 Router::get('/main/cadastrar-curso',function() use ($cadastrocurso){
-	$cadastrocurso->index();
+    $cadastrocurso->index();
 });
 
 Router::get('/main/cadastrar-materia',function() use ($cadastromateria){
-	$cadastromateria->index();
+    $cadastromateria->index();
 });
 
 Router::get('/main/cadastrar-serie',function() use ($cadastroserie){
-	$cadastroserie->index();
+    $cadastroserie->index();
 });
 
 Router::get('/main/cadastrar-diciplina',function() use ($cadastroDiciplina){
-	$cadastroDiciplina->index();
+    $cadastroDiciplina->index();
 });
 
 Router::get('/main/cadastrar-turmas',function() use ($cadastrarTurmas){
-	$cadastrarTurmas->index();
+    $cadastrarTurmas->index();
 });
 
 
 Router::get('/main/boletim',function() use ($boletim){
-	$boletim->index();
+    $boletim->index();
 });
 
 Router::get('/main/editar-aluno',function() use ($EditarAluno){
-	$EditarAluno->index();
+    $EditarAluno->index();
 });
 
 Router::get('/main/editar-professor',function() use ($EditarProfessor){
-	$EditarProfessor->index();
+    $EditarProfessor->index();
 });
 
 Router::get('/main/lancamento-notas',function() use ($lacamentoNotas){
-	$lacamentoNotas->index();
+    $lacamentoNotas->index();
 });
 
 Router::get('/main/chat',function() use ($chat){
-	$chat->index();
+    $chat->index();
 });
 
 Router::get('/main/chat-box',function() use ($chatbox){
-	$chatbox->index();
+    $chatbox->index();
 });
 
 Router::get('/main/atualiza-dados',function() use ($AtualizaDados){
-	$AtualizaDados->index();
+    $AtualizaDados->index();
 });
 
 Router::get('/main/calendario',function() use ($calendario){
-	$calendario->index();
+    $calendario->index();
 });
 
 Router::get('/main/cadastrar-arquivo',function() use ($addarquivo){
-	$addarquivo->index();
+    $addarquivo->index();
 });
 
 Router::get('/main/diario',function() use ($diario){
-	$diario->index();
+    $diario->index();
 });
 
 Router::get('/main/diario-box',function() use ($diariobox){
-	$diariobox->index();
+    $diariobox->index();
 });
 
 Router::get('/main/planeja-aula',function() use ($panejaAula){
-	$panejaAula->index();
+    $panejaAula->index();
 });
 
 Router::get('/main/planeja-aula-box',function() use ($panejaAulaBox){
-	$panejaAulaBox->index();
+    $panejaAulaBox->index();
 });
 
 Router::get('/main/troca-professor',function() use ($trocaProfessor){
-	$trocaProfessor->index();
+    $trocaProfessor->index();
 });
 
 
 Router::get('/main/avaliacoes',function() use ($avaliacoes){
-	$avaliacoes->index();
+    $avaliacoes->index();
 });
 
 Router::get('/main/aulas/?',function() use ($aulas){
-	$aulas->index();
+    $aulas->index();
 });
 
 Router::get('/main/aulas',function() use ($main){
-	$main->index();
+    $main->index();
 });
 
 Router::get('/main/cadastrar-horario',function() use ($horario){
-	$horario->index();
+    $horario->index();
 });
 
 Router::get('/main/listagem-horario',function() use ($listahorario){
-	$listahorario->index();
+    $listahorario->index();
 });
 
 Router::get('/main/gerir-turmas',function() use ($gerirturmas){
-	$gerirturmas->index();
+    $gerirturmas->index();
 });
 
 Router::get('/main/gestaotumas-box',function() use ($gerirturmasbox){
-	$gerirturmasbox->index();
+    $gerirturmasbox->index();
 });
 
 Router::get('/main/grade-curricular',function() use ($gradecurricular){
-	$gradecurricular->index();
+    $gradecurricular->index();
 });
 
 Router::get('/main/historico',function() use ($historico){
-	$historico->index();
+    $historico->index();
 });
 
 Router::get('/main/cadastrar-dependecia',function() use ($dp){
-	$dp->index();
+    $dp->index();
 });
 
 Router::get('/main/cadastrar-grade-curricular',function() use ($cgc){
-	$cgc->index();
+    $cgc->index();
 });
 
 Router::get('/main/editar-grade-curricular',function() use ($egc){
-	$egc->index();
+    $egc->index();
 });
 
 Router::get('/main/unidade_escolar',function() use ($ue){
-	$ue->index();
+    $ue->index();
 });
 
 Router::get('/main/listagem-sectarios',function() use ($editarSectario){
-	$editarSectario->index();
+    $editarSectario->index();
 });
 
 Router::get('/main/editar-sectarios',function() use ($editar){
-	$editar->index();
+    $editar->index();
 });
 
 

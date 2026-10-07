@@ -5,4 +5,10 @@ useDefault = true
 # versionamento antes de aplicar esta exclusão ao scanner de diretório.
 [[allowlists]]
 description = "Credenciais operacionais locais não versionadas"
-paths = ['''^\.env$''']
+paths = [
+  '''^\.env$''',
+  '''^\.env\.neon$''',
+  '''^\.env\.producao$''',
+  '''^\.env\.render\.(escolar|relatorios|legado)$''',
+  '''^\.atena-cloud-private/''',
+]

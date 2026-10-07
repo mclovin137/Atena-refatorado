@@ -6,7 +6,14 @@ TEST_CONTAINER="atena-test-${RANDOM}-${RANDOM}"
 TEST_PASSWORD="$(python3 -c 'import secrets; print(secrets.token_hex(24))')"
 export DB_PASSWORD="$TEST_PASSWORD" SERVICE_TOKEN="$TEST_PASSWORD" ADMIN_EMAIL=secretaria@atena.local ADMIN_PASSWORD="$TEST_PASSWORD"
 export SCHOOL_URL=http://localhost:8080 REPORTS_URL=http://localhost:8081
-cleanup() { docker rm -f "$TEST_CONTAINER" >/dev/null 2>&1 || true; }
+cleanup() {
+  local original_status=$?
+  if ! python3 scripts/sanitizar-evidencias.py; then
+    if [[ "$original_status" -eq 0 ]]; then original_status=1; fi
+  fi
+  docker rm -f "$TEST_CONTAINER" >/dev/null 2>&1 || true
+  exit "$original_status"
+}
 trap cleanup EXIT
 # Contêiner exclusivo; nenhum volume ou banco de outra aplicação é alterado.
 docker run -d --name "$TEST_CONTAINER" \

@@ -1,5 +1,6 @@
 package br.com.atena.escolar.curriculo.dao.jpa;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,4 +28,7 @@ public class CurriculoEntidadeJpa {
     @Min(1)
     @Max(2000)
     public int cargaHoraria;
+
+    @Column(name = "grade_id")
+    public Long gradeId;
 }

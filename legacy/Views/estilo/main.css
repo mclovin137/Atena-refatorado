@@ -1140,7 +1140,7 @@ input[type="radio"]
 
 .img-logo{
 	position: relative;
-	background-image:url('../uploads/user.jpg');
+	background-image:url('../../arquivo.php?nome=user.jpg');
 	background-size: cover;
 	background-position: center;
 	width: 90%;
@@ -1533,4 +1533,59 @@ select,option{
 		font-size: 15px;
 	}
 }
+}
+
+/* Faixas do ADR007: preserva as tabelas completas com rolagem local. */
+body { overflow-x: auto; }
+.content { min-width: 0; }
+.content canvas { max-width: 100%; }
+.atena-tabela { max-width: 100%; overflow-x: auto; }
+.menu-btn { border: 0; background: transparent; }
+.menu-btn:focus-visible, .atena-tabela:focus-visible, .menu a:focus-visible {
+    outline: 2px solid #0091ea;
+    outline-offset: 2px;
+}
+.menu { z-index: 100; }
+body:not(.atena-menu-aberto) .menu { display: none; }
+body:not(.atena-menu-aberto) header,
+body:not(.atena-menu-aberto) .content { left: 0; width: 100%; }
+@media (min-width: 1024px) {
+    .atena-menu-aberto .menu { display: block; width: 250px; }
+    .menu-wraper, .items-menu a, .items-menu h2 { width: 250px; }
+    .items-menu a { font-size: 16px; height: auto; text-align: left; }
+    .items-menu h2 { font-size: 17px; }
+}
+@media (max-width: 1023px) {
+    header, .content { left: 0; width: 100%; }
+    header { min-height: 60px; height: auto; }
+    .atena-menu-aberto .menu {
+        display: block; width: min(250px, calc(100% - 60px));
+        top: 60px; height: calc(100% - 60px);
+    }
+    .menu-wraper, .items-menu a, .items-menu h2 { width: 100%; }
+    .items-menu a { font-size: 16px; height: auto; text-align: left; }
+    .items-menu h2 { font-size: 17px; }
+    .nome-usuario p { margin-left: 0; font-size: 15px; }
+    .botoes a { padding: 0 8px; top: 0; }
+    .box-content { padding: 16px; max-width: 100%; overflow-wrap: anywhere; }
+    .box-chat-online, .card, #exampleModal, #exampleModal1 { zoom: 1; }
+    .list-group { width: 100%; }
+    .wraper-table { max-width: 100%; }
+}
+@media (max-width: 767px) {
+    .w50, .box-single-wraper, .box-metrica-single, .box-tarefas-single,
+    .form-single, .diario-from { width: 100%; float: none; }
+    .form-single input, .form-single select { max-width: 100%; }
+    .box-content form { margin: 16px 0; }
+    .erro-box, .box-sucesso { height: auto; min-height: 40px; }
+}
+
+@media (max-width: 1023px) {
+    header { display: flex; align-items: center; justify-content: space-between; padding: 8px; }
+    header .center { padding: 0; margin: 0; }
+    .menu-btn .fa-bars { margin-top: 0; }
+    .botoes { float: none; margin-top: 0; }
+    .botoes ul { display: flex; align-items: center; gap: 8px; }
+    .botoes form { margin: 0; }
+    .botoes button { padding: 4px 8px; }
 }

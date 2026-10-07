@@ -1,8 +1,16 @@
 {
-  "name": "mpdf/mpdf",
-  "description": "Este pacote gera PDFs usando a biblioteca mPDF",
+  "name": "cris042/atena-legado",
+  "description": "Interface PHP real do Atena com PostgreSQL isolado",
   "license": "MIT",
   "require": {
-    "mpdf/mpdf": "^8.0"
+    "php": "~8.4.0",
+    "ext-pdo_pgsql": "*",
+    "ext-gd": "*",
+    "ext-mbstring": "*",
+    "mpdf/mpdf": "^8.2.5"
+  },
+  "config": {
+    "allow-plugins": false,
+    "sort-packages": true
   }
 }

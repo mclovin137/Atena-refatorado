@@ -10,6 +10,8 @@ import Materiais from "./componentes/Materiais";
 import Boletim from "./componentes/Boletim";
 import PrepararNotas from "./componentes/PrepararNotas";
 import Perfil from "./componentes/Perfil";
+import AssociacoesAcademicas from "./componentes/AssociacoesAcademicas";
+import ImportacaoLegado from "./componentes/ImportacaoLegado";
 export default function AreaEscolar({ user, setUser }) {
   const [page, setPage] = useState("inicio"),
     [rows, setRows] = useState([]),
@@ -41,6 +43,9 @@ export default function AreaEscolar({ user, setUser }) {
       "disciplinas",
       "aulas",
       "avaliacoes",
+      "faculdades",
+      "grades-curriculares",
+      "requisitos-formacao",
     ];
     const results = await Promise.all(names.map((n) => api(n)));
     const d = Object.fromEntries(names.map((n, i) => [n, results[i]]));
@@ -143,6 +148,20 @@ export default function AreaEscolar({ user, setUser }) {
               setNotice={setNotice}
               references={references}
             />
+          )}
+          {admin && ["requisitos-formacao", "matriculas"].includes(page) && (
+            <AssociacoesAcademicas
+              key={`associacoes-${page}`}
+              page={page}
+              rows={rows}
+              refs={refs}
+              label={label}
+              guard={guard}
+              busy={busy}
+            />
+          )}
+          {admin && page === "importacao" && (
+            <ImportacaoLegado guard={guard} busy={busy} refs={refs} />
           )}
           {page === "materiais" && (
             <Materiais

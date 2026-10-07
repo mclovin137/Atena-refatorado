@@ -1,5 +1,6 @@
 package br.com.atena.escolar.curso.dao.jpa;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,4 +19,7 @@ public class CursoEntidadeJpa {
     @NotBlank
     @Size(max = 150)
     public String nome;
+
+    @Column(name = "faculdade_id")
+    public Long faculdadeId;
 }

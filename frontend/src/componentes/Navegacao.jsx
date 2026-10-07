@@ -51,6 +51,14 @@ export default function Navegacao({ page, setPage, admin, guard, setUser }) {
             Preparar notas
           </button>
         )}
+        {admin && (
+          <button
+            className={page === "importacao" ? "active" : ""}
+            onClick={() => setPage("importacao")}
+          >
+            Importação do legado
+          </button>
+        )}
         <button onClick={() => setPage("perfil")}>Meu perfil</button>
       </nav>
       <button

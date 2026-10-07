@@ -2,33 +2,33 @@
 namespace Controller;
 use \Views\mainview;
 
-    
+
 class CriaGradeCurricularController
 {
-	   
-	public function index()
-	{
-		    $token = md5(@$_SESSION['matricula'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
 
-		    if ($token != @$_SESSION['sessao'])
-		    {
-		    	\Models\HomeMolde::redirect(INCLUDE_PATH);
-		    }
+    public function index()
+    {
+            $token = md5(@$_SESSION['matricula'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
 
-     	    if(@$_SESSION['login_secretaria'] != true)
-		    {
+            if ($token != @$_SESSION['sessao'])
+            {
+                \Models\HomeMolde::redirect(INCLUDE_PATH);
+            }
+
+            if(@$_SESSION['login_secretaria'] != true)
+            {
                \Models\HomeMolde::redirect(INCLUDE_PATH_MAIN_HOME);
-		    }
-    
+            }
+
             if(isset($_POST['Cadastre']))
-			{		    
-				\Models\MainMolde::criagrade();
-		    }
-		  
+            {
+                \Models\MainMolde::criagrade();
+            }
+
             if(@$_SESSION['login_secretaria'] = true)
-		    {
-		 			mainView::render('cadastrar-grade-curricular.php',[],'headersecretaria.php');
-		    }
-	}
+            {
+                    mainView::render('cadastrar-grade-curricular.php',[],'headersecretaria.php');
+            }
+    }
 }
 ?>

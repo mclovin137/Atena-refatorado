@@ -34,7 +34,33 @@ export const resources = {
       ["telefone", "Telefone", "tel"],
     ],
   },
-  cursos: { label: "Cursos", group: "Secretaria", fields: [name] },
+  faculdades: { label: "Faculdades", group: "Secretaria", fields: [name] },
+  cursos: {
+    label: "Cursos",
+    group: "Secretaria",
+    fields: [
+      name,
+      [
+        "faculdadeId",
+        "Faculdade (opcional no cadastro histórico)",
+        "faculdades",
+      ],
+    ],
+  },
+  "grades-curriculares": {
+    label: "Grades por curso",
+    group: "Secretaria",
+    fields: [name, ["cursoId", "Curso", "cursos", true]],
+  },
+  "requisitos-formacao": {
+    label: "Requisitos de formação",
+    group: "Secretaria",
+    fields: [
+      name,
+      ["gradeId", "Grade curricular", "grades-curriculares", true],
+      ["descricao", "Descrição administrativa", "textarea"],
+    ],
+  },
   series: { label: "Séries", group: "Secretaria", fields: [name] },
   materias: { label: "Matérias", group: "Secretaria", fields: [name] },
   curriculos: {
@@ -43,6 +69,11 @@ export const resources = {
     fields: [
       name,
       ["materiaId", "Matéria", "materias", true],
+      [
+        "gradeId",
+        "Grade por curso (opcional no modelo histórico)",
+        "grades-curriculares",
+      ],
       ["cargaHoraria", "Carga horária", "number", true],
     ],
   },
@@ -160,6 +191,9 @@ export const resources = {
   },
 };
 export const secretaryOnly = [
+  "faculdades",
+  "grades-curriculares",
+  "requisitos-formacao",
   "pessoas",
   "unidades",
   "cursos",

@@ -51,7 +51,7 @@ import java.util.UUID;
         })
 @AutoConfigureMockMvc
 class EscolarIntegracaoTeste {
-    static final String password = UUID.randomUUID() + "-SenhaSegura";
+    static final String password = CredenciaisIntegracao.SENHA;
     static final String token = UUID.randomUUID().toString() + UUID.randomUUID();
     static final Path arquivosLegados =
             Path.of(System.getProperty("java.io.tmpdir"), "atena-testes-" + UUID.randomUUID());
@@ -103,6 +103,7 @@ class EscolarIntegracaoTeste {
 
     @BeforeEach
     void autenticar() throws Exception {
+        CredenciaisIntegracao.prepararBootstrap(jdbc);
         admin = entrarComCookieReal("secretaria@atena.local", password);
     }
 
@@ -315,9 +316,45 @@ class EscolarIntegracaoTeste {
         mvc.perform(delete("/api/disciplinas/" + id(extra)).session(admin).with(csrf()))
                 .andExpect(status().isNoContent());
         created.remove("disciplinas/" + id(extra));
-        criar(
-                "matriculas",
-                Map.of("turmaId", id(turma), "alunoId", id(aluno), "dependencia", false));
+        var matricula =
+                criar(
+                        "matriculas",
+                        Map.of("turmaId", id(turma), "alunoId", id(aluno), "dependencia", false));
+        String associacoes = "/api/matriculas/" + id(matricula) + "/materias";
+        mvc.perform(get(associacoes)).andExpect(status().isUnauthorized());
+        assertEquals(1, json(get(associacoes), admin, 200).size());
+        assertEquals(1, json(get(associacoes), student, 200).size());
+        assertEquals(1, json(get(associacoes), teacher, 200).size());
+        var alunoAlheio = entrar(outro.get("email").asText(), password);
+        mvc.perform(get(associacoes).session(alunoAlheio)).andExpect(status().isForbidden());
+        mvc.perform(delete(associacoes + "/" + disciplinaId).session(admin))
+                .andExpect(status().isForbidden());
+        mvc.perform(delete(associacoes + "/" + disciplinaId).session(student).with(csrf()))
+                .andExpect(status().isForbidden());
+        mvc.perform(delete(associacoes + "/" + disciplinaId).session(admin).with(csrf()))
+                .andExpect(status().isNoContent());
+        assertEquals(0, json(get(associacoes), admin, 200).size());
+        json(
+                post(associacoes)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"disciplinaId\":" + disciplinaId + "}"),
+                admin,
+                201);
+        json(
+                post(associacoes)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"disciplinaId\":" + disciplinaId + "}"),
+                admin,
+                409);
+        json(
+                post(associacoes)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"disciplinaId\":" + Long.MAX_VALUE + "}"),
+                admin,
+                404);
         criar(
                 "horarios",
                 Map.of(

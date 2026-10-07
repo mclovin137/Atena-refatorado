@@ -17,7 +17,7 @@ if Path('docs/continuidade.md').stat().st_size > 8192:
 PY
 python3 scripts/qualidade.py
 ./scripts/formatar-java.sh
-if [[ -n "$(git ls-files -- .env '.env.*' | sed '/^\.env\.example$/d')" ]]; then
+if [[ -n "$(git ls-files -- .env '.env.*' .atena-cloud-private | sed '/^\.env\.example$/d')" ]]; then
   printf '%s\n' 'Arquivo de credenciais está versionado.' >&2
   exit 1
 fi

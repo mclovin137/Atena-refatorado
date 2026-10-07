@@ -1,0 +1,5 @@
+Lib/vendor
+.env*
+.git
+*.sql
+Views/uploads

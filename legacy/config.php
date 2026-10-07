@@ -1,39 +1,28 @@
 <?php
-	session_start();
-	date_default_timezone_set('America/Sao_Paulo');
-	include('Models/Router.php');
-	include('Models/MySql.php');
-	include('Models/MainMolde.php');
-	include('Models/HomeMolde.php');
-	include('Views/mainviw.php');
-
-	
-
-
-	$autoload = function($class)
-	{				
-		   include($class.'.php');		  
-	};
-	
-	spl_autoload_register($autoload);
-
-    // Diretorios
-    define('BASE_DIR',__DIR__.'/');
-	define('INCLUDE_PATH','http://localhost/Sistema Escolar/');
-    //define('INCLUDE_PATH','//10.10.202.18/Sistema Escolar/');
-	//define('INCLUDE_PATH','//192.168.1.13/Sistema Escolar/');
-	define('INCLUDE_PATH_MAIN',INCLUDE_PATH.'main/');
-	define('INCLUDE_PATH_MAIN_HOME',INCLUDE_PATH_MAIN.'Home/');
-	define('INCLUDE_PATH_GOOGLE','https://www.google.com/');
-	
-	//Conectar com banco de dados!
-	define('HOST','localhost');
-	define('USER','root');
-	define('PASSWORD','');
-	define('DATABASE','SistemaEscolar');
-
-	ob_end_flush();
-
-	
-	
-?>
+require_once __DIR__ . '/Models/Seguranca.php';
+require_once __DIR__ . '/Models/LimiteLogin.php';
+Seguranca::iniciar();
+date_default_timezone_set('America/Sao_Paulo');
+define('BASE_DIR', __DIR__ . '/');
+$base = getenv('LEGADO_BASE_URL') ?: '/';
+if (!str_starts_with($base, '/') && !preg_match('~^https?://[^\s]+/$~D', $base)) {
+    throw new RuntimeException('URL base inválida');
+}
+if (getenv('LEGADO_ENV') === 'production' && !str_starts_with($base, 'https://')) {
+    throw new RuntimeException('HTTPS obrigatório');
+}
+define('INCLUDE_PATH', rtrim($base, '/') . '/');
+define('INCLUDE_PATH_MAIN', INCLUDE_PATH . 'main/');
+define('INCLUDE_PATH_MAIN_HOME', INCLUDE_PATH_MAIN . 'Home/');
+define('INCLUDE_PATH_GOOGLE', 'https://www.google.com/');
+require_once BASE_DIR . 'Models/Router.php';
+require_once BASE_DIR . 'Models/MySql.php';
+require_once BASE_DIR . 'Models/MainMolde.php';
+require_once BASE_DIR . 'Models/HomeMolde.php';
+require_once BASE_DIR . 'Views/mainviw.php';
+spl_autoload_register(function (string $class): void {
+    if (!preg_match('~^(Controller|Models|Views)\\\\[A-Za-z0-9_]+$~D', $class)) return;
+    $path = BASE_DIR . str_replace('\\', '/', $class) . '.php';
+    if (is_file($path)) require_once $path;
+});
+Seguranca::autorizar();
